@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseClient.rhc.modules.sys.mapper.labelItem.LabelItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseClient.rhc.modules.sys.entity.labelItem.LabelItem">
+        <id column="id" property="id" />
+        <result column="use_id" property="useId" />
+        <result column="label_id" property="labelId" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, use_id, label_id, type
+    </sql>
+
+    <select id="selectItemList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.labelItem.LabelItem">
+        select <include refid="Base_Column_List" /> from label_item
+        <trim prefix="where" prefixOverrides="and">
+            <if test="item.useId != null and item.useId != ''">
+                and use_id like concat(#{item.useId}, "%")
+            </if>
+            <if test="item.labelId != null and item.labelId != ''">
+                and label_id like concat(#{item.labelId}, "%")
+            </if>
+            <if test="item.type != null">
+                and type = #{item.type}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectService" parameterType="java.lang.String" resultType="com.rentalHouseClient.rhc.modules.sys.entity.labelItem.LabelItem">
+        select <include refid="Base_Column_List" /> from label_item
+        <trim prefix="where" prefixOverrides="and">
+
+            <if test="serviceId != null and serviceId != ''">
+                and use_id =#{serviceId}
+            </if>
+        </trim>
+    </select>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseAdmin.rha.modules.sys.mapper.attention.AttentionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseAdmin.rha.modules.sys.entity.attention.Attention">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="issue_id" property="issueId" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="delete_time" property="deleteTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, user_id, issue_id, status, create_time, delete_time
+    </sql>
+
+    <select id="selectAttentionList" resultType="com.rentalHouseAdmin.rha.modules.sys.entity.attention.Attention">
+        select <include refid="Base_Column_List" /> from attention
+        <trim prefix="where" prefixOverrides="and">
+            <if test="attention.issueId != null and attention.issueId != ''">
+                and issue_id like concat(#{attention.issueId}, "%")
+            </if>
+            <if test="attention.createTime != null">
+                and create_time = #{attention.createTime}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

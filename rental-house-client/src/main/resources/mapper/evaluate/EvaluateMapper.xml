@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseClient.rhc.modules.sys.mapper.evaluate.EvaluateMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseClient.rhc.modules.sys.entity.evaluate.Evaluate">
+        <id column="id" property="id" />
+        <result column="issue_id" property="issueId" />
+        <result column="evaluate_content" property="evaluateContent" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="delete_time" property="deleteTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, issue_id, evaluate_content, status, create_time, delete_time
+    </sql>
+
+    <select id="selectEvaluateList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.evaluate.Evaluate">
+        select <include refid="Base_Column_List" /> from evaluate
+        <trim prefix="where" prefixOverrides="and">
+            <if test="evaluate.issueId != null and evaluate.issueId != ''">
+                and issue_id like concat(#{evaluate.issueId}, "%")
+            </if>
+            <if test="evaluate.evaluateContent != null and evaluate.evaluateContent != ''">
+                and evaluate_content like concat(#{evaluate.evaluateContent}, "%")
+            </if>
+            <if test="evaluate.status != null">
+                and status = #{evaluate.status}
+            </if>
+            <if test="evaluate.createTime != null">
+                and create_time = #{evaluate.createTime}
+            </if>
+            <if test="evaluate.deleteTime != null and evaluate.deleteTime != ''">
+                and delete_time like concat(#{evaluate.deleteTime}, "%")
+            </if>
+        </trim>
+    </select>
+
+</mapper>

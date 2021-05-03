@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseClient.rhc.modules.sys.mapper.autonym.AutonymMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseClient.rhc.modules.sys.entity.autonym.Autonym">
+        <id column="id" property="id" />
+        <result column="identity_card" property="identityCard" />
+        <result column="name" property="name" />
+        <result column="client_user_id" property="clientUserId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, identity_card, name, client_user_id
+    </sql>
+
+    <select id="selectAutonymList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.autonym.Autonym">
+        select <include refid="Base_Column_List" /> from autonym
+        <trim prefix="where" prefixOverrides="and">
+            <if test="autonym.identityCard != null and autonym.identityCard != ''">
+                and identity_card like concat(#{autonym.identityCard}, "%")
+            </if>
+            <if test="autonym.name != null and autonym.name != ''">
+                and name like concat(#{autonym.name}, "%")
+            </if>
+            <if test="autonym.clientUserId != null and autonym.clientUserId != ''">
+                and client_user_id like concat(#{autonym.clientUserId}, "%")
+            </if>
+        </trim>
+    </select>
+
+</mapper>

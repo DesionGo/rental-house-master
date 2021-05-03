@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseClient.rhc.modules.sys.mapper.footprint.FootprintMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseClient.rhc.modules.sys.entity.footprint.Footprint">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="look_id" property="lookId" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="delete_time" property="deleteTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, user_id, look_id, status, create_time, delete_time
+    </sql>
+
+    <select id="selectFootprintList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.footprint.Footprint">
+        select <include refid="Base_Column_List" /> from footprint
+        <trim prefix="where" prefixOverrides="and">
+            <if test="footprint.userId != null and footprint.userId != ''">
+                and user_id like concat(#{footprint.userId}, "%")
+            </if>
+            <if test="footprint.lookId != null and footprint.lookId != ''">
+                and look_id like concat(#{footprint.lookId}, "%")
+            </if>
+            <if test="footprint.status != null">
+                and status = #{footprint.status}
+            </if>
+            <if test="footprint.createTime != null">
+                and create_time = #{footprint.createTime}
+            </if>
+            <if test="footprint.deleteTime != null and footprint.deleteTime != ''">
+                and delete_time like concat(#{footprint.deleteTime}, "%")
+            </if>
+        </trim>
+    </select>
+
+</mapper>

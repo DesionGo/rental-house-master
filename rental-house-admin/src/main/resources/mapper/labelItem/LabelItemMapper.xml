@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseAdmin.rha.modules.sys.mapper.labelItem.LabelItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseAdmin.rha.modules.sys.entity.labelItem.LabelItem">
+        <id column="id" property="id" />
+        <result column="use_id" property="useId" />
+        <result column="label_id" property="labelId" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, use_id, label_id, type
+    </sql>
+
+    <select id="selectItemList" resultType="com.rentalHouseAdmin.rha.modules.sys.entity.labelItem.LabelItem">
+        select <include refid="Base_Column_List" /> from label_item
+        <trim prefix="where" prefixOverrides="and">
+            <if test="labelItem.useId != null and labelItem.useId != ''">
+                and use_id like concat(#{labelItem.useId}, "%")
+            </if>
+            <if test="labelItem.labelId != null and labelItem.labelId != ''">
+                and label_id like concat(#{labelItem.labelId}, "%")
+            </if>
+            <if test="labelItem.type != null">
+                and type = #{labelItem.type}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

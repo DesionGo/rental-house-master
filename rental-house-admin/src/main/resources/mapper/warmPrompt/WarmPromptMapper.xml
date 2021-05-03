@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseAdmin.rha.modules.sys.mapper.warmPrompt.WarmPromptMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseAdmin.rha.modules.sys.entity.warmPrompt.WarmPrompt">
+        <id column="id" property="id" />
+        <result column="keyword" property="keyword" />
+        <result column="remind_words" property="remindWords" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_user_name" property="updateUserName" />
+        <result column="update_time" property="updateTime" />
+        <result column="status" property="status" />
+        <result column="delete_time" property="deleteTime" />
+        <result column="create_time" property="createTime" />
+        <result column="create_name" property="createName" />
+        <result column="create_user" property="createUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, keyword, remind_words, update_user, update_user_name, update_time, status, delete_time, create_time, create_name, create_user
+    </sql>
+
+    <select id="selectPromptList" resultType="com.rentalHouseAdmin.rha.modules.sys.entity.warmPrompt.WarmPrompt">
+        select <include refid="Base_Column_List" /> from warm_prompt
+        <trim prefix="where" prefixOverrides="and">
+            <if test="warmPrompt.keyword != null and warmPrompt.keyword != ''">
+                and keyword like concat(#{warmPrompt.keyword}, "%")
+            </if>
+            <if test="warmPrompt.remindWords != null and warmPrompt.remindWords != ''">
+                and remind_words like concat(#{warmPrompt.remindWords}, "%")
+            </if>
+            <if test="warmPrompt.updateUser != null and warmPrompt.updateUser != ''">
+                and update_user like concat(#{warmPrompt.updateUser}, "%")
+            </if>
+            <if test="warmPrompt.updateUserName != null and warmPrompt.updateUserName != ''">
+                and update_user_name like concat(#{warmPrompt.updateUserName}, "%")
+            </if>
+            <if test="warmPrompt.updateTime != null and warmPrompt.updateTime != ''">
+                and update_time like concat(#{warmPrompt.updateTime}, "%")
+            </if>
+            <if test="warmPrompt.status != null and warmPrompt.status != ''">
+                and status like concat(#{warmPrompt.status}, "%")
+            </if>
+            <if test="warmPrompt.deleteTime != null and warmPrompt.deleteTime != ''">
+                and delete_time like concat(#{warmPrompt.deleteTime}, "%")
+            </if>
+            <if test="warmPrompt.createTime != null">
+                and create_time = #{warmPrompt.createTime}
+            </if>
+            <if test="warmPrompt.createName != null and warmPrompt.createName != ''">
+                and create_name like concat(#{warmPrompt.createName}, "%")
+            </if>
+            <if test="warmPrompt.createUser != null and warmPrompt.createUser != ''">
+                and create_user like concat(#{warmPrompt.createUser}, "%")
+            </if>
+        </trim>
+    </select>
+
+</mapper>

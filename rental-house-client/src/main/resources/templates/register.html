@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="description" content="Webartinfo">
+      <meta name="author" content="Webartinfo">
+      <title>Manland - Bootstrap Light Real Estate HTML Template</title>
+      <!-- Favicon Icon -->
+      <link rel="icon" type="image/png" href="img/favicon.png">
+      <!-- Bootstrap core CSS -->
+
+      <link href="vendor/icons/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
+
+   </head>
+   <body>
+      <!-- Register -->
+      <section class="hv-100">
+         <div class="container">
+            <div class="row align-items-center hv-100">
+               <div class="col-lg-5 col-md-5 mx-auto">
+                  <div class="card padding-card mb-0">
+                     <div class="card-body">
+                        <h5 class="card-title mb-4">Register</h5>
+                        <div class="layui-form kvf-user-login-box">
+                           <div class="form-group">
+                              <div class="layui-form-item">
+                              <label>用户名 <span class="text-danger">*</span></label>
+                              <input type="text" name="userName" class="form-control" placeholder="Enter Full Name">
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <div class="layui-form-item">
+                              <label>Email<span class="text-danger">*</span></label>
+                              <input type="email" name="email" class="form-control" placeholder="Enter Email Address">
+                              </div>
+                           </div>
+                           <div class="form-group">
+                              <div class="layui-form-item">
+                              <label>密码<span class="text-danger">*</span></label>
+                              <input type="password" name="password" class="form-control" placeholder="Enter Password">
+                              </div>
+                           </div>
+                           <button type="submit" class="btn btn-success btn-block" lay-submit lay-filter="kUserRegisterSubmit">注册</button>
+                        </div>
+                        <div class="mt-4 text-center">
+                           Have an account - <a  th:href="@{/login}">Login</a>
+                        </div>
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <script th:replace="common/base::context"></script>
+      <script th:replace="common/base::iconpkcss"></script>
+      <script th:replace="common/base::mainjs"></script>
+      <script>
+         layui.use('form', function () {
+            var form = layui.form;
+
+            //提交
+            form.on('submit(kUserRegisterSubmit)', function(obj) {
+               //请求登入接口
+               kvfKit.aPost(api.userAdd, obj.field, function (r) {
+                  if (r.code === req.status.ok) {
+                     // todo 请求成功后，写入 access_token
+                     /*layui.data(setter.tableName, {
+                         key: setter.request.tokenName
+                         ,value: res.data.access_token
+                     });*/
+                     // 登入成功的提示与跳转
+                     layer.msg('注册成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 500
+                     }, function() {
+                        // 解决session过期在iframe页面登录后，主页嵌套在iframe里面的问题
+                        if (window !== top) {
+                           top.location.href = api.homeView;
+                        } else {
+                           location.href = api.homeView; // kvf-admin首页
+                        }
+                     });
+
+                  } else {
+                     if (r.msg.indexOf('验证码') !== -1) {
+                        kvfKit.unhappyMsg(r.msg + '，请重试。', true);
+                        refreshVerCode();
+                     } else {
+                        kvfKit.unhappyMsg(r.msg, true);
+                        refreshVerCode();
+                     }
+                  }
+               });
+            });
+
+            // 绑定监听回车事件
+            kvfKit.bindEnterEventForLayuiForm();
+
+
+            $('#kUserGetVerCode').on('click', function () {
+               refreshVerCode();
+            });
+
+            // 刷新图片验证码
+            function refreshVerCode() {
+               $('#kUserGetVerCode').attr('src', api.captchaUrl + '?t=' + Math.random());
+               $('#kUserLoginVercode').val('');
+            }
+
+         })
+      </script>
+   </body>
+</html>

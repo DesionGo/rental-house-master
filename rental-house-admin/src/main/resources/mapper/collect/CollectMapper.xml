@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseAdmin.rha.modules.sys.mapper.collect.CollectMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseAdmin.rha.modules.sys.entity.collect.Collect">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="issue_id" property="issueId" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="delete_time" property="deleteTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, user_id, issue_id, status, create_time, delete_time
+    </sql>
+
+    <select id="selectCollectList" resultType="com.rentalHouseAdmin.rha.modules.sys.entity.collect.Collect">
+        select <include refid="Base_Column_List" /> from collect
+        <trim prefix="where" prefixOverrides="and">
+            <if test="collect.userId != null and collect.userId != ''">
+                and user_id like concat(#{collect.userId}, "%")
+            </if>
+            <if test="collect.issueId != null and collect.issueId != ''">
+                and issue_id like concat(#{collect.issueId}, "%")
+            </if>
+            <if test="collect.status != null">
+                and status = #{collect.status}
+            </if>
+            <if test="collect.createTime != null">
+                and create_time = #{collect.createTime}
+            </if>
+            <if test="collect.deleteTime != null and collect.deleteTime != ''">
+                and delete_time like concat(#{collect.deleteTime}, "%")
+            </if>
+        </trim>
+    </select>
+
+</mapper>

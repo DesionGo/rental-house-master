@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseAdmin.rha.modules.sys.mapper.issue.IssueMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseAdmin.rha.modules.sys.entity.issue.Issue">
+        <id column="id" property="id" />
+        <result column="headline" property="headline" />
+        <result column="content" property="content" />
+        <result column="type" property="type" />
+        <result column="create_user_id" property="createUserId" />
+        <result column="create_user_name" property="createUserName" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="delete_time" property="deleteTime" />
+        <result column="money" property="money" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="county" property="county" />
+        <result column="detail_site" property="detailSite" />
+        <result column="status" property="status" />
+        <result column="auditor_user_id" property="auditorUserId" />
+        <result column="auditor_user_name" property="auditorUserName" />
+        <result column="auditor_time" property="auditorTime" />
+        <result column="auditor_status" property="auditorStatus" />
+        <result column="auditor_remark" property="auditorRemark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, headline, content, type, create_user_id, create_user_name, create_time, update_time, delete_time, money, province, city, county, detail_site, status, auditor_user_id, auditor_user_name, auditor_time, auditor_status, auditor_remark
+    </sql>
+
+    <select id="selectIssueList" resultType="com.rentalHouseAdmin.rha.modules.sys.entity.issue.Issue">
+        select <include refid="Base_Column_List" /> from issue
+        <trim prefix="where" prefixOverrides="and">
+            <if test="issue.headline != null and issue.headline != ''">
+                and headline like concat(#{issue.headline}, "%")
+            </if>
+            <if test="issue.content != null and issue.content != ''">
+                and content like concat(#{issue.content}, "%")
+            </if>
+            <if test="issue.type != null">
+                and type = #{issue.type}
+            </if>
+            <if test="issue.createUserId != null and issue.createUserId != ''">
+                and create_user_id like concat(#{issue.createUserId}, "%")
+            </if>
+            <if test="issue.createUserName != null and issue.createUserName != ''">
+                and create_user_name like concat(#{issue.createUserName}, "%")
+            </if>
+            <if test="issue.createTime != null">
+                and create_time = #{issue.createTime}
+            </if>
+            <if test="issue.updateTime != null">
+                and update_time = #{issue.updateTime}
+            </if>
+            <if test="issue.deleteTime != null">
+                and delete_time = #{issue.deleteTime}
+            </if>
+            <if test="issue.money != null">
+                and money = #{issue.money}
+            </if>
+            <if test="issue.province != null and issue.province != ''">
+                and province like concat(#{issue.province}, "%")
+            </if>
+            <if test="issue.city != null and issue.city != ''">
+                and city like concat(#{issue.city}, "%")
+            </if>
+            <if test="issue.county != null and issue.county != ''">
+                and county like concat(#{issue.county}, "%")
+            </if>
+            <if test="issue.detailSite != null and issue.detailSite != ''">
+                and detail_site like concat(#{issue.detailSite}, "%")
+            </if>
+            <if test="issue.status != null and issue.status != ''">
+                and status like concat(#{issue.status}, "%")
+            </if>
+            <if test="issue.auditorUserId != null and issue.auditorUserId != ''">
+                and auditor_user_id like concat(#{issue.auditorUserId}, "%")
+            </if>
+            <if test="issue.auditorUserName != null and issue.auditorUserName != ''">
+                and auditor_user_name like concat(#{issue.auditorUserName}, "%")
+            </if>
+            <if test="issue.auditorTime != null">
+                and auditor_time = #{issue.auditorTime}
+            </if>
+            <if test="issue.auditorStatus != null">
+                and auditor_status = #{issue.auditorStatus}
+            </if>
+            <if test="issue.auditorRemark != null and issue.auditorRemark != ''">
+                and auditor_remark like concat(#{issue.auditorRemark}, "%")
+            </if>
+        </trim>
+    </select>
+
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseClient.rhc.modules.sys.mapper.FilesMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseClient.rhc.modules.sys.entity.Files">
+        <id column="id" property="id" />
+        <result column="url" property="url" />
+        <result column="create_date" property="createDate" />
+        <result column="file_name" property="fileName" />
+        <result column="file_path" property="filePath" />
+        <result column="ascription_id" property="ascriptionId" />
+        <result column="ascription_name" property="ascriptionName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, url, create_date, file_name, file_path, ascription_id, ascription_name
+    </sql>
+
+    <select id="selectFilesList"  resultType="com.rentalHouseClient.rhc.modules.sys.entity.Files">
+        select <include refid="Base_Column_List" /> from sys_files
+        <trim prefix="where" prefixOverrides="and">
+            <if test="city != null">
+                and ascription_id = #{files.ascriptionId}
+            </if>
+            <if test="files.ascriptionName != null and files.ascriptionName != ''">
+                and ascription_name like concat(#{files.ascriptionName}, "%")
+            </if>
+        </trim>
+    </select>
+    <select id="selectFiles" parameterType="java.lang.String"  resultType="com.rentalHouseClient.rhc.modules.sys.entity.Files">
+        select <include refid="Base_Column_List" /> from sys_files
+        <trim prefix="where" prefixOverrides="and">
+
+            <if test="city != null and city != ''">
+                and ascription_name like concat(#{city}, "%")
+            </if>
+        </trim>
+    </select>
+    <select id="selectFilesId" parameterType="java.lang.String"  resultType="com.rentalHouseClient.rhc.modules.sys.entity.Files">
+        select <include refid="Base_Column_List" /> from sys_files
+        <trim prefix="where" prefixOverrides="and">
+
+            <if test="ascriptionId != null">
+                and ascription_id = #{ascriptionId}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

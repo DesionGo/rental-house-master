@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:replace="common/base::pagetitle"></title>
+    <link th:replace="common/base::static"/>
+</head>
+<body>
+<div class="layui-form" style="padding: 20px 30px 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布标题</label>
+        <div class="layui-input-inline">
+            <input type="text" name="headline" th:value="${editInfo.headline}" placeholder="请输入发布标题" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布内容</label>
+        <div class="layui-input-inline">
+            <input type="text" name="content" th:value="${editInfo.content}" placeholder="请输入发布内容" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">发布类型(0 找租友，1 出租，2 求租）</label>
+        <div class="layui-input-inline">
+            <input type="text" name="type" th:value="${editInfo.type}" placeholder="请输入发布类型(0 找租友，1 出租，2 求租）" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建者id</label>
+        <div class="layui-input-inline">
+            <input type="text" name="createUserId" th:value="${editInfo.createUserId}" placeholder="请输入创建者id" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建者名字</label>
+        <div class="layui-input-inline">
+            <input type="text" name="createUserName" th:value="${editInfo.createUserName}" placeholder="请输入创建者名字" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">创建时间</label>
+        <div class="layui-input-inline">
+            <input type="text" name="createTime" id="createTime" th:value="${#strings.replace(editInfo.createTime,'T',' ')}" placeholder="请输入创建时间" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">修改时间</label>
+        <div class="layui-input-inline">
+            <input type="text" name="updateTime" id="updateTime" th:value="${#strings.replace(editInfo.updateTime,'T',' ')}" placeholder="请输入修改时间" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">删除时间</label>
+        <div class="layui-input-inline">
+            <input type="text" name="deleteTime" id="deleteTime" th:value="${#strings.replace(editInfo.deleteTime,'T',' ')}" placeholder="请输入删除时间" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">金额</label>
+        <div class="layui-input-inline">
+            <input type="text" name="money" th:value="${editInfo.money}" placeholder="请输入金额" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">省</label>
+        <div class="layui-input-inline">
+            <input type="text" name="province" th:value="${editInfo.province}" placeholder="请输入省" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">市</label>
+        <div class="layui-input-inline">
+            <input type="text" name="city" th:value="${editInfo.city}" placeholder="请输入市" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">县/区</label>
+        <div class="layui-input-inline">
+            <input type="text" name="county" th:value="${editInfo.county}" placeholder="请输入县/区" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">详情地点</label>
+        <div class="layui-input-inline">
+            <input type="text" name="detailSite" th:value="${editInfo.detailSite}" placeholder="请输入详情地点" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">状态(1.正常 2.审核中,3.下架 )</label>
+        <div class="layui-input-inline">
+            <input type="text" name="status" th:value="${editInfo.status}" placeholder="请输入状态(1.正常 2.审核中,3.下架 )" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">审核人员id</label>
+        <div class="layui-input-inline">
+            <input type="text" name="auditorUserId" th:value="${editInfo.auditorUserId}" placeholder="请输入审核人员id" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">审核人员姓名</label>
+        <div class="layui-input-inline">
+            <input type="text" name="auditorUserName" th:value="${editInfo.auditorUserName}" placeholder="请输入审核人员姓名" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">审核时间</label>
+        <div class="layui-input-inline">
+            <input type="text" name="auditorTime" id="auditorTime" th:value="${#strings.replace(editInfo.auditorTime,'T',' ')}" placeholder="请输入审核时间" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">审核状态（0.审核中 1. 审核通过，2.审核驳回）</label>
+        <div class="layui-input-inline">
+            <input type="text" name="auditorStatus" th:value="${editInfo.auditorStatus}" placeholder="请输入审核状态（0.审核中 1. 审核通过，2.审核驳回）" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">审核回复</label>
+        <div class="layui-input-inline">
+            <input type="text" name="auditorRemark" th:value="${editInfo.auditorRemark}" placeholder="请输入审核回复" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit="" lay-filter="kFormSubmit" id="kFormSubmit">
+        <input type="text" name="id" th:value="${editInfo.id}" autocomplete="off" class="layui-input">
+    </div>
+</div>
+
+<script th:replace="common/base::context"></script>
+<script th:replace="common/base::mainjs"></script>
+<script>
+    layui.use(['form', 'laydate'], function () {
+        var $ = layui.$, form = layui.form, laydate = layui.laydate;
+
+
+        laydate.render({
+            elem: '#createTime' // 指定元素
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#updateTime' // 指定元素
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#deleteTime' // 指定元素
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#auditorTime' // 指定元素
+            ,type: 'datetime'
+        });
+
+        //监听提交
+        form.on('submit(kFormSubmit)', function(data){
+            var field = data.field; //获取提交的字段
+            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+
+            var url = field.id ? 'issue/issue/edit' : 'issue/issue/add';
+            //提交 Ajax 成功后，关闭当前弹层并重载表格
+            $.ajax({
+                type: req.type.post,
+                url: BASE_WEB + url,
+                data: field,
+                async: false,
+                success: function (r) {
+                    if (r.code === req.status.ok) {
+                        // 重载表格
+                        parent.layui.table.reload('kContentTable');
+                        parent.layer.close(index); //再执行关闭
+                    } else {
+                        kvfKit.errorMsg(r.msg);
+                    }
+                }
+            });
+
+        });
+    })
+</script>
+</body>
+</html>

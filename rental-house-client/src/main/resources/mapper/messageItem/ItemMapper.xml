@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseClient.rhc.modules.sys.mapper.messageItem.MessageItemMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseClient.rhc.modules.sys.entity.messageItem.MessageItem">
+        <id column="id" property="id" />
+        <result column="message_content" property="messageContent" />
+        <result column="is_look" property="isLook" />
+        <result column="send_id" property="sendId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, message_content, is_look, send_id
+    </sql>
+
+    <select id="selectItemList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.messageItem.MessageItem">
+        select <include refid="Base_Column_List" /> from message_item
+        <trim prefix="where" prefixOverrides="and">
+            <if test="messageItem.messageContent != null and messageItem.messageContent != ''">
+                and message_content like concat(#{item.messageContent}, "%")
+            </if>
+            <if test="messageItem.isLook != null">
+                and is_look = #{item.isLook}
+            </if>
+            <if test="messageItem.sendId != null and messageItem.sendId != ''">
+                and send_id like concat(#{item.sendId}, "%")
+            </if>
+        </trim>
+    </select>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseClient.rhc.modules.sys.mapper.label.LabelMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseClient.rhc.modules.sys.entity.label.Label">
+        <id column="id" property="id" />
+        <result column="label_content" property="labelContent" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="delete_time" property="deleteTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, label_content, status, create_time, delete_time
+    </sql>
+
+    <select id="selectLabelList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.label.Label">
+        select <include refid="Base_Column_List" /> from label
+        <trim prefix="where" prefixOverrides="and">
+            <if test="label.labelContent != null and label.labelContent != ''">
+                and label_content like concat(#{label.labelContent}, "%")
+            </if>
+            <if test="label.status != null">
+                and status = #{label.status}
+            </if>
+            <if test="label.createTime != null">
+                and create_time = #{label.createTime}
+            </if>
+            <if test="label.deleteTime != null and label.deleteTime != ''">
+                and delete_time like concat(#{label.deleteTime}, "%")
+            </if>
+        </trim>
+    </select>
+
+</mapper>

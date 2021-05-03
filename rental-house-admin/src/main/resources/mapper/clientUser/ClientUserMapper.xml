@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rentalHouseAdmin.rha.modules.sys.mapper.clientUser.ClientUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.rentalHouseAdmin.rha.modules.sys.entity.clientUser.ClientUser">
+        <id column="id" property="id" />
+        <result column="user_name" property="userName" />
+        <result column="salt" property="salt" />
+        <result column="password" property="password" />
+        <result column="phone" property="phone" />
+        <result column="nick_name" property="nickName" />
+        <result column="email" property="email" />
+        <result column="sex" property="sex" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+       id, user_name, salt, password, phone, nick_name, email, sex, status, create_time, update_time
+    </sql>
+
+    <select id="selectUserList" resultType="com.rentalHouseAdmin.rha.modules.sys.entity.clientUser.ClientUser">
+        select <include refid="Base_Column_List" /> from client_user
+        <trim prefix="where" prefixOverrides="and">
+            <if test="clientUser.userName != null and clientUser.userName != ''">
+                and user_name like concat(#{clientUser.userName}, "%")
+            </if>
+            <if test="clientUser.salt != null and clientUser.salt != ''">
+                and salt like concat(#{clientUser.salt}, "%")
+            </if>
+            <if test="clientUser.password != null and clientUser.password != ''">
+                and password like concat(#{clientUser.password}, "%")
+            </if>
+            <if test="clientUser.phone != null and clientUser.phone != ''">
+                and phone like concat(#{clientUser.phone}, "%")
+            </if>
+            <if test="clientUser.nickName != null and clientUser.nickName != ''">
+                and nick_name like concat(#{clientUser.nickName}, "%")
+            </if>
+            <if test="clientUser.email != null and clientUser.email != ''">
+                and email like concat(#{clientUser.email}, "%")
+            </if>
+            <if test="clientUser.sex != null">
+                and sex = #{clientUser.sex}
+            </if>
+            <if test="clientUser.status != null">
+                and status = #{clientUser.status}
+            </if>
+            <if test="clientUser.createTime != null">
+                and create_time = #{clientUser.createTime}
+            </if>
+            <if test="clientUser.updateTime != null">
+                and update_time = #{clientUser.updateTime}
+            </if>
+        </trim>
+    </select>
+
+</mapper>
