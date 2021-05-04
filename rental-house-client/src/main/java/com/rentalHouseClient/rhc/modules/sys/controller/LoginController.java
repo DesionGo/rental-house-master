@@ -10,6 +10,7 @@ import com.rentalHouseClient.rhc.modules.sys.dto.IssueIndexDTO;
 import com.rentalHouseClient.rhc.modules.sys.entity.clientUser.ClientUser;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.utils.CaptchaUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,30 +113,63 @@ public class LoginController extends BaseController {
     @Log("个人资料")
     @GetMapping("userProfile")
     public ModelAndView userProfile() {
-        String ipAddress = "27.156.190.52";
-        IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
-        return  new ModelAndView("user-profile").addObject("issueIndexDTO",issueIndexDTO);
+       if(SecurityUtils.getSubject().getPrincipal()!=null){
+           String ipAddress = "27.156.190.52";
+
+           IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+           return  new ModelAndView("user-profile").addObject("issueIndexDTO",issueIndexDTO);
+       } else{
+           return new ModelAndView("sys/login");
+       }
+
     }
     @Log("我的财产")
     @GetMapping("myProperties")
     public ModelAndView myProperties() {
-        String ipAddress = "27.156.190.52";
-        IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
-        return  new ModelAndView("my-properties").addObject("issueIndexDTO",issueIndexDTO);
+        if(SecurityUtils.getSubject().getPrincipal()!=null){
+            String ipAddress = "27.156.190.52";
+
+            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+            return  new ModelAndView("my-properties").addObject("issueIndexDTO",issueIndexDTO);
+        } else{
+            return new ModelAndView("sys/login");
+        }
     }
     @Log("我的收藏")
     @GetMapping("favoriteProperties")
     public ModelAndView favoriteProperties() {
-        String ipAddress = "27.156.190.52";
-        IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
-        return  new ModelAndView("favorite-properties").addObject("issueIndexDTO",issueIndexDTO);
+        if(SecurityUtils.getSubject().getPrincipal()!=null){
+            String ipAddress = "27.156.190.52";
+
+            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+            return  new ModelAndView("favorite-properties").addObject("issueIndexDTO",issueIndexDTO);
+        } else{
+            return new ModelAndView("sys/login");
+        }
     }
     @Log("发布")
     @GetMapping("addProperty")
     public ModelAndView addProperty() {
-        String ipAddress = "27.156.190.52";
-        IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
-        return  new ModelAndView("add-property").addObject("issueIndexDTO",issueIndexDTO);
+        if(SecurityUtils.getSubject().getPrincipal()!=null){
+            String ipAddress = "27.156.190.52";
+
+            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+            return  new ModelAndView("add-property").addObject("issueIndexDTO",issueIndexDTO);
+        } else{
+            return new ModelAndView("sys/login");
+        }
+    }
+    @Log("租房详情")
+    @GetMapping("propertySingleGallery")
+    public ModelAndView propertySingleGallery() {
+        if(SecurityUtils.getSubject().getPrincipal()==null){
+            String ipAddress = "27.156.190.52";
+
+            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+            return  new ModelAndView("property-single-gallery").addObject("issueIndexDTO",issueIndexDTO);
+        } else{
+            return new ModelAndView("sys/login");
+        }
     }
     /**
      * 图片验证码
