@@ -104,39 +104,47 @@
          <div class="slider-form inner-page-form">
             <div class="container">
                <h1 class="text-center mb-5">找你想要的</h1>
-               <form>
+               <form action="/propertiesGridScreen" name="blog">
                   <div class="row no-gutters">
                      <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="input-group">
                            <div class="input-group-addon"><i class="mdi mdi-map-marker-multiple"></i></div>
-                           <select class="form-control select2" name="location">
+
+                              <select class="form-control select2" id ="provinceList" name="province"  onchange="cityForm(this.value)">
+
                               <option disabled="" selected="">省</option>
 
-                           </select>
+                              </select>
                         </div>
                      </div>
                      <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="input-group">
                            <div class="input-group-addon"><i class="mdi mdi-map-marker-multiple"></i></div>
-                           <select class="form-control select2" name="location">
-                              <option disabled="" selected="">市</option>
 
-                           </select>
+                              <select class="form-control select2" id ="cityList" name="city" onchange="countiesForm(this.value)">
+                                 <option disabled="" selected="">市</option>
+                              </select>
+
+
+
                         </div>
                      </div>
                      <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="input-group">
                            <div class="input-group-addon"><i class="mdi mdi-map-marker-multiple"></i></div>
-                           <select class="form-control select2" name="location">
-                              <option disabled="" selected="">县/区</option>
 
-                           </select>
+                              <select  class="form-control select2"  id="countiesList" name="counties">
+                                 <option disabled="" selected="">县/区</option>
+                              </select>
+
+
+
                         </div>
                      </div>
                      <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="input-group">
                            <div class="input-group-addon"><i class="mdi mdi-hotel"></i></div>
-                           <select class="form-control select2"  name="location">
+                           <select class="form-control select2"  name="houseType">
                               <option disabled="" selected="">房型</option>
                               <option>一房</option>
                               <option>二房</option>
@@ -148,28 +156,29 @@
                      <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="input-group">
                            <div class="input-group-addon"><i class="mdi mdi-magnify-minus-outline"></i></div>
-                        <input class="form-control select2" placeholder="输入最小金额" type="number">
+                        <input class="form-control select2" name="moneyMin" placeholder="输入最小金额" type="number">
                         </div>
                      </div>
                      <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="input-group">
                            <div class="input-group-addon"><i class="mdi mdi-magnify-plus-outline"></i></div>
-                           <input class="form-control select2" placeholder="输入最大金额" type="number">
+                           <input class="form-control select2" name="moneyMax" placeholder="输入最大金额" type="number">
                         </div>
                      </div>
                      <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="input-group">
                            <div class="input-group-addon"><i class="mdi mdi-hotel"></i></div>
-                           <select class="form-control select2"  name="location">
+                           <select class="form-control select2"  name="rentOutType">
                               <option disabled="" selected="">出租方式</option>
                               <option>整租</option>
                               <option>合租</option>
                               <option>找室友</option>
+
                            </select>
                         </div>
                      </div>
                      <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                        <div class="input-group"><button type="submit" class="btn btn-success btn-block no-radius font-weight-bold">查询</button>   </div>
+                        <div class="input-group"><button type="submit" class="btn btn-success btn-block no-radius font-weight-bold" onclick="  return check()">查询</button>   </div>
                      </div>
                   </div>
                </form>
@@ -468,5 +477,86 @@
       <script th:replace="common/base::context"></script>
       <script th:replace="common/base::iconpkcss"></script>
       <script th:replace="common/base::mainjs"></script>
+      <script>
+
+         function check(){
+
+            if( document.getElementById('provinceList').value==null||document.getElementById('provinceList').value==''){
+               alert("省不能空")
+
+               return false;
+            }else{
+               if(document.getElementById('cityList').value==null||document.getElementById('cityList').value==''){
+                  alert("市区不能空")
+
+                  return false;
+               }
+               else{
+                  return true;
+               }
+            }
+
+         }
+
+         function cityForm(data){
+            console.log(data);
+            var city=data;
+            kvfKit.aGet(BASE_WEB + 'sys/city?city='+city, function (r) {
+               var data=r.data;
+               $("#cityList").find("option").remove();
+               $("#countiesList").find("option").remove();
+               var opt;
+               opt=new Option("","");
+               document.getElementById('cityList').options.add(opt);
+               for (var i = 0; i <= data.length; i++) {
+                  opt = new Option(data[i], data[i]);
+                  document.getElementById('cityList').options.add(opt);
+               }
+            });
+         }
+
+         function countiesForm(data){
+            console.log(data);
+            var city= document.getElementById('provinceList').value;
+            var counties=data;
+            kvfKit.aGet(BASE_WEB + 'sys/counties?city='+city+"&&counties="+counties, function (r) {
+               var data=r.data;
+               if(JSON.stringify(data) == "[]"){
+                  $("#counties").css("display", "none");
+               }else{
+                  $("#counties").css("display", "inline");
+               }
+               $("#countiesList").find("option").remove();
+               for (var i = 0; i <= data.length; i++) {
+                  var opt = new Option(data[i], data[i]);
+                  document.getElementById('countiesList').options.add(opt);
+               }
+            });
+         }
+
+         //JavaScript代码区域
+         layui.use(['element', 'layer', 'laytpl','form'], function(){
+            var element = layui.element, laytpl = layui.laytpl, layer = layui.layer,form = layui.form;
+
+
+            kvfKit.aGet(api.province, function (r) {
+
+               laytpl($('#provinceList').html()).render(r.data, function (html) {
+                  console.log(r.data)
+                  var data=r.data;
+                  var option = '';
+                  option +="<option value=''></option>";
+                  for(var i=0;i<data.length;i++){
+                     //循环获取返回值，并组装成html代码
+                     option +="<option value='"+data[i]+"'>"+data[i]+"</option>";
+                  }
+                  $("#provinceList").html("");
+                  $("#provinceList").append(option);
+               });
+            });
+
+         });
+
+      </script>
    </body>
 </html>

@@ -104,10 +104,10 @@ public class LoginController extends BaseController {
     }
     @Log("出租广场(筛选)")
     @GetMapping("propertiesGridScreen")
-    public ModelAndView propertiesGridScreen(@RequestParam("province") String province,@RequestParam("city") String city,@RequestParam("counties") String counties) {
+    public ModelAndView propertiesGridScreen(@RequestParam("province") String province,@RequestParam("city") String city,@RequestParam("counties") String counties,@RequestParam("houseType") String houseType,@RequestParam("moneyMin") Integer moneyMin,@RequestParam("moneyMax") Integer moneyMax,@RequestParam("rentOutType") String rentOutType) {
         String ipAddress = "27.156.190.52";
         System.out.println("province"+province);
-        IssueIndexDTO issueIndexDTO= issueService.listIssueDTOGo(ipAddress,province,city,counties);
+        IssueIndexDTO issueIndexDTO= issueService.listIssueDTOGo(ipAddress,province,city,counties,houseType,moneyMin,moneyMax,rentOutType);
         return  new ModelAndView("properties-grid").addObject("issueIndexDTO",issueIndexDTO);
     }
     @Log("个人资料")

@@ -2,14 +2,11 @@ package com.rentalHouseClient.rhc.modules.sys.service.issue;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.rentalHouseClient.rhc.modules.sys.dto.CityDTO;
-import com.rentalHouseClient.rhc.modules.sys.dto.IssueDTO;
-import com.rentalHouseClient.rhc.modules.sys.dto.IssueTypeDTO;
+import com.rentalHouseClient.rhc.modules.sys.dto.*;
 import com.rentalHouseClient.rhc.modules.sys.service.FilesService;
 import com.rentalHouseClient.rhc.modules.sys.service.label.LabelService;
 import com.rentalHouseClient.rhc.common.util.BaiDuAPIUtil;
 import com.rentalHouseClient.rhc.common.utils.ShiroKit;
-import com.rentalHouseClient.rhc.modules.sys.dto.IssueIndexDTO;
 import com.rentalHouseClient.rhc.modules.sys.entity.Files;
 import com.rentalHouseClient.rhc.modules.sys.entity.clientUser.ClientUser;
 import com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue;
@@ -164,21 +161,30 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
     }
 
     @Override
-    public IssueIndexDTO listIssueDTOGo(String ip, String city, String province,String counties) {
+    public IssueIndexDTO listIssueDTOGo(String ip, String city, String province,String counties,String houseType,Integer moneyMin,Integer moneyMax,String rentOutType) {
+
         IssueIndexDTO issueIndexDTO=new IssueIndexDTO();
         Issue issue=new Issue();
+        PropertiesGridScreenDTO propertiesGridScreenDTO=new PropertiesGridScreenDTO();
+        propertiesGridScreenDTO.setHouseType(houseType);
+        propertiesGridScreenDTO.setMoneyMax(moneyMax);
+        propertiesGridScreenDTO.setMoneyMin(moneyMin);
+        propertiesGridScreenDTO.setRentOutType(rentOutType);
         //判断是否登陆
         if(SecurityUtils.getSubject().getPrincipal()!=null){
             ClientUser clientUser=new ClientUser();
             clientUser  = clientUserService.getById(ShiroKit.getUserId());
             issueIndexDTO.setUserName(clientUser.getUserName());
-            issue.setProvince(clientUser.getProvince());
-        }else{
+            propertiesGridScreenDTO.setProvince(clientUser.getProvince());
+        }else if("".equals(province)||province==null){
             BaiDuAPIUtil baiDuAPIUtil=new BaiDuAPIUtil();
-
-            issue.setProvince(baiDuAPIUtil.baiDuApiProvince(ip));
+            propertiesGridScreenDTO.setProvince(baiDuAPIUtil.baiDuApiProvince(ip));
+        }else {
+            propertiesGridScreenDTO.setCity(city);
+            propertiesGridScreenDTO.setCounty(counties);
+            propertiesGridScreenDTO.setProvince(province);
         }
-        List<Issue> issues = baseMapper.selectIssue(issue);
+        List<Issue> issues = baseMapper.propertiesGridScreen(propertiesGridScreenDTO);
         Set<String> cityNameSet = new HashSet<String>();
         Set<Integer> typeSet = new HashSet<Integer>();
         List<CityDTO> cityDTOS = new ArrayList<>();

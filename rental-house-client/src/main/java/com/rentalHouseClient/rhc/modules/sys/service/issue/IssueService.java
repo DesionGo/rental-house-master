@@ -27,6 +27,6 @@ public interface IssueService extends IService<Issue> {
     //租房广场（无参）
     IssueIndexDTO listIssueDTO(String ip);
 
-    //租房广场（无参）
-    IssueIndexDTO listIssueDTOGo(String ip,String city,String province,String counties );
+    //租房广场（筛选参数）
+    IssueIndexDTO listIssueDTOGo(String ip,String city,String province,String counties,String houseType,Integer moneyMin,Integer moneyMax,String rentOutType );
 }

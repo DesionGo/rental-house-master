@@ -31,6 +31,10 @@
        id, headline, content, type, create_user_id, create_user_name, create_time, update_time, delete_time, money, province, city, county, detail_site, status, auditor_user_id, auditor_user_name, auditor_time, auditor_status, auditor_remark
     </sql>
 
+    <sql id="Base_Column_List1">
+       i.id, i.headline, i.content, i.type, i.create_user_id, i.create_user_name, i.create_time, i.update_time, i.delete_time, i.money, i.province, i.city, i.county, i.detail_site, i.status, i.auditor_user_id, i.auditor_user_name, i.auditor_time, i.auditor_status, i.auditor_remark
+    </sql>
+
     <select id="selectIssueList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue">
         select <include refid="Base_Column_List" /> from issue
         <trim prefix="where" prefixOverrides="and">
@@ -105,6 +109,35 @@
         <if test="issue.county != null and issue.county != ''">
             and county like concat(#{issue.county}, "%")
         </if>
+
+    </select>
+
+    <select id="propertiesGridScreen"  resultType="com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue">
+        select <include refid="Base_Column_List1" />
+        from issue i
+        left join label_item li on li.use_id=i.id
+        left join label l on l.id=li.label_id
+        where   i.status=1
+        <if test="dto.city != null and dto.city != ''">
+            and i.city like concat(#{dto.city}, "%")
+        </if>
+        <if test="dto.province != null and dto.province != ''">
+            and i.province like concat(#{dto.province}, "%")
+        </if>
+        <if test="dto.county != null and dto.county != ''">
+            and i.county like concat(#{dto.county}, "%")
+        </if>
+        <if test="dto.houseType != null and dto.houseType != ''">
+            and l.label_content like concat(#{dto.houseType}, "%")
+        </if>
+
+        <if test=" dto.moneyMin != ''">
+            and i.money <![CDATA[>=]]> #{dto.moneyMin}
+        </if>
+        <if test="  dto.moneyMax != ''">
+            and i.money <![CDATA[<=]]> #{dto.moneyMax}
+        </if>
+
 
     </select>
 
