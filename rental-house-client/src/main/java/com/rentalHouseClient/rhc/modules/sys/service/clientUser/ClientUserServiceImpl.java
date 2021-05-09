@@ -41,5 +41,8 @@ public class ClientUserServiceImpl extends ServiceImpl<ClientUserMapper, ClientU
                 .eq(ClientUser::getId, id));
     }
 
-
+    @Override
+    public void updateUser(ClientUser clientUser) {
+         baseMapper.updateUser(clientUser);
+    }
 }

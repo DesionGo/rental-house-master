@@ -20,7 +20,11 @@ public interface ClientUserService extends IService<ClientUser> {
      */
     Page<ClientUser> listUserPage(ClientUser clientUser);
 
+
+
     ClientUser getByEmail(String email);
 
     void updateUserPassword(String id, String password);
+
+    void updateUser(ClientUser clientUser);
 }

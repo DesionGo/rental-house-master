@@ -68,7 +68,7 @@ public class UserRealm extends AuthorizingRealm {
             // 账号锁定
             throw new LockedAccountException("账号已被锁定，请联系管理员");
         }
-
+        ShiroKit.setSessionAttribute("id", clientUser.getId());
         return new SimpleAuthenticationInfo(clientUser, clientUser.getPassword(), getName());
     }
 

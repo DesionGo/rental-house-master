@@ -73,5 +73,30 @@
             </if>
         </trim>
     </select>
-
+    <update id="updateUser" parameterType="Object">
+		 update client_user set
+        <if test="clientUser.userName != null and clientUser.userName != ''">
+            user_name=#{clientUser.userName},
+        </if>
+        <if test="clientUser.phone != null and clientUser.phone != ''">
+            phone=#{clientUser.phone},
+        </if>
+        <if test="clientUser.email != null and clientUser.email != ''">
+            email=#{clientUser.email},
+        </if>
+        <if test="clientUser.sex != null and clientUser.sex != ''">
+            sex=#{clientUser.sex},
+        </if>
+        <if test="clientUser.province != null and clientUser.province != ''">
+            province=#{clientUser.province},
+        </if>
+        <if test="clientUser.city != null and clientUser.city != ''">
+            city=#{clientUser.city},
+        </if>
+        <if test="clientUser.county != null and clientUser.county != ''">
+            city=#{clientUser.county},
+        </if>
+            update_time=#{clientUser.updateTime}
+		 where id = #{clientUser.id,jdbcType=VARCHAR}
+	 </update>
 </mapper>

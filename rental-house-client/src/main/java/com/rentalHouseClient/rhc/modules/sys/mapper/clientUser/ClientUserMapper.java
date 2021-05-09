@@ -1,8 +1,10 @@
 package com.rentalHouseClient.rhc.modules.sys.mapper.clientUser;
 
+import ch.qos.logback.core.net.server.Client;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rentalHouseClient.rhc.modules.sys.entity.clientUser.ClientUser;
+import org.apache.ibatis.annotations.Param;
 
 
 import java.util.List;
@@ -22,5 +24,8 @@ public interface ClientUserMapper extends BaseMapper<ClientUser> {
      * @return list
      */
     List<ClientUser> selectUserList(ClientUser clientUser, IPage page);
+
+    void updateUser(@Param("clientUser") ClientUser clientUser);
+
 
 }
