@@ -16,7 +16,9 @@
     <sql id="Base_Column_List">
        id, user_id, issue_id, status, create_time, delete_time
     </sql>
-
+    <sql id="Base_Column_List1">
+       i.id, i.headline, i.content, i.type, i.create_user_id, i.create_user_name, i.create_time, i.update_time, i.delete_time, i.money, i.province, i.city, i.county, i.detail_site, i.status, i.auditor_user_id, i.auditor_user_name, i.auditor_time, i.auditor_status, i.auditor_remark
+    </sql>
     <select id="selectCollectList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.collect.Collect">
         select <include refid="Base_Column_List" /> from collect
         <trim prefix="where" prefixOverrides="and">
@@ -37,5 +39,10 @@
             </if>
         </trim>
     </select>
-
+    <select id="selectUserCollectList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue">
+        select <include refid="Base_Column_List1" /> from collect c
+        left join issue i on i.id=c.issue_id
+        left join client_user cu on cu.id=c.user_id
+        where c.user_id=#{userId}
+    </select>
 </mapper>

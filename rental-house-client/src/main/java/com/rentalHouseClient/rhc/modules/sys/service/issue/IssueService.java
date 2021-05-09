@@ -24,6 +24,8 @@ public interface IssueService extends IService<Issue> {
 
     List<Issue> listIssue(Issue issue);
 
+    IssueIndexDTO userIssue(String createId);
+
     //租房广场（无参）
     IssueIndexDTO listIssueDTO(String ip);
 

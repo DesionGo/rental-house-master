@@ -1,6 +1,8 @@
 package com.rentalHouseClient.rhc.modules.sys.controller;
 
+import com.rentalHouseClient.rhc.modules.sys.entity.collect.Collect;
 import com.rentalHouseClient.rhc.modules.sys.service.clientUser.ClientUserService;
+import com.rentalHouseClient.rhc.modules.sys.service.collect.CollectService;
 import com.rentalHouseClient.rhc.modules.sys.service.issue.IssueService;
 import com.rentalHouseClient.rhc.common.annotation.Log;
 import com.rentalHouseClient.rhc.common.controller.BaseController;
@@ -48,6 +50,8 @@ public class LoginController extends BaseController {
     @Autowired
     private ClientUserService clientUserService;
 
+    @Autowired
+    private CollectService collectService;
 
     @GetMapping(value = "login")
     public ModelAndView login() {
@@ -129,21 +133,24 @@ public class LoginController extends BaseController {
     @Log("修改个人信息")
     @PostMapping("editUserProfile")
     public R editUserProfile(@RequestBody ClientUser clientUser) {
+        if(SecurityUtils.getSubject().getPrincipal()!=null){
         clientUser.setId(ShiroKit.getSessionAttribute("id").toString());
         DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String createtime = dtf2.format(LocalDateTime.now());
         LocalDateTime ldt = LocalDateTime.parse(createtime, dtf2);
         clientUser.setUpdateTime(ldt);
         clientUserService.updateUser(clientUser);
-        return R.ok();
+            return R.ok();
+        } else{
+            return R.fail("用户token过期，请重新登陆！");
+        }
+
     }
     @Log("我的财产")
     @GetMapping("myProperties")
     public ModelAndView myProperties() {
         if(SecurityUtils.getSubject().getPrincipal()!=null){
-            String ipAddress = "27.156.190.52";
-
-            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+            IssueIndexDTO issueIndexDTO=issueService.userIssue(ShiroKit.getSessionAttribute("id").toString());
             return  new ModelAndView("my-properties").addObject("issueIndexDTO",issueIndexDTO);
         } else{
             return new ModelAndView("sys/login");
@@ -153,9 +160,7 @@ public class LoginController extends BaseController {
     @GetMapping("favoriteProperties")
     public ModelAndView favoriteProperties() {
         if(SecurityUtils.getSubject().getPrincipal()!=null){
-            String ipAddress = "27.156.190.52";
-
-            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+            IssueIndexDTO issueIndexDTO=collectService.selectUserCollectList(ShiroKit.getSessionAttribute("id").toString(),1);
             return  new ModelAndView("favorite-properties").addObject("issueIndexDTO",issueIndexDTO);
         } else{
             return new ModelAndView("sys/login");

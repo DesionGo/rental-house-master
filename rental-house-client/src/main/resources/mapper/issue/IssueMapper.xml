@@ -141,4 +141,9 @@
 
     </select>
 
+    <select id="selectUserIssue"  resultType="com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue">
+        select <include refid="Base_Column_List" />
+        from issue
+        where    create_user_id=#{createId}
+    </select>
 </mapper>

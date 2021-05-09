@@ -62,6 +62,45 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
     }
 
     @Override
+    public IssueIndexDTO userIssue(String createId) {
+        List<Issue> issues=baseMapper.selectUserIssue(createId);
+
+        IssueIndexDTO issueIndexDTO=new IssueIndexDTO();
+        List<IssueDTO> issueDTOS=new ArrayList<>();
+        ClientUser clientUser=new ClientUser();
+        clientUser  = clientUserService.getById(ShiroKit.getUserId());
+        issueIndexDTO.setUserName(clientUser.getUserName());
+
+        for(Issue issue1:issues){
+            IssueDTO issueDTO=new IssueDTO();
+            Files file= filesService.selectFilesId(issue1.getId());
+            List<Label> labels=labelService.list();
+            List<LabelItem> labelItems=labelItemService.selectService(issue1.getId());
+
+            if(labelItems.size()!=0){
+                List<Label> labels1=new ArrayList<>();
+                for(LabelItem labelItem:labelItems){
+
+                    for(Label label:labels){
+                        if(label.getId().equals(labelItem.getLabelId())){
+                            labels1.add(label);
+                        }
+                    }
+                    issueDTO.setLabel(labels1);
+                }
+            }
+            BeanUtils.copyProperties(issue1,issueDTO);
+            if(file!=null) {
+                issueDTO.setUrl(file.getUrl());
+            }
+
+            issueDTOS.add(issueDTO);
+        }
+        issueIndexDTO.setIssue(issueDTOS);
+        return issueIndexDTO;
+    }
+
+    @Override
     public IssueIndexDTO listIssueDTO(String ip) {
         Issue issue=new Issue();
         IssueIndexDTO issueIndexDTO=new IssueIndexDTO();

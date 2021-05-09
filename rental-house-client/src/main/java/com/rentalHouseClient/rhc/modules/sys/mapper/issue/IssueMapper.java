@@ -28,4 +28,6 @@ public interface IssueMapper extends BaseMapper<Issue> {
     List<Issue> selectIssue(@Param("issue") Issue issue);
 
     List<Issue> propertiesGridScreen(@Param("dto") PropertiesGridScreenDTO dto);
+
+    List<Issue> selectUserIssue(@Param("createId")String createId);
 }
