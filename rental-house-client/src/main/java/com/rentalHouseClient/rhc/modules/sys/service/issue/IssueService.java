@@ -2,8 +2,11 @@ package com.rentalHouseClient.rhc.modules.sys.service.issue;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rentalHouseClient.rhc.common.dto.R;
+import com.rentalHouseClient.rhc.modules.sys.dto.AddPropertyDTO;
 import com.rentalHouseClient.rhc.modules.sys.dto.IssueIndexDTO;
 import com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,4 +34,7 @@ public interface IssueService extends IService<Issue> {
 
     //租房广场（筛选参数）
     IssueIndexDTO listIssueDTOGo(String ip,String city,String province,String counties,String houseType,Integer moneyMin,Integer moneyMax,String rentOutType );
+
+    //发布租房信息
+    R add(AddPropertyDTO addPropertyDTO);
 }

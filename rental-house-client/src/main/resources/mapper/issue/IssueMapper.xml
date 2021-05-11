@@ -146,4 +146,37 @@
         from issue
         where    create_user_id=#{createId}
     </select>
+
+    <insert id="add" parameterType="com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue">
+        insert into issue (
+        id,
+        headline,
+        content,
+        type,
+        create_user_id,
+        create_user_name,
+        create_time,
+        money,
+        province,
+        city,
+        county,
+        detail_site,
+        status
+        )
+        values (
+       #{issue.id},
+       #{issue.headline},
+       #{issue.content},
+       #{issue.type},
+       #{issue.createUserId},
+       #{issue.createUserName},
+       #{issue.createTime},
+        #{issue.money},
+       #{issue.province},
+        #{issue.city},
+        #{issue.county},
+        #{issue.detailSite},
+        #{issue.status}
+        )
+    </insert>
 </mapper>

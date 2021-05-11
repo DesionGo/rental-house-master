@@ -154,24 +154,36 @@
                            </div>
                            <div class="form-group">
                               <label>性别 <span class="text-danger">*</span></label>
-                              <input type="text" th:if="${clientUser.sex} eq ''" class="form-control" id="sex"  name="sex" placeholder="请输入性别">
-                              <input type="text" th:if="${clientUser.sex} ne ''" class="form-control" id="sex"  name="sex" th:placeholder="${clientUser.sex}">
+                              <select  class="form-control select2" id="sex" name="sex" >
+                                 <option value="1">男</option>
+                                 <option value="2">女</option>
+                              </select>
                            </div>
                            <div class="form-group">
                               <label>省： <span class="text-danger">*</span></label>
-                              <input type="text" th:if="${clientUser.province} eq ''" class="form-control" id="pro"  name="province" placeholder="请输入所在的省份">
-                              <input type="text" th:if="${clientUser.province} ne ''" class="form-control" id="pro"   name="province" th:placeholder="${clientUser.province}">
+
+                              <select  class="form-control select2" id ="provinceList" name="province"  onchange="cityForm(this.value)">
+
+
+
+                              </select>
+
                            </div>
                            <div class="form-group">
                               <label>市： <span class="text-danger">*</span></label>
-                              <input type="text" th:if="${clientUser.city} eq ''" class="form-control" id="ci"   name="city" placeholder="请输入所在的市">
-                              <input type="text" th:if="${clientUser.city} ne ''" class="form-control" id="ci"   name="city" th:placeholder="${clientUser.city}">
+
+                              <select class="form-control select2" id ="cityList" name="city"  onchange="countiesForm(this.value)">
+
+                              </select>
+
                            </div>
                            <div class="form-group">
                               <label>区/县： <span class="text-danger">*</span></label>
 
-                              <input type="text" th:if="${clientUser.county} eq ''" class="form-control" id="co"   name="county" placeholder="请输入所在的区/县">
-                              <input type="text" th:if="${clientUser.county} ne ''" class="form-control" id="co"    name="county" th:placeholder="${clientUser.county}">
+                              <select  class="form-control select2"  id="countiesList" name="counties">
+
+                              </select>
+
                            </div>
                          <!--  <div class="form-group">
                               <label>关于我： <span class="text-danger">*</span></label>
@@ -183,12 +195,16 @@
                         <div class="card-body">
                            <h5 class="card-title mb-4">更改密码</h5>
                            <div class="form-group">
+                              <label>旧密码：<span class="text-danger">*</span></label>
+                              <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="">
+                           </div>
+                           <div class="form-group">
                               <label>新密码：<span class="text-danger">*</span></label>
-                              <input type="password" class="form-control" id="" placeholder="">
+                              <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="">
                            </div>
                            <div class="form-group">
                               <label>确认密码：<span class="text-danger">*</span></label>
-                              <input type="password" class="form-control" placeholder="">
+                              <input type="password" class="form-control" id="password" name="password" placeholder="">
                            </div>
                         </div>
                      </div>
@@ -235,19 +251,32 @@
       <script th:replace="common/base::mainjs"></script>
    <script>
       function sunbimt() {
-         if( document.getElementById('provinceList').value!=null||document.getElementById('provinceList').value!=''){
-
+         if( document.getElementById('provinceList').value==null||document.getElementById('provinceList').value==''){
+            alert("省不能空")
+            return false;
          }else{
             if(document.getElementById('cityList').value==null||document.getElementById('cityList').value==''){
                alert("市区不能空")
 
                return false;
             }
-            else{
-               return true;
+            if(document.getElementById('oldPassword').value==null||document.getElementById('oldPassword').value==''){
+               console.log("过")
+
+            }else{
+               if(document.getElementById('newPassword').value==null||document.getElementById('newPassword').value==''){
+                  alert("请输入新密码！")
+                  return false;
+               }else{
+                  if(document.getElementById('newPassword').value!=document.getElementById('password').value){
+                     alert("请确认好密码！")
+                     return false
+                  }
+               }
             }
+
          }
-         console.log( $('userForm').serialize())
+
          $.ajax({
             //几个参数需要注意一下
             type: "POST",//方法类型
@@ -255,12 +284,25 @@
             contentType: "application/json   ",
             url: "/editUserProfile" ,//url
 
-            data: JSON.stringify({userName:form1.userName.value,phone:form1.phone.value,email:form1.email.value,sex:form1.sex.value,city:form1.city.value,province:form1.province.value,county:form1.county.value}) ,
+            data: JSON.stringify({userName:form1.userName.value,phone:form1.phone.value,email:form1.email.value,sex:form1.sex.value,city:form1.city.value,province:form1.province.value,county:form1.counties.value}),
             success: function (result) {
                console.log(result);//打印服务端返回的数据(调试用)
                if (result.code == 200) {
                   alert("SUCCESS");
+                  $.ajax({
+                     url: 'sys/user/changePwd',
+                     type: 'POST',
+                     data: {oldPassword:form1.oldPassword.value,password:form1.password.value},
 
+                     success: function(data) {
+                        if (data.code == 200) {
+                           alert("修改成功");
+                        }
+                     },
+                     error: function(err) {
+                        alert("修改失败");
+                     }
+                  });
                }else{
                   alert("异常！");
                }
@@ -270,7 +312,108 @@
                alert("异常！");
             }
          });
+
       }
+      function cityForm(data){
+         console.log(data);
+         var city=data;
+         kvfKit.aGet(BASE_WEB + 'sys/city?city='+city, function (r) {
+            var data=r.data;
+            $("#cityList").find("option").remove();
+            $("#countiesList").find("option").remove();
+            var opt;
+            opt=new Option("","");
+            document.getElementById('cityList').options.add(opt);
+            for (var i = 0; i <= data.length; i++) {
+               opt = new Option(data[i], data[i]);
+               document.getElementById('cityList').options.add(opt);
+            }
+         });
+      }
+      function countiesForm(data){
+         console.log(data);
+         var city= document.getElementById('provinceList').value;
+         var counties=data;
+         kvfKit.aGet(BASE_WEB + 'sys/counties?city='+city+"&&counties="+counties, function (r) {
+            var data=r.data;
+            if(JSON.stringify(data) == "[]"){
+               $("#counties").css("display", "none");
+            }else{
+               $("#counties").css("display", "inline");
+            }
+            $("#countiesList").find("option").remove();
+            for (var i = 0; i <= data.length; i++) {
+               var opt = new Option(data[i], data[i]);
+               document.getElementById('countiesList').options.add(opt);
+            }
+         });
+      }
+
+      //JavaScript代码区域
+      layui.use(['element', 'layer', 'laytpl','form'], function(){
+         var element = layui.element, laytpl = layui.laytpl, layer = layui.layer,form = layui.form;
+
+         $('#sex').val('[[${clientUser.sex}]]')
+         kvfKit.aGet(api.province, function (r) {
+
+            laytpl($('#provinceList').html()).render(r.data, function (html) {
+               console.log(r.data)
+               var data=r.data;
+               var option = '';
+
+               for(var i=0;i<data.length;i++){
+                  //循环获取返回值，并组装成html代码
+                  option +="<option value='"+data[i]+"'>"+data[i]+"</option>";
+               }
+               $("#provinceList").html("");
+               $("#provinceList").append(option);
+            });
+            document.getElementsByName("province")[0].value='[[${clientUser.province}]]';
+         });
+
+
+
+      });
+      layui.use(['element', 'layer', 'laytpl','form'], function() {
+         var element = layui.element, laytpl = layui.laytpl, layer = layui.layer, form = layui.form;
+         kvfKit.aGet(BASE_WEB + 'sys/city?city=' + '[[${clientUser.province}]]', function (r) {
+            var data = r.data;
+            $("#cityList").find("option").remove();
+            $("#countiesList").find("option").remove();
+            var opt;
+            opt = new Option("", "");
+            document.getElementById('cityList').options.add(opt);
+            for (var i = 0; i <= data.length; i++) {
+               opt = new Option(data[i], data[i]);
+               document.getElementById('cityList').options.add(opt);
+               if(data[i]=='[[${clientUser.city}]]'){
+                  opt.selected = true;
+               }
+            }
+         });
+
+      });
+      layui.use(['element', 'layer', 'laytpl','form'], function() {
+         var element = layui.element, laytpl = layui.laytpl, layer = layui.layer, form = layui.form;
+
+
+         kvfKit.aGet(BASE_WEB + 'sys/counties?city=' + '[[${clientUser.province}]]' + "&&counties=" + '[[${clientUser.city}]]', function (r) {
+            var data = r.data;
+            if (JSON.stringify(data) == "[]") {
+               $("#counties").css("display", "none");
+            } else {
+               $("#counties").css("display", "inline");
+            }
+            $("#countiesList").find("option").remove();
+            for (var i = 0; i <= data.length; i++) {
+               var opt = new Option(data[i], data[i]);
+               document.getElementById('countiesList').options.add(opt);
+               if(data[i]=='[[${clientUser.county}]]'){
+                  opt.selected = true;
+               }
+            }
+         });
+      })
    </script>
    </body>
 </html>

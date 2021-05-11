@@ -93,9 +93,7 @@
         <if test="clientUser.city != null and clientUser.city != ''">
             city=#{clientUser.city},
         </if>
-        <if test="clientUser.county != null and clientUser.county != ''">
-            city=#{clientUser.county},
-        </if>
+            county=#{clientUser.county},
             update_time=#{clientUser.updateTime}
 		 where id = #{clientUser.id,jdbcType=VARCHAR}
 	 </update>

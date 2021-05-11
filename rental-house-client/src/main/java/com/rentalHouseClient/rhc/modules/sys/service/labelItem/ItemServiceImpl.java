@@ -29,4 +29,9 @@ public class ItemServiceImpl extends ServiceImpl<LabelItemMapper, LabelItem> imp
         return baseMapper.selectService(serviceId);
     }
 
+    @Override
+    public void add(LabelItem labelItem) {
+        baseMapper.add(labelItem);
+    }
+
 }

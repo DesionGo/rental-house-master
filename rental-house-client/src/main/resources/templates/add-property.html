@@ -133,244 +133,114 @@
                   </div>
                </div>
                <div class="col-lg-9 col-md-9">
-                  <form>
+                  <form id="form1" name="form1">
                      <div class="card padding-card">
                         <div class="card-body">
-                           <h5 class="card-title mb-4">Property Description</h5>
+                           <h5 class="card-title mb-4">新增出租</h5>
                            <div class="form-group">
 
-                              <label>Property Title <span class="text-danger">*</span></label>
-                              <input type="text" class="form-control" placeholder="Enter Full Name">
+                              <label>出租标题<span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" name="headline" placeholder="请输入出租标题">
                            </div>
                            <div class="form-group">
-                              <label>Property Description <span class="text-danger">*</span></label>
-                              <textarea class="form-control" rows="4"></textarea>
+                              <label>出租内容<span class="text-danger">*</span></label>
+                              <textarea class="form-control " name="content"  rows="4"></textarea>
                            </div>
                            <div class="row">
                               <div class="form-group col-md-4">
-                                 <label>Type <span class="text-danger">*</span></label>
-                                 <select class="form-control custom-select">
-                                    <option>Select Type</option>
-                                    <option>Type 1</option>
-                                    <option>Type 2</option>
-                                    <option>Type 3</option>
+                                 <label>发布类型<span class="text-danger">*</span></label>
+                                 <select name="type" class="form-control custom-select">
+                                    <option>选择类型</option>
+                                    <option value="1">出租</option>
+                                    <option value="2">转租</option>
+                                    <option value="0">找室友</option>
                                  </select>
                               </div>
                               <div class="form-group col-md-4">
-                                 <label>Status <span class="text-danger">*</span></label>
-                                 <select class="form-control custom-select">
-                                    <option>Select Status</option>
-                                    <option>Type 1</option>
-                                    <option>Type 2</option>
-                                    <option>Type 3</option>
-                                 </select>
-                              </div>
-                              <div class="form-group col-md-4">
-                                 <label>Location <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Location">
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="form-group col-md-4">
-                                 <label>Bedrooms <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Bedrooms">
-                              </div>
-                              <div class="form-group col-md-4">
-                                 <label>Bathrooms <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Bathrooms">
-                              </div>
-                              <div class="form-group col-md-4">
-                                 <label>Floors <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Floors">
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="form-group col-md-4">
-                                 <label>Garages <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Garages">
-                              </div>
-                              <div class="form-group col-md-4">
-                                 <label>Area <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="sq ft">
-                              </div>
-                              <div class="form-group col-md-4">
-                                 <label>Size <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="sq ft">
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="form-group col-md-4">
-                                 <label>Sale of Rent Price <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Rent Price">
-                              </div>
-                              <div class="form-group col-md-4">
-                                 <label>Before Price Label<span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Price Label">
-                              </div>
-                              <div class="form-group col-md-4">
-                                 <label>After Price Label <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Price Label">
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="form-group col-md-6">
-                                 <label>Property ID <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Property ID">
-                              </div>
-                              <div class="form-group col-md-6">
-                                 <label>Video URL</label>
-                                 <input type="text" class="form-control" placeholder="Youtube, Vimeo, Dailymotion, etc...">
+                                 <label>金额<span class="text-danger">*</span></label>
+                                 <input type="text" name="money" class="form-control" placeholder="请输入金额">
                               </div>
                            </div>
                         </div>
                      </div>
                      <div class="card property-features-add padding-card">
                         <div class="card-body">
-                           <h5 class="card-title mb-4">Property Features</h5>
+                           <h5 class="card-title mb-4">房子特点</h5>
                            <div class="row">
                               <div class="col-md-4">
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox">
-                                    <label class="custom-control-label" for="site-checkbox">Center Cooling</label>
+                                 <div class="custom-control custom-checkbox" th:each="labelList: ${issueIndexDTO.labelList}">
+                                    <input type="checkbox" name="label" class="custom-control-input" th:id="${labelList.id}" th:value="${labelList.id}">
+                                    <label class="custom-control-label" th:for="${labelList.id}">[[${labelList.labelContent}]]</label>
                                  </div>
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox1">
-                                    <label class="custom-control-label" for="site-checkbox1">Fire Alarm</label>
-                                 </div>
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox2">
-                                    <label class="custom-control-label" for="site-checkbox2">Heating</label>
-                                 </div>
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox3">
-                                    <label class="custom-control-label" for="site-checkbox3">Gym</label>
-                                 </div>
+
                               </div>
-                              <div class="col-md-4">
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox4">
-                                    <label class="custom-control-label" for="site-checkbox4">Balcony</label>
+
+
+                           </div>
+                        </div>
+                     </div>
+                     <div class="card padding-card">
+                        <div class="card-body" >
+                        <h5 class="card-title mb-4">上传照片</h5>
+                        <div class="col-md-4">
+                           <div class="fuzone">
+                              <div class="fu-text">
+                                 <div id="onLoad">
+                                    <span><i class="mdi mdi-image-area"></i> 点击上传图片</span>
                                  </div>
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox5">
-                                    <label class="custom-control-label" for="site-checkbox5">Modern Kitchen</label>
-                                 </div>
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox6">
-                                    <label class="custom-control-label" for="site-checkbox6">Pool</label>
-                                 </div>
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox7">
-                                    <label class="custom-control-label" for="site-checkbox7">Elevator</label>
-                                 </div>
+
                               </div>
-                              <div class="col-md-4">
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox8">
-                                    <label class="custom-control-label" for="site-checkbox8">Dryer</label>
-                                 </div>
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox9">
-                                    <label class="custom-control-label" for="site-checkbox9">Sauna</label>
-                                 </div>
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox10">
-                                    <label class="custom-control-label" for="site-checkbox10">Dish Washer</label>
-                                 </div>
-                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="site-checkbox11">
-                                    <label class="custom-control-label" for="site-checkbox12">Pet Frindly</label>
-                                 </div>
-                              </div>
+                              <input class="upload" type="file" id="filename" name="fileOne" accept="image/png, image/jpeg, image/jpg" multiple="multiple" onchange="checkImage(this)">
+                           </div>
+                        </div>
+                        </div>
+                        <div class="card-body" >
+
+
+                           <div class="row" id="onLoadImage">
+
+
+
+
+
+
                            </div>
                         </div>
                      </div>
                      <div class="card padding-card">
                         <div class="card-body">
-                           <h5 class="card-title mb-4">Property Gallery</h5>
-                           <div class="row">
-                              <div class="col-md-4">
-                                 <div class="fuzone">
-                                    <div class="fu-text">
-                                       <span><i class="mdi mdi-image-area"></i> Click here or drop files to upload</span>
-                                    </div>
-                                    <input class="upload" type="file">
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <div class="fuzone">
-                                    <div class="fu-text">
-                                       <span><i class="mdi mdi-image-area"></i> Click here or drop files to upload</span>
-                                    </div>
-                                    <input class="upload" type="file">
-                                 </div>
-                              </div>
-                              <div class="col-md-4">
-                                 <div class="fuzone">
-                                    <div class="fu-text">
-                                       <span><i class="mdi mdi-image-area"></i> Click here or drop files to upload</span>
-                                    </div>
-                                    <input class="upload" type="file">
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="card padding-card">
-                        <div class="card-body">
-                           <h5 class="card-title mb-4">Property Location</h5>
+                           <h5 class="card-title mb-4">房子位置</h5>
                            <div class="row">
                               <div class="form-group col-md-4">
-                                 <label>Address <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Address">
-                              </div>
-                              <div class="form-group col-md-4">
-                                 <label>Country<span class="text-danger">*</span></label>
-                                 <select class="form-control custom-select">
-                                    <option>Select Country</option>
-                                    <option>Country 1</option>
-                                    <option>Country 2</option>
-                                    <option>Country 3</option>
+                                 <label>省<span class="text-danger">*</span></label>
+                                 <select class="form-control select2" id ="provinceList" name="province"  onchange="cityForm(this.value)">
+
                                  </select>
                               </div>
                               <div class="form-group col-md-4">
-                                 <label>City <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter City">
+                                 <label>市<span class="text-danger">*</span></label>
+                                 <select class="form-control select2" id ="cityList" name="city" onchange="countiesForm(this.value)">
+
+                                 </select>
+                              </div>
+                              <div class="form-group col-md-4">
+                                 <label>区/县</label>
+                                 <select  class="form-control select2"  id="countiesList" name="counties">
+
+                                 </select>
                               </div>
                            </div>
                            <div class="row">
                               <div class="form-group col-md-4">
-                                 <label>State <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter State">
+                                 <label>详细地址 <span class="text-danger">*</span></label>
+                                 <input type="text" class="form-control" name="detailSite" placeholder="请输入详细地址">
                               </div>
-                              <div class="form-group col-md-4">
-                                 <label>Zip/Postal Code <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="Enter Zip/Postal">
-                              </div>
-                              <div class="form-group col-md-4">
-                                 <label>Neighborhood <span class="text-danger">*</span></label>
-                                 <input type="text" class="form-control" placeholder="...">
-                              </div>
+
                            </div>
-                           <div class="map" id="wrapper-9cd199b9cc5410cd3b1ad21cab2e54d3">
-                              <div id="map-9cd199b9cc5410cd3b1ad21cab2e54d3"></div>
-                              <script>(function () {
-                                 var setting = {"height":540,"width":803,"zoom":15,"queryString":"Candás, Spain","place_id":"ChIJuXoxw-aANg0RZ1DUQHMSFTM","satellite":false,"centerCoord":[43.59051127662882,-5.768219799999998],"cid":"0x3315127340d45067","lang":"en","cityUrl":"/spain/candas-8349","cityAnchorText":"Map of Candas, Asturias, Spain","id":"map-9cd199b9cc5410cd3b1ad21cab2e54d3","embed_id":"215844"};
-                                 var d = document;
-                                 var s = d.createElement('script');
-                                 s.src = 'https://1map.com/js/script-for-user.js?embed_id=215844';
-                                 s.async = true;
-                                 s.onload = function (e) {
-                                   window.OneMap.initMap(setting)
-                                 };
-                                 var to = d.getElementsByTagName('script')[0];
-                                 to.parentNode.insertBefore(s, to);
-                                 })();
-                              </script><a href="https://1map.com/map-embed">1 Map</a>
-                           </div>
+
                         </div>
                      </div>
-                     <button type="submit" class="btn btn-success">ADD PROPERTY</button>
+                     <button type="button" class="btn btn-success" onclick="checkSubmit()">ADD PROPERTY</button>
                   </form>
                </div>
             </div>
@@ -391,141 +261,6 @@
             </div>
          </div>
       </section>
-      <!-- End Join Team -->
-      <!-- Footer -->
-      <section class="section-padding footer bg-white">
-         <div class="container">
-            <div class="row">
-               <div class="col-md-4">
-                  <img class="img-fluid footer-logo" src="img/logo.svg" alt="">
-                  <h6 class="mb-4 mt-5">GET IN TOUCH</h6>
-                  <div class="footer-social">
-                     <a href="#"><i class="mdi mdi-facebook"></i></a>
-                     <a href="#"><i class="mdi mdi-twitter"></i></a>
-                     <a href="#"><i class="mdi mdi-instagram"></i></a>
-                     <a href="#"><i class="mdi mdi-google"></i></a>
-                  </div>
-               </div>
-               <div class="col-md-2">
-                  <h6 class="mb-4">PRODUCTS</h6>
-                  <ul>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Page Builder
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     UI Kit
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Styleguide
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Documentation
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Changelog
-                     </a>
-                  </li>
-                  <ul>
-               </div>
-               <div class="col-md-2">
-                  <h6 class="mb-4">SERVICES</h6>
-                  <ul>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Documentation
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Changelog
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Pagebuilder
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     UI Kit
-                     </a>
-                  </li>
-                  <ul>
-               </div>
-               <div class="col-md-2">
-                  <h6 class="mb-4">CONNECT</h6>
-                  <ul>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Page Builder
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     UI Kit
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Styleguide
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Documentation
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Changelog
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Documentation
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Changelog
-                     </a>
-                  </li>
-                  <ul>
-               </div>
-               <div class="col-md-2">
-                  <h6 class="mb-4">LEGAL</h6>
-                  <ul>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Documentation
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Changelog
-                     </a>
-                  </li>
-                  <li>
-                     <a href="#!" class="text-reset">
-                     Pagebuilder
-                     </a>
-                  </li>
-                  <ul>
-               </div>
-            </div>
-         </div>
-      </section>
-      <!-- End Footer -->
-      <!-- Copyright -->
       <section class="pt-4 pb-4 text-center">
          <p class="mt-0 mb-0">© Copyright 2020 Manland. All Rights Reserved</p>
          <small class="mt-0 mb-0">
@@ -536,5 +271,234 @@
       <script th:replace="common/base::context"></script>
       <script th:replace="common/base::iconpkcss"></script>
       <script th:replace="common/base::mainjs"></script>
+      <script>
+         var curFiles = [];//文件数组，用来保存上传的文件信息
+
+         //检查上传的图片
+         function checkImage(obj) {
+            var files = obj.files;
+            console.log(files.length);
+            if(files){
+
+               if(files.length <= 3) {//把一次上传图片数限制在3张
+                  for (var i = 0; i < files.length; i++) {
+                     var item = files.item(i);
+                     var size = item.size;
+                     if (size / 1000 < 100) { //简易大小限制100K
+                        curFiles.push(item);
+                     }
+                     else {
+                        alert("第" + (i + 1) + "张图片过大");
+                     }
+                  }
+               }
+               else{
+                  $("#filename").val("");
+                  alert("一次最多上传3张图片");
+               }
+            }
+            else {
+               $("#filename").val("");
+               alert("请选择上传文件");
+            }
+
+            //去除文件名相同的情况（上传列表中多次出现同一个文件）
+            for (var i = 0; i < curFiles.length - 1; i++) {
+               for (var j = 1; j < curFiles.length; j++) {
+                  if (i != j) {
+                     if (curFiles[i].name == curFiles[j].name) {
+                        curFiles.splice(j, 1)
+                     }
+                  }
+               }
+            }
+
+            //判断上传图片大小(100KB)
+            for(var i = 0; i < curFiles.length; i++){
+               var size = curFiles[i].size;
+               if(size/1000>100){
+                  curFiles.splice(i, 1);
+               }
+
+            }
+
+            console.log(curFiles);
+
+            onLoadImage();
+         }
+
+         //预览图片
+         function onLoadImage() {
+            $("#onLoadImage").html("");
+            for(var i = 0; i < curFiles.length; i++){
+               (function(i){
+                  var file = curFiles[i];
+                  var reader = new FileReader();
+                  reader.readAsDataURL(file);
+                  reader.onload = function(){
+                     $('#onLoadImage').append("                          <div class=\"col-md-4\">\n" +
+                             "                                    <div class=\"fuzone\">\n" +
+                             "                                       <div class=\"fu-text\"><img src='"+reader.result+"'/><span><span>"+file.name+"</span><button id='"+i+"' onclick='del(this.id)'>删除</button></span><br></div></div></div>");
+                  }
+               })(i)
+            }
+         }
+
+         //删除功能
+         function del(id) {
+            var name = $("#"+id).prev().text();
+            console.log(name);
+            curFiles = curFiles.filter(function(file) {
+               return file.name !== name;
+            });
+            console.log(curFiles);
+            onLoadImage();
+         }
+
+
+
+
+         //上传功能的实现
+        function checkSubmit() {
+            if(curFiles.length>0){
+               var formdata =  new FormData($('#form1')[0]);
+               for (var i = 0; i<curFiles.length; i++) {
+                  formdata.append('uploadFiles', curFiles[i]);
+               }
+               console.log(formdata);
+               var checked = [];
+               $("input[name='label']:checked").each(function () {
+                  checked.push($(this).val());
+               });
+               console.log(checked)
+
+               console.log(JSON.stringify({label:checked,city:form1.city.value,province:form1.province.value,counties:form1.counties.value,type:form1.type.value,content:form1.content.value,headline:form1.headline.value}))
+               $.ajax({
+                  url: 'addPropertyDetail',
+                  type: 'post',
+                  data: JSON.stringify({label:checked,city:form1.city.value,province:form1.province.value,counties:form1.counties.value,type:form1.type.value,content:form1.content.value,headline:form1.headline.value}),
+                  processData: false,
+                  dataType:"json",
+                  contentType: "application/json",
+                  success: function(data) {
+                     console.log(data)
+                     if(data.code!=500){
+                        $.ajax({
+                           url: 'multipleImageUpload',
+                           type: 'post',
+                           data: formdata,
+                           processData: false,
+                           contentType: false,
+                           success: function(data) {
+                              alert(data.length+"个上传结果");
+                              for(var k in data){
+                                 var num=Number(k)+1;
+                                 alert("第"+num+"张上传结果："+data[k].result_msg);
+                                 if(data[k].hasOwnProperty("relativePath"))
+                                    alert("第"+num+"张相对路径："+data[k].relativePath);
+                              }
+                           },
+                           error: function(err) {
+                              alert("上传失败");
+                           }
+                        });
+                     }else{
+                        alert(data.msg);
+                     }
+
+
+                  },
+                  error: function(err) {
+                     alert("上传失败");
+                  }
+               });
+            }
+            else{
+               alert("请选择文件后上传");
+            }
+
+         }
+
+
+
+         function check(){
+
+            if( document.getElementById('provinceList').value==null||document.getElementById('provinceList').value==''){
+               alert("省不能空")
+
+               return false;
+            }else{
+               if(document.getElementById('cityList').value==null||document.getElementById('cityList').value==''){
+                  alert("市区不能空")
+
+                  return false;
+               }
+               else{
+                  return true;
+               }
+            }
+
+         }
+
+         function cityForm(data){
+            console.log(data);
+            var city=data;
+            kvfKit.aGet(BASE_WEB + 'sys/city?city='+city, function (r) {
+               var data=r.data;
+               $("#cityList").find("option").remove();
+               $("#countiesList").find("option").remove();
+               var opt;
+               opt=new Option("","");
+               document.getElementById('cityList').options.add(opt);
+               for (var i = 0; i <= data.length; i++) {
+                  opt = new Option(data[i], data[i]);
+                  document.getElementById('cityList').options.add(opt);
+               }
+            });
+         }
+
+         function countiesForm(data){
+            console.log(data);
+            var city= document.getElementById('provinceList').value;
+            var counties=data;
+            kvfKit.aGet(BASE_WEB + 'sys/counties?city='+city+"&&counties="+counties, function (r) {
+               var data=r.data;
+               if(JSON.stringify(data) == "[]"){
+                  $("#counties").css("display", "none");
+               }else{
+                  $("#counties").css("display", "inline");
+               }
+               $("#countiesList").find("option").remove();
+               for (var i = 0; i <= data.length; i++) {
+                  var opt = new Option(data[i], data[i]);
+                  document.getElementById('countiesList').options.add(opt);
+               }
+            });
+         }
+
+         //JavaScript代码区域
+         layui.use(['element', 'layer', 'laytpl','form'], function(){
+            var element = layui.element, laytpl = layui.laytpl, layer = layui.layer,form = layui.form;
+
+
+            kvfKit.aGet(api.province, function (r) {
+
+               laytpl($('#provinceList').html()).render(r.data, function (html) {
+                  console.log(r.data)
+                  var data=r.data;
+                  var option = '';
+                  option +="<option value=''></option>";
+                  for(var i=0;i<data.length;i++){
+                     //循环获取返回值，并组装成html代码
+                     option +="<option value='"+data[i]+"'>"+data[i]+"</option>";
+                  }
+                  $("#provinceList").html("");
+                  $("#provinceList").append(option);
+               });
+            });
+
+         });
+
+      </script>
    </body>
 </html>

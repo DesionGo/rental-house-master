@@ -1,5 +1,6 @@
 package com.rentalHouseClient.rhc.modules.sys.dto;
 
+import com.rentalHouseClient.rhc.modules.sys.entity.label.Label;
 import lombok.Data;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public class IssueIndexDTO {
 
     //人气单子
     private List<IssueDTO> popularityIssue;
+    //标签
+    private  List<Label> labelList;
 }

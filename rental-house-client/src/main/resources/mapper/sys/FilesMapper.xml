@@ -47,5 +47,24 @@
             </if>
         </trim>
     </select>
-
+    <insert id="add" parameterType="com.rentalHouseClient.rhc.modules.sys.entity.Files">
+        insert into sys_files (
+        id,
+        url,
+        create_date,
+        file_name,
+        file_path,
+        ascription_id,
+        ascription_name
+        )
+        values (
+       #{files.id},
+       #{files.url},
+       #{files.createDate},
+       #{files.fileName},
+       #{files.filePath},
+       #{files.ascriptionId},
+       #{files.ascriptionName}
+        )
+    </insert>
 </mapper>

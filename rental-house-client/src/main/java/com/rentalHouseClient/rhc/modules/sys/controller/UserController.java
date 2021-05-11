@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rentalHouseClient.rhc.common.controller.BaseController;
 import com.rentalHouseClient.rhc.common.dto.R;
+import com.rentalHouseClient.rhc.common.util.BaiDuAPIUtil;
 import com.rentalHouseClient.rhc.common.utils.CryptionKit;
 import com.rentalHouseClient.rhc.common.utils.ShiroKit;
 import com.rentalHouseClient.rhc.modules.sys.dto.UserEditDTO;
@@ -22,6 +23,7 @@ import com.rentalHouseClient.rhc.modules.sys.vo.UserQueryVO;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,6 +41,9 @@ import java.util.List;
 @RestController
 @RequestMapping("sys/user")
 public class UserController extends BaseController {
+
+    @Value("${kvf.ip}")
+    private String ip;
 
     @Autowired
     private IUserService userService;
@@ -99,6 +104,11 @@ public class UserController extends BaseController {
     @PostMapping(value = "add")
     public R add(ClientUser clientUser) {
 
+        BaiDuAPIUtil baiDuAPIUtil=new BaiDuAPIUtil();
+
+        clientUser.setProvince(baiDuAPIUtil.baiDuApiProvince(ip));
+        clientUser.setCity(baiDuAPIUtil.baiDuApiCity(ip));
+        clientUser.setSex(2);
         // 生成用户初始密码并加密
         clientUser.setPassword(CryptionKit.genUserPwd(clientUser.getPassword()));
         clientUserService.saveOrUpdate(clientUser);
@@ -159,11 +169,12 @@ public class UserController extends BaseController {
             return R.fail("修改失败，非法的参数");
         }
         // 用户修改密码
-        User user = userService.getById(ShiroKit.getUserId());
+       String s= ShiroKit.getUserId();
+        ClientUser clientUser = clientUserService.getById(ShiroKit.getUserId());
         oldPassword = CryptionKit.genUserPwd(oldPassword);
-        if (user.getPassword().equals(oldPassword)) {
+        if (clientUser.getPassword().equals(oldPassword)) {
             password = CryptionKit.genUserPwd(password);
-            if (user.getPassword().equals(password)) {
+            if (clientUser.getPassword().equals(password)) {
                 return R.fail("新密码不能与旧密码相同");
             }
         } else {

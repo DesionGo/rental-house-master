@@ -23,4 +23,6 @@ public interface LabelItemService extends IService<LabelItem> {
 
     List<LabelItem> selectService(String serviceId);
 
+    void add(LabelItem labelItem);
+
 }

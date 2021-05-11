@@ -2,6 +2,7 @@ package com.rentalHouseClient.rhc.modules.sys.mapper.issue;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.rentalHouseClient.rhc.modules.sys.dto.AddPropertyDTO;
 import com.rentalHouseClient.rhc.modules.sys.dto.PropertiesGridScreenDTO;
 import com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue;
 import org.apache.ibatis.annotations.Param;
@@ -30,4 +31,6 @@ public interface IssueMapper extends BaseMapper<Issue> {
     List<Issue> propertiesGridScreen(@Param("dto") PropertiesGridScreenDTO dto);
 
     List<Issue> selectUserIssue(@Param("createId")String createId);
+
+    void add(@Param("issue")Issue issue);
 }

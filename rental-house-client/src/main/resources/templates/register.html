@@ -6,11 +6,7 @@
       <meta name="description" content="Webartinfo">
       <meta name="author" content="Webartinfo">
       <title>Manland - Bootstrap Light Real Estate HTML Template</title>
-      <!-- Favicon Icon -->
-      <link rel="icon" type="image/png" href="img/favicon.png">
-      <!-- Bootstrap core CSS -->
 
-      <link href="vendor/icons/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
 
    </head>
    <body>
@@ -26,25 +22,26 @@
                            <div class="form-group">
                               <div class="layui-form-item">
                               <label>用户名 <span class="text-danger">*</span></label>
-                              <input type="text" name="userName" class="form-control" placeholder="Enter Full Name">
+                              <input type="text" name="userName" class="form-control" placeholder="请输入用户名">
                               </div>
                            </div>
                            <div class="form-group">
                               <div class="layui-form-item">
                               <label>Email<span class="text-danger">*</span></label>
-                              <input type="email" name="email" class="form-control" placeholder="Enter Email Address">
+                              <input type="email" name="email" class="form-control" placeholder="请输入邮箱">
                               </div>
                            </div>
                            <div class="form-group">
                               <div class="layui-form-item">
                               <label>密码<span class="text-danger">*</span></label>
-                              <input type="password" name="password" class="form-control" placeholder="Enter Password">
+                              <input type="password" name="password" class="form-control" placeholder="请输入密码">
                               </div>
                            </div>
+
                            <button type="submit" class="btn btn-success btn-block" lay-submit lay-filter="kUserRegisterSubmit">注册</button>
                         </div>
                         <div class="mt-4 text-center">
-                           Have an account - <a  th:href="@{/login}">Login</a>
+                           欢迎您 - <a  th:href="@{/login}">登陆</a>
                         </div>
 
                      </div>
@@ -57,6 +54,7 @@
       <script th:replace="common/base::iconpkcss"></script>
       <script th:replace="common/base::mainjs"></script>
       <script>
+
          layui.use('form', function () {
             var form = layui.form;
 

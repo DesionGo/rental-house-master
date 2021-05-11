@@ -36,4 +36,9 @@ public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files> implements
         return  files;
     }
 
+    @Override
+    public void add(Files files) {
+        baseMapper.add(files);
+    }
+
 }

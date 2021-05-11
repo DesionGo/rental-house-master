@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.rentalHouseClient.rhc.modules.sys.entity.Files;
 
+import java.io.File;
+
 /**
  * <p>
  * 文件上传 服务类
@@ -22,4 +24,6 @@ public interface FilesService extends IService<Files> {
     Files selectFiles(String city);
 
     Files selectFilesId(String ascriptionId);
+
+    void add(Files files);
 }

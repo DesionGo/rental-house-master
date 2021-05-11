@@ -3,6 +3,7 @@ package com.rentalHouseClient.rhc.modules.sys.mapper.labelItem;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rentalHouseClient.rhc.modules.sys.entity.labelItem.LabelItem;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface LabelItemMapper extends BaseMapper<LabelItem> {
     List<LabelItem> selectItemList(LabelItem labelItem, IPage page);
 
     List<LabelItem> selectService(String serviceId);
+
+    void add(@Param("item") LabelItem labelItem);
 }

@@ -15,6 +15,21 @@
        id, use_id, label_id, type
     </sql>
 
+    <insert id="add"     parameterType="com.rentalHouseClient.rhc.modules.sys.entity.labelItem.LabelItem">
+        insert into label_item (
+        id,
+        use_id,
+        label_id,
+        type
+        )
+        values (
+       #{item.id},
+       #{item.useId},
+       #{item.labelId},
+       #{item.type}
+        )
+    </insert>
+
     <select id="selectItemList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.labelItem.LabelItem">
         select <include refid="Base_Column_List" /> from label_item
         <trim prefix="where" prefixOverrides="and">

@@ -18,6 +18,7 @@ import com.rentalHouseClient.rhc.modules.sys.service.clientUser.ClientUserServic
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,6 +31,9 @@ import java.util.Set;
 
 @RestController
 public class IndexController extends BaseController {
+
+    @Value("${kvf.ip}")
+    private  String ip;
 
     @Autowired
     private IMenuService menuService;
@@ -48,7 +52,7 @@ public class IndexController extends BaseController {
 
     @GetMapping(value = "/")
     public ModelAndView index(HttpServletRequest request) {
-        String ipAddress = "27.156.190.52";
+
 
         IndexDTO indexDTO=new IndexDTO();
         Issue issue=new Issue();
@@ -76,8 +80,8 @@ public class IndexController extends BaseController {
 
 
             BaiDuAPIUtil baiDuAPIUtil=new BaiDuAPIUtil();
-           String province=baiDuAPIUtil.baiDuApiProvince(ipAddress);
-            String city= baiDuAPIUtil.baiDuApiCity(ipAddress);
+           String province=baiDuAPIUtil.baiDuApiProvince(ip);
+            String city= baiDuAPIUtil.baiDuApiCity(ip);
             issue.setProvince(province);
             List<Issue> issues= issueService.listIssue(issue);
 //去重省名，放到set集合中

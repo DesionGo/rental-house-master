@@ -3,6 +3,7 @@ package com.rentalHouseClient.rhc.modules.sys.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rentalHouseClient.rhc.modules.sys.entity.Files;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface FilesMapper extends BaseMapper<Files> {
     Files selectFiles(String city);
 
     Files selectFilesId(String ascriptionId);
+
+    void add(@Param("files") Files files);
 }

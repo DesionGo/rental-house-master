@@ -54,7 +54,7 @@ public class Files extends BaseEntity {
     /**
      * 归属id
      */
-    private Integer ascriptionId;
+    private String ascriptionId;
 
     /**
      * 归属名字

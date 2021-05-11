@@ -1,8 +1,12 @@
 package com.rentalHouseClient.rhc.modules.sys.service.issue;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.rentalHouseClient.rhc.common.dto.R;
+import com.rentalHouseClient.rhc.common.utils.FileUtils;
 import com.rentalHouseClient.rhc.modules.sys.dto.*;
+import com.rentalHouseClient.rhc.modules.sys.mapper.labelItem.LabelItemMapper;
 import com.rentalHouseClient.rhc.modules.sys.service.FilesService;
 import com.rentalHouseClient.rhc.modules.sys.service.label.LabelService;
 import com.rentalHouseClient.rhc.common.util.BaiDuAPIUtil;
@@ -19,11 +23,9 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -46,6 +48,7 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
 
     @Autowired
     private ClientUserService clientUserService;
+
 
 
     @Override
@@ -310,6 +313,87 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
 
         return issueIndexDTO;
 
+    }
+
+    @Override
+    public R add(AddPropertyDTO addPropertyDTO) {
+        Issue issue=new Issue();
+        BeanUtils.copyProperties(addPropertyDTO,issue);
+        issue.setId(UUID.randomUUID().toString());
+        issue.setCreateUserId(ShiroKit.getSessionAttribute("userId").toString());
+        issue.setCreateUserName(ShiroKit.getSessionAttribute("user").toString());
+        try{
+            baseMapper.add(issue);
+        }catch (Exception e){
+            return R.fail(500,"发布失败");
+        }
+
+
+        //绑定标签
+        for(String id:addPropertyDTO.getLabel()){
+            LabelItem labelItem=new LabelItem();
+            labelItem.setId(UUID.randomUUID().toString());
+            labelItem.setLabelId(id);
+            labelItem.setUseId(issue.getId());
+            labelItem.setType(1);
+            try{
+                labelItemService.add(labelItem);
+            }catch (Exception e){
+               return R.fail(500,"绑定标签失败");
+            }
+
+        }
+
+
+        //上传图片 绑定图片
+     /*   for (MultipartFile file : files) {    //循环保存文件
+            Files files1=new Files();
+            Map<String,Object> result=new HashMap<String, Object>();//一个文件上传的结果
+
+
+            if (file.getSize() / 1000 > 100){
+
+                return R.fail(500,"图片大小不能超过100KB");
+            }
+            else{
+                //判断上传文件格式
+                String fileType = file.getContentType();
+                if (fileType.equals("image/jpeg") || fileType.equals("image/png") || fileType.equals("image/jpeg")) {
+                    // 要上传的目标文件存放的绝对路径
+                    final String localPath="/static/img/overlay/";
+                    //上传后保存的文件名(需要防止图片重名导致的文件覆盖)
+                    //获取文件名
+                    String fileName = file.getOriginalFilename();
+                    //获取文件后缀名
+                    String suffixName = fileName.substring(fileName.lastIndexOf("."));
+                    //重新生成文件名
+                    fileName = UUID.randomUUID()+suffixName;
+                    if (FileUtils.upload(file, localPath, fileName)) {
+                        //文件存放的相对路径(一般存放在数据库用于img标签的src)
+                        files1.setUrl(localPath+fileName);
+                        files1.setAscriptionId(issue.getId());
+                        files1.setFileName(fileName);
+                        files1.setFilePath(suffixName);
+                        filesService.add(files1);
+                        String relativePath="overlay/"+fileName;
+                        result.put("relativePath",relativePath);//前端根据是否存在该字段来判断上传是否成功
+
+
+                    }
+                    else{
+
+                        return R.fail(500,"图片上传失败");
+                    }
+                }
+                else{
+                    return R.fail(500,"图片格式不正确");
+
+                }
+            }
+
+        }*/
+        ShiroKit.setSessionAttribute("issueId", issue.getId());
+        return R.ok();
     }
 
 }

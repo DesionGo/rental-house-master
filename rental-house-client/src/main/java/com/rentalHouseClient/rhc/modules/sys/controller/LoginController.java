@@ -1,6 +1,12 @@
 package com.rentalHouseClient.rhc.modules.sys.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.rentalHouseClient.rhc.common.utils.FileUtils;
+import com.rentalHouseClient.rhc.modules.sys.dto.AddPropertyDTO;
+import com.rentalHouseClient.rhc.modules.sys.entity.Files;
 import com.rentalHouseClient.rhc.modules.sys.entity.collect.Collect;
+import com.rentalHouseClient.rhc.modules.sys.entity.label.Label;
+import com.rentalHouseClient.rhc.modules.sys.service.FilesService;
 import com.rentalHouseClient.rhc.modules.sys.service.clientUser.ClientUserService;
 import com.rentalHouseClient.rhc.modules.sys.service.collect.CollectService;
 import com.rentalHouseClient.rhc.modules.sys.service.issue.IssueService;
@@ -11,6 +17,7 @@ import com.rentalHouseClient.rhc.common.utils.HttpServletContextKit;
 import com.rentalHouseClient.rhc.common.utils.ShiroKit;
 import com.rentalHouseClient.rhc.modules.sys.dto.IssueIndexDTO;
 import com.rentalHouseClient.rhc.modules.sys.entity.clientUser.ClientUser;
+import com.rentalHouseClient.rhc.modules.sys.service.label.LabelService;
 import com.wf.captcha.GifCaptcha;
 import com.wf.captcha.utils.CaptchaUtil;
 import org.apache.shiro.SecurityUtils;
@@ -19,6 +26,7 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * 作用：LayOA系统登录<br>
@@ -40,18 +49,26 @@ public class LoginController extends BaseController {
     @Value(value = "${kvf.login.authcode.enable}")
     private boolean needAuthCode;
 
+    @Value("${kvf.ip}")
+    private String ip;
+
     @Value(value = "${kvf.login.authcode.dynamic}")
     private boolean isDynamic;
 
     @Autowired
     private IssueService issueService;
 
+    @Autowired
+    private LabelService labelService;
 
     @Autowired
     private ClientUserService clientUserService;
 
     @Autowired
     private CollectService collectService;
+
+    @Autowired
+    private FilesService filesService;
 
     @GetMapping(value = "login")
     public ModelAndView login() {
@@ -106,16 +123,16 @@ public class LoginController extends BaseController {
     @Log("出租广场")
     @GetMapping("propertiesGrid")
     public ModelAndView propertiesGrid() {
-        String ipAddress = "27.156.190.52";
-        IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+
+        IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ip);
         return  new ModelAndView("properties-grid").addObject("issueIndexDTO",issueIndexDTO);
     }
     @Log("出租广场(筛选)")
     @GetMapping("propertiesGridScreen")
     public ModelAndView propertiesGridScreen(@RequestParam(value="province",required = false) String province,@RequestParam(value="city",required = false) String city,@RequestParam(value="counties",required = false) String counties,@RequestParam(value="houseType",required = false) String houseType,@RequestParam(value="moneyMin",required = false) Integer moneyMin,@RequestParam(value="moneyMax",required = false) Integer moneyMax,@RequestParam(value="rentOutType",required = false) String rentOutType) {
-        String ipAddress = "27.156.190.52";
+
         System.out.println("province"+province);
-        IssueIndexDTO issueIndexDTO= issueService.listIssueDTOGo(ipAddress,province,city,counties,houseType,moneyMin,moneyMax,rentOutType);
+        IssueIndexDTO issueIndexDTO= issueService.listIssueDTOGo(ip,province,city,counties,houseType,moneyMin,moneyMax,rentOutType);
         return  new ModelAndView("properties-grid").addObject("issueIndexDTO",issueIndexDTO);
     }
     @Log("个人资料")
@@ -170,25 +187,102 @@ public class LoginController extends BaseController {
     @GetMapping("addProperty")
     public ModelAndView addProperty() {
         if(SecurityUtils.getSubject().getPrincipal()!=null){
-            String ipAddress = "27.156.190.52";
 
-            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+            IssueIndexDTO issueIndexDTO= new IssueIndexDTO();
+            issueIndexDTO.setUserName(ShiroKit.getSessionAttribute("user").toString());
+            issueIndexDTO.setLabelList(labelService.list());
             return  new ModelAndView("add-property").addObject("issueIndexDTO",issueIndexDTO);
         } else{
             return new ModelAndView("sys/login");
+        }
+    }
+    @Log("发布信息")
+    @PostMapping("addPropertyDetail")
+    public R addPropertyDetail(@RequestBody AddPropertyDTO addPropertyDTO ) {
+
+
+        if(SecurityUtils.getSubject().getPrincipal()!=null){
+
+            DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String createtime = dtf2.format(LocalDateTime.now());
+            LocalDateTime ldt = LocalDateTime.parse(createtime, dtf2);
+            addPropertyDTO.setCreateTime(ldt);
+
+            return issueService.add(addPropertyDTO);
+        } else{
+            return R.fail("用户token过期，请重新登陆！");
         }
     }
     @Log("租房详情")
     @GetMapping("propertySingleGallery")
     public ModelAndView propertySingleGallery() {
         if(SecurityUtils.getSubject().getPrincipal()==null){
-            String ipAddress = "27.156.190.52";
 
-            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ipAddress);
+
+            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ip);
             return  new ModelAndView("property-single-gallery").addObject("issueIndexDTO",issueIndexDTO);
         } else{
             return new ModelAndView("sys/login");
         }
+    }
+    @Log("上传图片")
+    @RequestMapping("/multipleImageUpload")
+    public List multipleImageUpload(@RequestParam("uploadFiles") MultipartFile[] files){
+        System.out.println("上传的图片数："+files.length);
+        Files files1=new Files();
+        List<Map<String,Object>> root=new ArrayList<Map<String,Object>>();
+
+        for (MultipartFile file : files) {    //循环保存文件
+
+            Map<String,Object> result=new HashMap<String, Object>();//一个文件上传的结果
+            String result_msg="";//上传结果信息
+
+            if (file.getSize() / 1000 > 100){
+                result_msg="图片大小不能超过100KB";
+            }
+            else{
+                //判断上传文件格式
+                String fileType = file.getContentType();
+                if (fileType.equals("image/jpeg") || fileType.equals("image/png") || fileType.equals("image/jpeg")) {
+                    // 要上传的目标文件存放的绝对路径
+                    final String localPath="C:\\Users\\10098\\Desktop";
+                    //上传后保存的文件名(需要防止图片重名导致的文件覆盖)
+                    //获取文件名
+                    String fileName = file.getOriginalFilename();
+                    //获取文件后缀名
+                    String suffixName = fileName.substring(fileName.lastIndexOf("."));
+                    //重新生成文件名
+                    fileName = UUID.randomUUID()+suffixName;
+                    if (FileUtils.upload(file, localPath, fileName)) {
+                        //文件存放的相对路径(一般存放在数据库用于img标签的src)
+                        files1.setId(UUID.randomUUID().toString());
+                        files1.setUrl(localPath+fileName);
+                        files1.setAscriptionId(ShiroKit.getSessionAttribute("issueId").toString());
+                        files1.setFileName(fileName);
+                        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                        String createtime = dtf2.format(LocalDateTime.now());
+                        LocalDateTime ldt = LocalDateTime.parse(createtime, dtf2);
+                        files1.setCreateDate(ldt);
+                        files1.setFilePath(suffixName);
+                        filesService.add(files1);
+                        String relativePath="img/"+fileName;
+                        result.put("relativePath",relativePath);//前端根据是否存在该字段来判断上传是否成功
+                        result_msg="图片上传成功";
+                    }
+                    else{
+                        result_msg="图片上传失败";
+                    }
+                }
+                else{
+                    result_msg="图片格式不正确";
+                }
+            }
+            result.put("result_msg",result_msg);
+            root.add(result);
+        }
+        String root_json= JSON.toJSONString(root);
+        System.out.println(root_json);
+        return root;
     }
     /**
      * 图片验证码
