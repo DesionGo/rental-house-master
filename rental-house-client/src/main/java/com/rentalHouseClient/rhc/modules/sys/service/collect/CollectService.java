@@ -2,6 +2,7 @@ package com.rentalHouseClient.rhc.modules.sys.service.collect;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.rentalHouseClient.rhc.common.dto.R;
 import com.rentalHouseClient.rhc.modules.sys.dto.IssueIndexDTO;
 import com.rentalHouseClient.rhc.modules.sys.entity.collect.Collect;
 import com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue;
@@ -28,4 +29,14 @@ public interface CollectService extends IService<Collect> {
      */
     IssueIndexDTO selectUserCollectList(String userId, int current);
 
+    /**
+     * 修改收藏状态
+     * @param userId 查询参数
+     * @return page
+     */
+    void updateStatus(String issueId,String userId);
+
+    R add(Collect collect);
+
+    Collect selectById(Collect collect);
 }

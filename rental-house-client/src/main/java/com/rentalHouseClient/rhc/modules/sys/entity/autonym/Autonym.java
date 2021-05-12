@@ -25,7 +25,7 @@ public class Autonym extends BaseEntity {
     /**
      * 
      */
-    @TableId(value = "id", type = IdType.AUTO)
+
     private String id;
 
     /**

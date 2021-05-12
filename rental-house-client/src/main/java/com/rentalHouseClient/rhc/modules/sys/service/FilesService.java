@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.rentalHouseClient.rhc.modules.sys.entity.Files;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * <p>
@@ -24,6 +25,8 @@ public interface FilesService extends IService<Files> {
     Files selectFiles(String city);
 
     Files selectFilesId(String ascriptionId);
+
+    List<Files> selectFilesById(String ascriptionId);
 
     void add(Files files);
 }

@@ -25,7 +25,7 @@ public interface FilesMapper extends BaseMapper<Files> {
 
     Files selectFiles(String city);
 
-    Files selectFilesId(String ascriptionId);
+    List<Files> selectFilesId(String ascriptionId);
 
     void add(@Param("files") Files files);
 }

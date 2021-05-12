@@ -51,6 +51,7 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
 
 
 
+
     @Override
     public Page<Issue> listIssuePage(Issue issue) {
         Page<Issue> page = new Page<>(issue.getCurrent(), issue.getSize());
@@ -65,7 +66,7 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
     }
 
     @Override
-    public IssueIndexDTO userIssue(String createId) {
+    public IssueIndexDTO userIssue(String createId,int current) {
         List<Issue> issues=baseMapper.selectUserIssue(createId);
 
         IssueIndexDTO issueIndexDTO=new IssueIndexDTO();
@@ -73,8 +74,8 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
         ClientUser clientUser=new ClientUser();
         clientUser  = clientUserService.getById(ShiroKit.getUserId());
         issueIndexDTO.setUserName(clientUser.getUserName());
-
-        for(Issue issue1:issues){
+        List<Issue> issues1 =issues.stream().skip((current-1)*6).limit(6).collect(Collectors.toList());
+        for(Issue issue1:issues1){
             IssueDTO issueDTO=new IssueDTO();
             Files file= filesService.selectFilesId(issue1.getId());
             List<Label> labels=labelService.list();
@@ -99,12 +100,14 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
 
             issueDTOS.add(issueDTO);
         }
+        issueIndexDTO.setCurrent(current);
+        issueIndexDTO.setSum(issues1.size());
         issueIndexDTO.setIssue(issueDTOS);
         return issueIndexDTO;
     }
 
     @Override
-    public IssueIndexDTO listIssueDTO(String ip) {
+    public IssueIndexDTO listIssueDTO(String ip,int current) {
         Issue issue=new Issue();
         IssueIndexDTO issueIndexDTO=new IssueIndexDTO();
         //判断是否登陆
@@ -170,7 +173,7 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
                 issueTypeDTOS.add(issueTypeDTO);
             }
         }
-        List<Issue> issueOut=issues.stream().limit(6).collect(Collectors.toList());
+        List<Issue> issueOut=issues.stream().skip((current-1)*6).limit(6).collect(Collectors.toList());
         for(Issue issue1:issueOut){
             IssueDTO issueDTO=new IssueDTO();
             Files file= filesService.selectFilesId(issue1.getId());
@@ -187,6 +190,7 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
                         }
                     }
                     issueDTO.setLabel(labels1);
+
                 }
             }
             BeanUtils.copyProperties(issue1,issueDTO);
@@ -198,12 +202,13 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
         }
         issueIndexDTO.setIssue(issueDTOS);
         issueIndexDTO.setCity(cityDTOS);
-
+        issueIndexDTO.setCurrent(current);
+        issueIndexDTO.setSum(issueOut.size());
         return issueIndexDTO;
     }
 
     @Override
-    public IssueIndexDTO listIssueDTOGo(String ip, String city, String province,String counties,String houseType,Integer moneyMin,Integer moneyMax,String rentOutType) {
+    public IssueIndexDTO listIssueDTOGo(String ip, String city, String province,String counties,String houseType,Integer moneyMin,Integer moneyMax,String rentOutType,int current) {
 
         IssueIndexDTO issueIndexDTO=new IssueIndexDTO();
         Issue issue=new Issue();
@@ -276,13 +281,14 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
                 issueTypeDTOS.add(issueTypeDTO);
             }
         }
-        List<Issue> issueOut=issues.stream().limit(6).collect(Collectors.toList());
+
         //把对应的图片放进去
         issue.setProvince(province);
         issue.setCity(city);
         issue.setCounty(counties);
         List<Issue> issueList=baseMapper.selectIssue(issue);
-        for(Issue issue1:issueList){
+        List<Issue> issueOut=issueList.stream().skip((current-1)*6).limit(6).collect(Collectors.toList());
+        for(Issue issue1:issueOut){
 
             IssueDTO issueDTO=new IssueDTO();
             Files file= filesService.selectFilesId(issue1.getId());
@@ -307,10 +313,12 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
             }
 
             issueDTOS.add(issueDTO);
+
         }
         issueIndexDTO.setIssue(issueDTOS);
         issueIndexDTO.setCity(cityDTOS);
-
+        issueIndexDTO.setCurrent(current);
+        issueIndexDTO.setSum(issueOut.size());
         return issueIndexDTO;
 
     }
@@ -320,8 +328,9 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
         Issue issue=new Issue();
         BeanUtils.copyProperties(addPropertyDTO,issue);
         issue.setId(UUID.randomUUID().toString());
-        issue.setCreateUserId(ShiroKit.getSessionAttribute("userId").toString());
-        issue.setCreateUserName(ShiroKit.getSessionAttribute("user").toString());
+        issue.setStatus("2");
+        issue.setCreateUserId(ShiroKit.getSessionAttribute("id").toString());
+        issue.setCreateUserName(ShiroKit.getSessionAttribute("userName").toString());
         try{
             baseMapper.add(issue);
         }catch (Exception e){
@@ -395,5 +404,38 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
         ShiroKit.setSessionAttribute("issueId", issue.getId());
         return R.ok();
     }
+
+    @Override
+    public IssueIndexDTO IssueDetail(String issueId) {
+
+        //获取单子的数据
+      Issue issue=  baseMapper.selectById(issueId);
+      //获取单子发布者的信息
+     ClientUser clientUser= clientUserService.getById(issue.getCreateUserId());
+     //获取单子所对应的标签
+    List<LabelItem> labelItems=  labelItemService.selectService(issueId);
+    List<Label> label =new ArrayList<>();
+    for(LabelItem labelItem:labelItems){
+        label.add(labelService.getById(labelItem.getLabelId()));
+    }
+    //获取单子所对应的照片
+    List<Files> files=filesService.selectFilesById(issueId);
+
+        IssueDTO issueDTO=new IssueDTO();
+        BeanUtils.copyProperties(issue,issueDTO);
+        issueDTO.setLabel(label);
+        issueDTO.setFiles(files);
+        IssueIndexDTO issueIndexDTO=new IssueIndexDTO();
+        issueIndexDTO.setClientUser(clientUser);
+        issueIndexDTO.setIssueDTO(issueDTO);
+        issueIndexDTO.setUserName(clientUser.getUserName());
+        return issueIndexDTO;
+    }
+
+    @Override
+    public List<Issue> selectUserCollectList(String userId) {
+        return baseMapper.selectUserCollectList(userId);
+    }
+
 
 }

@@ -118,3 +118,4 @@ kvf:
     enable: false
     #默认ip
   ip : 27.156.190.52
+  localPath : D:\java\rental-house-master\rental-house-client\src\main\resources\static\img\user\

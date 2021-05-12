@@ -19,4 +19,5 @@ public interface AutonymService extends IService<Autonym> {
      */
     Page<Autonym> listAutonymPage(Autonym autonym);
 
+    Integer add(Autonym autonym);
 }

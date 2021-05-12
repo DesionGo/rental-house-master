@@ -27,14 +27,19 @@ public interface IssueService extends IService<Issue> {
 
     List<Issue> listIssue(Issue issue);
 
-    IssueIndexDTO userIssue(String createId);
+    IssueIndexDTO userIssue(String createId,int current);
 
     //租房广场（无参）
-    IssueIndexDTO listIssueDTO(String ip);
+    IssueIndexDTO listIssueDTO(String ip,int current);
 
     //租房广场（筛选参数）
-    IssueIndexDTO listIssueDTOGo(String ip,String city,String province,String counties,String houseType,Integer moneyMin,Integer moneyMax,String rentOutType );
+    IssueIndexDTO listIssueDTOGo(String ip,String city,String province,String counties,String houseType,Integer moneyMin,Integer moneyMax,String rentOutType,int current );
 
     //发布租房信息
     R add(AddPropertyDTO addPropertyDTO);
+
+    //租房详情
+    IssueIndexDTO IssueDetail(String issueId);
+
+    List<Issue> selectUserCollectList(String userId);
 }

@@ -1,5 +1,6 @@
 package com.rentalHouseClient.rhc.modules.sys.dto;
 
+import com.rentalHouseClient.rhc.modules.sys.entity.clientUser.ClientUser;
 import com.rentalHouseClient.rhc.modules.sys.entity.label.Label;
 import lombok.Data;
 
@@ -16,7 +17,12 @@ public class IssueIndexDTO {
 
     private  String userName;
 
-    //单子
+    private ClientUser clientUser;
+
+    //单子详情
+    private IssueDTO issueDTO;
+
+    //多个单子
     private List<IssueDTO> issue;
 
     //左边城市所对应的数量
@@ -29,4 +35,14 @@ public class IssueIndexDTO {
     private List<IssueDTO> popularityIssue;
     //标签
     private  List<Label> labelList;
+
+    /**
+     * 当前页数
+     */
+    private Integer current;
+
+    /**
+     * 数据条
+     */
+    private Integer sum;
 }

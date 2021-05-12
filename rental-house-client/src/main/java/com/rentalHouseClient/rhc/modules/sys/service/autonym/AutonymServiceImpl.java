@@ -24,4 +24,9 @@ public class AutonymServiceImpl extends ServiceImpl<AutonymMapper, Autonym> impl
         return page.setRecords(autonyms);
     }
 
+    @Override
+    public Integer add(Autonym autonym) {
+     return    baseMapper.add(autonym);
+    }
+
 }

@@ -192,7 +192,7 @@
             <div class="row">
                <div class="col-lg-3 col-md-3">
 
-               <!--   <div class="card">
+                  <div class="card">
                      <div class="card-body">
                         <h5 class="card-title mb-3">出租类型</h5>
                         <ul class="sidebar-card-list">
@@ -201,18 +201,18 @@
                            <li><a href="#"><i class="mdi mdi-chevron-right"></i> 找室友 <span class="sidebar-badge">1200</span></a></li>
                         </ul>
                      </div>
-                  </div>-->
-             <!--     <div class="card">
+                  </div>
+                  <div class="card">
                      <div class="card-body">
                         <h5 class="card-title mb-3">城市</h5>
                         <ul class="sidebar-card-list">
 
-                           <li th:each="city: ${issueIndexDTO.city}"><a href="#"><i class="mdi mdi-chevron-right"></i> city.cityName<span class="sidebar-badge">city.amount</span></a></li>
+                           <li th:each="city: ${issueIndexDTO.city}"><a href="#"><i class="mdi mdi-chevron-right"></i> [[${city.cityName}]]<span class="sidebar-badge">[[${city.amount}]]</span></a></li>
 
                         </ul>
                      </div>
-                  </div>-->
-               <!--   <div class="card">
+                  </div>
+                  <div class="card">
                      <div class="card-body">
                         <h5 class="card-title mb-4">人气出租</h5>
                         <div id="featured-properties" class="carousel slide" data-ride="carousel">
@@ -254,16 +254,15 @@
                            </div>
                         </div>
                      </div>
-                  </div>-->
+                  </div>
                </div>
                <div class="col-lg-9 col-md-9">
 
                   <div class="row" th:if="${issueIndexDTO.issue} ne ''">
                      <div class="col-lg-6 col-md-6"  th:each="issue: ${issueIndexDTO.issue}">
                         <div class="card card-list">
-                           <a  th:href="@{'/propertySingleGallery?issueId='+${issue.id}}">
-                              <span class="badge badge-success" th:if="${issue.status}==1">出租</span>
-                              <span class="badge badge-info" th:if="${issue.status}==2">审核中</span>
+                           <a th:href="@{'/propertySingleGallery?issueId='+${issue.id}}">
+                              <span class="badge badge-success">出租</span>
                               <img class="card-img-top" src="/static/img/list/1.png" alt="Card image cap">
                               <div class="card-body">
                                  <h5 class="card-title"> [[${issue.headline}]]</h5>
@@ -288,17 +287,17 @@
                      </div>
 
                   </div>
-                  <div class="row" th:if="${#lists.isEmpty(issueIndexDTO.issue)}">
-                     <h3 style="margin-top: 100px">无数据</h3>
-                  </div>
+                   <div class="row" th:if="${#lists.isEmpty(issueIndexDTO.issue)}">
+                       <p>无数据</p>
+                   </div>
                   <nav class="mt-5">
                      <ul class="pagination justify-content-center">
                         <li class="page-item ">
-                           <a class="page-link" th:if="${(issueIndexDTO.current)-1} > 0" th:href="@{'/propertiesGrid?current='+${(issueIndexDTO.current)-1}}" ><i class="mdi mdi-chevron-left"></i></a>
+                           <a class="page-link" th:if="${(issueIndexDTO.current)-1} > 0" th:href="@{'/propertiesGridScreen?current='+${(issueIndexDTO.current)-1}+'&city='+${issueIndexDTO.issueDTO.city}+'&province='+${issueIndexDTO.issueDTO.province}+'&counties='+${issueIndexDTO.issueDTO.county}}" ><i class="mdi mdi-chevron-left"></i></a>
                         </li>
 
                         <li class="page-item">
-                           <a class="page-link" th:if="${issueIndexDTO.sum} > 0"  th:href="@{'/propertiesGrid?current='+${(issueIndexDTO.current)+1}}" ><i class="mdi mdi-chevron-right"></i></a>
+                           <a class="page-link" th:if="${issueIndexDTO.sum} > 0"  th:href="@{'/propertiesGridScreen?current='+${(issueIndexDTO.current)+1}+'&city='+${issueIndexDTO.issueDTO.city}+'&province='+${issueIndexDTO.issueDTO.province}+'&counties='+${issueIndexDTO.issueDTO.county}}" ><i class="mdi mdi-chevron-right"></i></a>
                         </li>
                      </ul>
                   </nav>

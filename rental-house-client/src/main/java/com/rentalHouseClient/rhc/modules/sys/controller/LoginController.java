@@ -3,6 +3,7 @@ package com.rentalHouseClient.rhc.modules.sys.controller;
 import com.alibaba.fastjson.JSON;
 import com.rentalHouseClient.rhc.common.utils.FileUtils;
 import com.rentalHouseClient.rhc.modules.sys.dto.AddPropertyDTO;
+import com.rentalHouseClient.rhc.modules.sys.dto.IssueDTO;
 import com.rentalHouseClient.rhc.modules.sys.entity.Files;
 import com.rentalHouseClient.rhc.modules.sys.entity.collect.Collect;
 import com.rentalHouseClient.rhc.modules.sys.entity.label.Label;
@@ -48,6 +49,9 @@ public class LoginController extends BaseController {
 
     @Value(value = "${kvf.login.authcode.enable}")
     private boolean needAuthCode;
+
+    @Value("${kvf.localPath}")
+    private String localPath;
 
     @Value("${kvf.ip}")
     private String ip;
@@ -102,7 +106,7 @@ public class LoginController extends BaseController {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password, rememberMe);
             subject.login(token);
 
-            ShiroKit.setSessionAttribute("user", username);
+
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
             return R.fail(e.getMessage());
@@ -122,25 +126,33 @@ public class LoginController extends BaseController {
     }
     @Log("出租广场")
     @GetMapping("propertiesGrid")
-    public ModelAndView propertiesGrid() {
+    public ModelAndView propertiesGrid(@RequestParam(value="current",required = false) int current) {
 
-        IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ip);
+        IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ip, current);
         return  new ModelAndView("properties-grid").addObject("issueIndexDTO",issueIndexDTO);
     }
     @Log("出租广场(筛选)")
     @GetMapping("propertiesGridScreen")
-    public ModelAndView propertiesGridScreen(@RequestParam(value="province",required = false) String province,@RequestParam(value="city",required = false) String city,@RequestParam(value="counties",required = false) String counties,@RequestParam(value="houseType",required = false) String houseType,@RequestParam(value="moneyMin",required = false) Integer moneyMin,@RequestParam(value="moneyMax",required = false) Integer moneyMax,@RequestParam(value="rentOutType",required = false) String rentOutType) {
+    public ModelAndView propertiesGridScreen(@RequestParam(value="current",required = false) Integer current,@RequestParam(value="province",required = false) String province,@RequestParam(value="city",required = false) String city,@RequestParam(value="counties",required = false) String counties,@RequestParam(value="houseType",required = false) String houseType,@RequestParam(value="moneyMin",required = false) Integer moneyMin,@RequestParam(value="moneyMax",required = false) Integer moneyMax,@RequestParam(value="rentOutType",required = false) String rentOutType) {
 
-        System.out.println("province"+province);
-        IssueIndexDTO issueIndexDTO= issueService.listIssueDTOGo(ip,province,city,counties,houseType,moneyMin,moneyMax,rentOutType);
-        return  new ModelAndView("properties-grid").addObject("issueIndexDTO",issueIndexDTO);
+
+        if(current==null){
+            current=1;
+        }
+        IssueIndexDTO issueIndexDTO= issueService.listIssueDTOGo(ip,city,province,counties,houseType,moneyMin,moneyMax,rentOutType,current);
+        IssueDTO issueDTO=new IssueDTO();
+        issueDTO.setCity(city);
+        issueDTO.setProvince(province);
+        issueDTO.setCounty(counties);
+        issueIndexDTO.setIssueDTO(issueDTO);
+        return  new ModelAndView("sys/user-properties-grid").addObject("issueIndexDTO",issueIndexDTO);
     }
     @Log("个人资料")
     @GetMapping("userProfile")
     public ModelAndView userProfile() {
        if(SecurityUtils.getSubject().getPrincipal()!=null){
            //查询用户信息
-           ClientUser clientUser = clientUserService.getByEmail(ShiroKit.getSessionAttribute("user").toString());
+           ClientUser clientUser = clientUserService.getByEmail(ShiroKit.getSessionAttribute("email").toString());
            return  new ModelAndView("user-profile").addObject("clientUser",clientUser);
        } else{
            return new ModelAndView("sys/login");
@@ -165,9 +177,9 @@ public class LoginController extends BaseController {
     }
     @Log("我的财产")
     @GetMapping("myProperties")
-    public ModelAndView myProperties() {
+    public ModelAndView myProperties(@RequestParam(value="current",required = false) Integer current) {
         if(SecurityUtils.getSubject().getPrincipal()!=null){
-            IssueIndexDTO issueIndexDTO=issueService.userIssue(ShiroKit.getSessionAttribute("id").toString());
+            IssueIndexDTO issueIndexDTO=issueService.userIssue(ShiroKit.getSessionAttribute("id").toString(),current);
             return  new ModelAndView("my-properties").addObject("issueIndexDTO",issueIndexDTO);
         } else{
             return new ModelAndView("sys/login");
@@ -175,13 +187,50 @@ public class LoginController extends BaseController {
     }
     @Log("我的收藏")
     @GetMapping("favoriteProperties")
-    public ModelAndView favoriteProperties() {
+    public ModelAndView favoriteProperties(@RequestParam(value="current",required = false) Integer current) {
         if(SecurityUtils.getSubject().getPrincipal()!=null){
-            IssueIndexDTO issueIndexDTO=collectService.selectUserCollectList(ShiroKit.getSessionAttribute("id").toString(),1);
+            IssueIndexDTO issueIndexDTO=collectService.selectUserCollectList(ShiroKit.getSessionAttribute("id").toString(),current);
+            issueIndexDTO.setCurrent(current);
+
             return  new ModelAndView("favorite-properties").addObject("issueIndexDTO",issueIndexDTO);
         } else{
             return new ModelAndView("sys/login");
         }
+    }
+    @Log("取消收藏")
+    @GetMapping("deleteFavoriteProperties")
+    public ModelAndView deleteFavoriteProperties(@RequestParam(value="issueId",required = false) String issueId) {
+
+        if(SecurityUtils.getSubject().getPrincipal()!=null){
+            collectService.updateStatus(issueId,ShiroKit.getSessionAttribute("id").toString());
+            IssueIndexDTO issueIndexDTO=collectService.selectUserCollectList(ShiroKit.getSessionAttribute("id").toString(),1);
+            issueIndexDTO.setCurrent(1);
+
+            return  new ModelAndView("favorite-properties").addObject("issueIndexDTO",issueIndexDTO);
+        } else{
+            return new ModelAndView("sys/login");
+        }
+    }
+    @Log("添加收藏")
+    @GetMapping("addFavoriteProperties")
+    public R addFavoriteProperties(@RequestParam(value="issueId") String issueId) {
+
+        if(SecurityUtils.getSubject().getPrincipal()!=null) {
+            Collect collect = new Collect();
+
+            collect.setIssueId(issueId);
+            collect.setUserId(ShiroKit.getSessionAttribute("id").toString());
+            if (collectService.selectById(collect) == null) {
+                collect.setId(UUID.randomUUID().toString());
+                collect.setStatus(1);
+                return collectService.add(collect);
+            } else {
+                return R.fail("收藏过了噢！");
+            }
+        }else{
+            return  R.fail(1000,"要登陆下咯");
+        }
+
     }
     @Log("发布")
     @GetMapping("addProperty")
@@ -189,12 +238,20 @@ public class LoginController extends BaseController {
         if(SecurityUtils.getSubject().getPrincipal()!=null){
 
             IssueIndexDTO issueIndexDTO= new IssueIndexDTO();
-            issueIndexDTO.setUserName(ShiroKit.getSessionAttribute("user").toString());
+            issueIndexDTO.setUserName(ShiroKit.getSessionAttribute("userName").toString());
             issueIndexDTO.setLabelList(labelService.list());
             return  new ModelAndView("add-property").addObject("issueIndexDTO",issueIndexDTO);
         } else{
             return new ModelAndView("sys/login");
         }
+    }
+    @Log("修改发布")
+    @GetMapping("updateProperty")
+    public ModelAndView updateProperty(@RequestParam(value="issueId",required = false) String issueId){
+
+        IssueIndexDTO issueIndexDTO= issueService.IssueDetail(issueId);
+            return  new ModelAndView("sys/update-property").addObject("issueIndexDTO",issueIndexDTO);
+
     }
     @Log("发布信息")
     @PostMapping("addPropertyDetail")
@@ -215,15 +272,9 @@ public class LoginController extends BaseController {
     }
     @Log("租房详情")
     @GetMapping("propertySingleGallery")
-    public ModelAndView propertySingleGallery() {
-        if(SecurityUtils.getSubject().getPrincipal()==null){
-
-
-            IssueIndexDTO issueIndexDTO= issueService.listIssueDTO(ip);
+    public ModelAndView propertySingleGallery(@RequestParam(value="issueId",required = false) String issueId) {
+            IssueIndexDTO issueIndexDTO= issueService.IssueDetail(issueId);
             return  new ModelAndView("property-single-gallery").addObject("issueIndexDTO",issueIndexDTO);
-        } else{
-            return new ModelAndView("sys/login");
-        }
     }
     @Log("上传图片")
     @RequestMapping("/multipleImageUpload")
@@ -234,49 +285,47 @@ public class LoginController extends BaseController {
 
         for (MultipartFile file : files) {    //循环保存文件
 
-            Map<String,Object> result=new HashMap<String, Object>();//一个文件上传的结果
-            String result_msg="";//上传结果信息
+            Map<String, Object> result = new HashMap<String, Object>();//一个文件上传的结果
+            String result_msg = "";//上传结果信息
 
-            if (file.getSize() / 1000 > 100){
+          /*  if (file.getSize() / 1000 > 100){
                 result_msg="图片大小不能超过100KB";
             }
-            else{
-                //判断上传文件格式
-                String fileType = file.getContentType();
-                if (fileType.equals("image/jpeg") || fileType.equals("image/png") || fileType.equals("image/jpeg")) {
-                    // 要上传的目标文件存放的绝对路径
-                    final String localPath="C:\\Users\\10098\\Desktop";
-                    //上传后保存的文件名(需要防止图片重名导致的文件覆盖)
-                    //获取文件名
-                    String fileName = file.getOriginalFilename();
-                    //获取文件后缀名
-                    String suffixName = fileName.substring(fileName.lastIndexOf("."));
-                    //重新生成文件名
-                    fileName = UUID.randomUUID()+suffixName;
-                    if (FileUtils.upload(file, localPath, fileName)) {
-                        //文件存放的相对路径(一般存放在数据库用于img标签的src)
-                        files1.setId(UUID.randomUUID().toString());
-                        files1.setUrl(localPath+fileName);
-                        files1.setAscriptionId(ShiroKit.getSessionAttribute("issueId").toString());
-                        files1.setFileName(fileName);
-                        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        String createtime = dtf2.format(LocalDateTime.now());
-                        LocalDateTime ldt = LocalDateTime.parse(createtime, dtf2);
-                        files1.setCreateDate(ldt);
-                        files1.setFilePath(suffixName);
-                        filesService.add(files1);
-                        String relativePath="img/"+fileName;
-                        result.put("relativePath",relativePath);//前端根据是否存在该字段来判断上传是否成功
-                        result_msg="图片上传成功";
-                    }
-                    else{
-                        result_msg="图片上传失败";
-                    }
+            else{*/
+            //判断上传文件格式
+            String fileType = file.getContentType();
+            if (fileType.equals("image/jpeg") || fileType.equals("image/png") || fileType.equals("image/jpeg")) {
+                // 要上传的目标文件存放的绝对路径
+                final String localPath1 = localPath;
+                //上传后保存的文件名(需要防止图片重名导致的文件覆盖)
+                //获取文件名
+                String fileName = file.getOriginalFilename();
+                //获取文件后缀名
+                String suffixName = fileName.substring(fileName.lastIndexOf("."));
+                //重新生成文件名
+                fileName = UUID.randomUUID() + suffixName;
+                if (FileUtils.upload(file, localPath1, fileName)) {
+                    //文件存放的相对路径(一般存放在数据库用于img标签的src)
+                    files1.setId(UUID.randomUUID().toString());
+                    files1.setUrl("/static/img/user/" + fileName);
+                    files1.setAscriptionId(ShiroKit.getSessionAttribute("issueId").toString());
+                    files1.setFileName(fileName);
+                    DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    String createtime = dtf2.format(LocalDateTime.now());
+                    LocalDateTime ldt = LocalDateTime.parse(createtime, dtf2);
+                    files1.setCreateDate(ldt);
+                    files1.setFilePath(suffixName);
+                    filesService.add(files1);
+                    String relativePath = "user/" + fileName;
+                    result.put("relativePath", relativePath);//前端根据是否存在该字段来判断上传是否成功
+                    result_msg = "图片上传成功";
+                } else {
+                    result_msg = "图片上传失败";
                 }
-                else{
-                    result_msg="图片格式不正确";
-                }
+            } else {
+                result_msg = "图片格式不正确";
             }
+     //   }
             result.put("result_msg",result_msg);
             root.add(result);
         }

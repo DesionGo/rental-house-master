@@ -33,4 +33,11 @@ public interface IssueMapper extends BaseMapper<Issue> {
     List<Issue> selectUserIssue(@Param("createId")String createId);
 
     void add(@Param("issue")Issue issue);
+
+    /**
+     * 获取列表。分页
+     * @param userId 查询参数
+     * @return page
+     */
+    List<Issue> selectUserCollectList(String userId);
 }

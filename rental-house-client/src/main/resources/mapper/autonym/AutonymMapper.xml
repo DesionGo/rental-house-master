@@ -29,5 +29,18 @@
             </if>
         </trim>
     </select>
-
+    <insert id="add"  parameterType="com.rentalHouseClient.rhc.modules.sys.entity.autonym.Autonym">
+        insert into autonym (
+        id,
+      identity_card,
+      name,
+      client_user_id
+        )
+        values (
+       #{autonym.id},
+       #{autonym.identityCard},
+       #{autonym.name},
+       #{autonym.clientUserId}
+        )
+    </insert>
 </mapper>

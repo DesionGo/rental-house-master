@@ -27,12 +27,12 @@
                <div class="collapse navbar-collapse" id="navbarResponsive">
                   <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                      <li class="nav-item">
-                        <a class="nav-link" href="index.html">
+                        <a class="nav-link" th:href="@{/}">
                         主页
                         </a>
                      </li>
                      <li class="nav-item dropdown">
-                        <a class="nav-link" th:href="@{/propertiesGrid}">
+                        <a class="nav-link" th:href="@{'/propertiesGrid?current=1'}">
                         出租广场
                      </a>
                      </li>
@@ -45,17 +45,17 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownPortfolio">
                            <a class="dropdown-item" th:href="@{/userProfile}">用户资料</a>
 
-                           <a class="dropdown-item" th:href="@{/myProperties}">我的财产</a>
-                           <a class="dropdown-item" th:href="@{/favoriteProperties}">收藏</a>
+                           <a class="dropdown-item" th:href="@{'/myProperties?current=1'}">我的财产</a>
+                           <a class="dropdown-item" th:href="@{'/favoriteProperties?current=1'}">收藏列表</a>
                            <a class="dropdown-item" th:href="@{/addProperty}">新增出租</a>
                         </div>
                      </li>
-                     <li class="nav-item dropdown">
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link" href="about.html">
                            关于我们
                         </a>
 
-                     </li>
+                     </li>-->
                   </ul>
                   <div class="my-2 my-lg-0">
                      <ul th:if="${authUserInfo.userName} eq null" class="list-inline main-nav-right">
@@ -162,7 +162,7 @@
             <div class="row">
                <div class="col-lg-3" th:each="city: ${authUserInfo.city}">
                   <div class="card bg-dark text-white card-overlay">
-                     <a th:href="@{'/propertiesGridScreen?&city=&counties=&province='+${city.cityName}}">
+                     <a th:href="@{'/propertiesGridScreen?&province=&counties=&city='+${city.cityName}}">
                         <img class="card-img" th:src="${city.url}" alt="Card image">
                         <div class="card-img-overlay">
                            <h3 class="card-title text-white" th:text="${city.cityName}"></h3>
@@ -173,6 +173,9 @@
                </div>
 
             </div>
+         </div>
+         <div class="row" th:if="${#lists.isEmpty(authUserInfo.city)}">
+            <h3 style="margin-top: 100px">无数据</h3>
          </div>
       </section>
       <!-- End Properties by City -->
@@ -186,7 +189,7 @@
             <div class="row">
                <div class="col-lg-4 col-md-4" th:each="issue: ${authUserInfo.issue}">
                   <div class="card card-list">
-                     <a href="#">
+                     <a th:href="@{'/propertySingleGallery?issueId='+${issue.id}}">
                         <span class="badge badge-success">在租</span>
                         <img class="card-img-top" src="/static/img/list/1.png" alt="Card image cap">
                         <div class="card-body">
@@ -205,11 +208,7 @@
                               [[${issue.money}]]<small>/月</small>
                            </h2>
                         </div>
-                        <div class="card-footer">
-                           <span><i class="mdi mdi-sofa"></i> Beds : <strong>3</strong></span>
-                           <span><i class="mdi mdi-scale-bathroom"></i> Baths : <strong>2</strong></span>
-                           <span><i class="mdi mdi-move-resize-variant"></i> Area : <strong>587 sq ft</strong></span>
-                        </div>
+
                      </a>
                   </div>
                </div>
@@ -217,13 +216,16 @@
             </div>
 
          </div>
+         <div class="row" th:if="${#lists.isEmpty(authUserInfo.issue)}">
+            <h3 style="margin-top: 100px">无数据</h3>
+         </div>
       </section>
       <!-- End Properties List -->
       <!-- Trusted Agents -->
 
 
       <!-- Join Team -->
-      <section class="py-5 bg-primary">
+   <!--   <section class="py-5 bg-primary">
          <div class="container">
             <div class="row align-items-center text-center text-md-left">
                <div class="col-md-8">
@@ -235,7 +237,7 @@
                </div>
             </div>
          </div>
-      </section>
+      </section>-->
       <!-- End Join Team -->
       <!-- Footer -->
 
@@ -308,6 +310,9 @@
                   $("#counties").css("display", "inline");
                }
                $("#countiesList").find("option").remove();
+               var opt;
+               opt=new Option("","");
+               document.getElementById('countiesList').options.add(opt);
                for (var i = 0; i <= data.length; i++) {
                   var opt = new Option(data[i], data[i]);
                   document.getElementById('countiesList').options.add(opt);

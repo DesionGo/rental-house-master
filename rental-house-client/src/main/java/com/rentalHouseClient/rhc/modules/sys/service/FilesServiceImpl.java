@@ -32,8 +32,18 @@ public class FilesServiceImpl extends ServiceImpl<FilesMapper, Files> implements
 
     @Override
     public Files selectFilesId(String ascriptionId) {
-        Files files=baseMapper.selectFilesId(ascriptionId);
-        return  files;
+        List<Files> files=baseMapper.selectFilesId(ascriptionId);
+        if(files.size()==0){
+            return    null;
+        }else{
+            return    files.get(0);
+        }
+
+    }
+
+    @Override
+    public List<Files> selectFilesById(String ascriptionId) {
+        return baseMapper.selectFilesId(ascriptionId);
     }
 
     @Override

@@ -28,7 +28,7 @@
                         </a>
                      </li>
                      <li class="nav-item dropdown">
-                        <a class="nav-link" th:href="@{/propertiesGrid}">
+                        <a class="nav-link" th:href="@{'/propertiesGrid?current=1'}">
                            出租广场
                         </a>
                      </li>
@@ -41,17 +41,17 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownPortfolio">
                            <a class="dropdown-item" th:href="@{/userProfile}">用户资料</a>
 
-                           <a class="dropdown-item" th:href="@{/myProperties}">我的财产</a>
-                           <a class="dropdown-item" th:href="@{/favoriteProperties}">收藏列表</a>
+                           <a class="dropdown-item" th:href="@{'/myProperties?current=1'}">我的财产</a>
+                           <a class="dropdown-item" th:href="@{'/favoriteProperties?current=1'}">收藏列表</a>
                            <a class="dropdown-item" th:href="@{/addProperty}">新增出租</a>
                         </div>
                      </li>
-                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="about.html">
-                           关于我们
-                        </a>
+                     <!-- <li class="nav-item dropdown">
+                       <a class="nav-link" href="about.html">
+                          关于我们
+                       </a>
 
-                     </li>
+                    </li>-->
                   </ul>
                   <div class="my-2 my-lg-0">
                      <ul th:if="${clientUser.userName} eq null" class="list-inline main-nav-right">
@@ -90,12 +90,7 @@
                      Settings for <a class="text-reset" href="mailto:yoursite@gmail.com">yoursite@gmail.com</a>
                   </h6>
                </div>
-               <div class="col-auto">
-                  <!-- Button -->
-                  <button class="btn btn-sm btn-primary">
-                  Log Out
-                  </button>
-               </div>
+
             </div>
             <!-- / .row -->
          </div>
@@ -215,27 +210,25 @@
             </div>
          </div>
       </section>
-      <!-- End User Profile -->
-      <!-- Join Team -->
-      <section class="py-5 bg-primary">
+      <!--   <section class="py-5 bg-primary">
          <div class="container">
             <div class="row align-items-center text-center text-md-left">
                <div class="col-md-8">
-                  <h2 class="text-white my-2">Join Our Professional Team & Agents</h2>
+                  <h2 class="text-white my-2">您受否有问题？咨询下客服吧！  -》</h2>
                </div>
                <div class="col-md-4 text-center text-md-right">
-                  <button type="button" class="btn btn-outline-light my-2">Read More</button> <button type="button"
-                     class="btn btn-light my-2">Contact Us</button>
+               <button type="button"
+                     class="btn btn-light my-2">联系客服</button>
                </div>
             </div>
          </div>
-      </section>
+      </section>-->
 
       <section class="pt-4 pb-4">
          <div class="container">
             <div class="row align-items-center text-center text-md-left">
                <div class="col-md-6">
-                  <p class="mt-0 mb-0">© Copyright 2020 Manland. All Rights Reserved</p>
+                  <p class="mt-0 mb-0">© 版权所有 2021 出租房工作室. 版权所有</p>
                </div>
                <div class="col-md-6 text-center text-md-right">
                   <p class="mt-0 mb-0">

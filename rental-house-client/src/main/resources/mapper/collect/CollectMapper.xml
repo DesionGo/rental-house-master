@@ -39,10 +39,46 @@
             </if>
         </trim>
     </select>
-    <select id="selectUserCollectList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue">
-        select <include refid="Base_Column_List1" /> from collect c
-        left join issue i on i.id=c.issue_id
-        left join client_user cu on cu.id=c.user_id
-        where c.user_id=#{userId}
+
+    <update id="updateStatus" parameterType="Object">
+		 update collect set
+			status=0
+		 where issue_id = #{issueId} and user_id=#{userId}
+	 </update>
+    <insert id="add" parameterType="com.rentalHouseClient.rhc.modules.sys.entity.collect.Collect">
+        insert into collect (
+        id,
+        user_id,
+        issue_id,
+        status
+        )
+        values (
+       #{collect.id},
+       #{collect.userId},
+        #{collect.issueId},
+        #{collect.status}
+        )
+    </insert>
+    <select id="selectById" resultType="com.rentalHouseClient.rhc.modules.sys.entity.collect.Collect">
+        select <include refid="Base_Column_List" /> from collect
+        <trim prefix="where" prefixOverrides="and">
+        status=1
+            <if test="collect.userId != null and collect.userId != ''">
+                and user_id like concat(#{collect.userId}, "%")
+            </if>
+            <if test="collect.issueId != null and collect.issueId != ''">
+                and issue_id like concat(#{collect.issueId}, "%")
+            </if>
+            <if test="collect.status != null">
+                and status = #{collect.status}
+            </if>
+            <if test="collect.createTime != null">
+                and create_time = #{collect.createTime}
+            </if>
+            <if test="collect.deleteTime != null and collect.deleteTime != ''">
+                and delete_time like concat(#{collect.deleteTime}, "%")
+            </if>
+        </trim>
     </select>
+
 </mapper>

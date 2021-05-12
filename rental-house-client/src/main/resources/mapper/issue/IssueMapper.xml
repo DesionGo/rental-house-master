@@ -179,4 +179,11 @@
         #{issue.status}
         )
     </insert>
+
+    <select id="selectUserCollectList" resultType="com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue">
+        select <include refid="Base_Column_List1" />
+        FROM collect c
+        LEFT JOIN issue i ON i.id=issue_id
+        where c.user_id=#{userId} and c.status=1
+    </select>
 </mapper>

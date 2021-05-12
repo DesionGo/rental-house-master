@@ -3,6 +3,7 @@ package com.rentalHouseClient.rhc.modules.sys.mapper.autonym;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rentalHouseClient.rhc.modules.sys.entity.autonym.Autonym;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,5 @@ public interface AutonymMapper extends BaseMapper<Autonym> {
      */
     List<Autonym> selectAutonymList(Autonym autonym, IPage page);
 
+    Integer add(@Param("autonym")Autonym autonym);
 }

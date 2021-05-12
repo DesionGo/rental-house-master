@@ -9,19 +9,23 @@ import com.rentalHouseClient.rhc.common.dto.R;
 import com.rentalHouseClient.rhc.common.util.BaiDuAPIUtil;
 import com.rentalHouseClient.rhc.common.utils.CryptionKit;
 import com.rentalHouseClient.rhc.common.utils.ShiroKit;
+import com.rentalHouseClient.rhc.modules.sys.dto.ClientUserDTO;
 import com.rentalHouseClient.rhc.modules.sys.dto.UserEditDTO;
 import com.rentalHouseClient.rhc.modules.sys.dto.UserRoleGroupDTO;
 import com.rentalHouseClient.rhc.modules.sys.entity.Dept;
 import com.rentalHouseClient.rhc.modules.sys.entity.User;
+import com.rentalHouseClient.rhc.modules.sys.entity.autonym.Autonym;
 import com.rentalHouseClient.rhc.modules.sys.entity.clientUser.ClientUser;
 import com.rentalHouseClient.rhc.modules.sys.service.IDeptService;
 import com.rentalHouseClient.rhc.modules.sys.service.IUserRoleService;
 import com.rentalHouseClient.rhc.modules.sys.service.IUserService;
+import com.rentalHouseClient.rhc.modules.sys.service.autonym.AutonymService;
 import com.rentalHouseClient.rhc.modules.sys.service.clientUser.ClientUserService;
 import com.rentalHouseClient.rhc.modules.sys.vo.UserQueryVO;
 
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -56,6 +61,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private IUserRoleService userRoleService;
+
+    @Autowired
+    private AutonymService autonymService;
 
     @RequiresPermissions("sys:user:index")
     @GetMapping("index")
@@ -102,16 +110,29 @@ public class UserController extends BaseController {
   
     @Transactional
     @PostMapping(value = "add")
-    public R add(ClientUser clientUser) {
+    public R add(ClientUserDTO clientUserDTO) {
 
+        ClientUser clientUser =new ClientUser();
+        BeanUtils.copyProperties(clientUserDTO,clientUser);
         BaiDuAPIUtil baiDuAPIUtil=new BaiDuAPIUtil();
-
-        clientUser.setProvince(baiDuAPIUtil.baiDuApiProvince(ip));
-        clientUser.setCity(baiDuAPIUtil.baiDuApiCity(ip));
-        clientUser.setSex(2);
-        // 生成用户初始密码并加密
-        clientUser.setPassword(CryptionKit.genUserPwd(clientUser.getPassword()));
-        clientUserService.saveOrUpdate(clientUser);
+        if(clientUserService.getByEmail(clientUser.getEmail())==null){
+            clientUser.setProvince(baiDuAPIUtil.baiDuApiProvince(ip));
+            clientUser.setCity(baiDuAPIUtil.baiDuApiCity(ip));
+            clientUser.setSex(2);
+            // 生成用户初始密码并加密
+            clientUser.setPassword(CryptionKit.genUserPwd(clientUser.getPassword()));
+            Boolean isSure=  clientUserService.saveOrUpdate(clientUser);
+            if(isSure){
+                ClientUser clientUser1=  clientUserService.getByEmail(clientUser.getEmail());
+                Autonym autonym=new Autonym();
+                BeanUtils.copyProperties(clientUserDTO,autonym);
+                autonym.setId(UUID.randomUUID().toString());
+                autonym.setClientUserId(clientUser1.getId());
+                autonymService.add(autonym);
+            }
+        }else {
+            return R.fail("邮箱已经被注册了！");
+        }
         return R.ok();
     }
 

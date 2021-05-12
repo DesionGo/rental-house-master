@@ -61,81 +61,72 @@ public class IndexController extends BaseController {
         List<IssueDTO> issueDTOS = new ArrayList<IssueDTO>();
         ClientUser clientUser=new ClientUser();
         Files files =new Files();
+        String city = null,province = null;
         if( SecurityUtils.getSubject().getPrincipal()!=null){
        clientUser  = clientUserService.getById(ShiroKit.getUserId());
             indexDTO.setUserName(clientUser.getUserName());
             issue.setProvince(clientUser.getProvince());
-            List<Issue> issues= issueService.listIssue(issue);
-
-
-            for(int i=0;i<issues.size();i++){
-                String userName = issues.get(i).getCity();
-                if (!set.contains(userName)) { //set中不包含重复的
-                    set.add(userName);
-
-                }
-        }
-
+            province=clientUser.getProvince();
+            city= clientUser.getCity();
+          //  issue.setCity(clientUser.getCity());
        }else{
-
-
             BaiDuAPIUtil baiDuAPIUtil=new BaiDuAPIUtil();
-           String province=baiDuAPIUtil.baiDuApiProvince(ip);
-            String city= baiDuAPIUtil.baiDuApiCity(ip);
+           province=baiDuAPIUtil.baiDuApiProvince(ip);
+             city= baiDuAPIUtil.baiDuApiCity(ip);
             issue.setProvince(province);
-            List<Issue> issues= issueService.listIssue(issue);
-//去重省名，放到set集合中
-            for(int i=0;i<issues.size();i++) {
-                String userName = issues.get(i).getCity();
-                if (!set.contains(userName)) { //set中不包含重复的
-                    set.add(userName);
-
-                }
-            }
-            //根据省名计算个数
-            for(String str:set){
-              Files file= filesService.selectFiles(str);
-                CityDTO cityDTO=new CityDTO();
-                if(file!=null){
-                    cityDTO.setUrl(file.getUrl());
-                }
-
-                cityDTO.setCityName(str);
-                int amount=0;
-                for(int j=0;j<issues.size();j++){
-                    if(str!=null){
-                        if(str.equals(issues.get(j).getCity())){
-                            amount++;
-                        }
-                    }
-
-                }
-                cityDTO.setAmount(amount);
-                cityDTOS.add(cityDTO);
-            }
-
-
-            if(issues.size()>6){
-                for(int i=0;i<6;i++){
-                    if(issues.get(i).getCity().equals(city)){
-                        IssueDTO issueDTO=new IssueDTO();
-                        BeanUtils.copyProperties(issues.get(i),issueDTO);
-                        issueDTOS.add(issueDTO);
-                    }
-                }
-            }else{
-                for(Issue issue1:issues){
-                    if(issue1.getCity().equals(city)){
-                        IssueDTO issueDTO=new IssueDTO();
-                        BeanUtils.copyProperties(issue1,issueDTO);
-                        issueDTOS.add(issueDTO);
-                    }
-                }
-            }
-
-            indexDTO.setCity(cityDTOS);
-            indexDTO.setIssue(issueDTOS);
         }
+        List<Issue> issues= issueService.listIssue(issue);
+//去重省名，放到set集合中
+        for(int i=0;i<issues.size();i++) {
+            String userName = issues.get(i).getCity();
+            if (!set.contains(userName)) { //set中不包含重复的
+                set.add(userName);
+
+            }
+        }
+        //根据省名计算个数
+        for(String str:set){
+            Files file= filesService.selectFiles(str);
+            CityDTO cityDTO=new CityDTO();
+            if(file!=null){
+                cityDTO.setUrl(file.getUrl());
+            }
+
+            cityDTO.setCityName(str);
+            int amount=0;
+            for(int j=0;j<issues.size();j++){
+                if(str!=null){
+                    if(str.equals(issues.get(j).getCity())){
+                        amount++;
+                    }
+                }
+
+            }
+            cityDTO.setAmount(amount);
+            cityDTOS.add(cityDTO);
+        }
+
+
+        if(issues.size()>6){
+            for(int i=0;i<6;i++){
+                if(issues.get(i).getCity().equals(city)){
+                    IssueDTO issueDTO=new IssueDTO();
+                    BeanUtils.copyProperties(issues.get(i),issueDTO);
+                    issueDTOS.add(issueDTO);
+                }
+            }
+        }else{
+            for(Issue issue1:issues){
+                if(issue1.getCity().equals(city)){
+                    IssueDTO issueDTO=new IssueDTO();
+                    BeanUtils.copyProperties(issue1,issueDTO);
+                    issueDTOS.add(issueDTO);
+                }
+            }
+        }
+
+        indexDTO.setCity(cityDTOS);
+        indexDTO.setIssue(issueDTOS);
         return new ModelAndView("index").addObject("authUserInfo", indexDTO);
     }
 
