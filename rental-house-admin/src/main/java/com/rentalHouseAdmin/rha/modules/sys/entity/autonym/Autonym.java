@@ -43,4 +43,9 @@ public class Autonym extends BaseEntity {
      */
     private String clientUserId;
 
+    /**
+     * 客户用户名称
+     */
+    private String userName;
+
 }

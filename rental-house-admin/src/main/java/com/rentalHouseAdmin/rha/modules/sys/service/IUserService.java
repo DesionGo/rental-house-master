@@ -26,7 +26,7 @@ public interface IUserService extends IService<com.rentalHouseAdmin.rha.modules.
 
     com.rentalHouseAdmin.rha.modules.sys.entity.User getByUsername(String username);
 
-    void updateUserPassword(Long id, String password);
+    void updateUserPassword(String id, String password);
 
     /**
      * 根据查询参数模糊搜索username和realname值可能为query的所有用户

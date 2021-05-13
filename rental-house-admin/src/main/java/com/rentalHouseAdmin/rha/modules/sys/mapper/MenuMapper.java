@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface MenuMapper extends BaseMapper<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> {
 
-    List<String> selectPermission(@Param("userId") Long userId);
+    List<String> selectPermission(@Param("userId") String userId);
 
     List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> selectMenuList(com.rentalHouseAdmin.rha.modules.sys.entity.Menu menu, Page page);
 
@@ -37,13 +37,13 @@ public interface MenuMapper extends BaseMapper<com.rentalHouseAdmin.rha.modules.
      * @param userId
      * @return
      */
-    List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> selectUserPermissionMenuList(@Param("parentId") Long parentId, @Param("userId") Long userId);
+    List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> selectUserPermissionMenuList(@Param("parentId") Long parentId, @Param("userId") String userId);
 
     /**
      * 查询用户有权限的导航菜单列表（用于横向导航菜单）
      * @param userId
      * @return
      */
-    List<Menu> selectUserPermissionNavMenuList(Long userId);
+    List<Menu> selectUserPermissionNavMenuList(String userId);
 
 }

@@ -52,7 +52,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping(value = "edit")
-    public ModelAndView edit(Long id) {
+    public ModelAndView edit(String id) {
         ModelAndView mv = new ModelAndView("sys/user_edit");
         com.rentalHouseAdmin.rha.modules.sys.dto.UserEditDTO userEditDTO = new UserEditDTO();
         com.rentalHouseAdmin.rha.modules.sys.dto.UserRoleGroupDTO userRoleGroupDTO = new UserRoleGroupDTO();
@@ -124,7 +124,7 @@ public class UserController extends BaseController {
 
     @RequiresPermissions("sys:user:del")
     @PostMapping(value = "removeBatch")
-    public com.rentalHouseAdmin.rha.common.dto.R removeBatch(@RequestParam("ids") List<Long> ids) {
+    public com.rentalHouseAdmin.rha.common.dto.R removeBatch(@RequestParam("ids") List<String> ids) {
         userService.removeByIds(ids);
         return com.rentalHouseAdmin.rha.common.dto.R.ok();
     }
@@ -136,7 +136,7 @@ public class UserController extends BaseController {
      */
     @RequiresPermissions("sys:user:reset")
     @PostMapping(value = "{id}/resetPwd")
-    public com.rentalHouseAdmin.rha.common.dto.R resetPwd(@PathVariable Long id) {
+    public com.rentalHouseAdmin.rha.common.dto.R resetPwd(@PathVariable String id) {
         userService.updateUserPassword(id, com.rentalHouseAdmin.rha.common.utils.CryptionKit.genUserPwd());
         return com.rentalHouseAdmin.rha.common.dto.R.ok();
     }

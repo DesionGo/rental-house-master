@@ -32,16 +32,22 @@ public class AutonymController extends BaseController {
         return new ModelAndView("sys/autonym/autonym");
     }
 
+
     @GetMapping(value = "edit")
-    public ModelAndView edit(Long id) {
+    public ModelAndView edit(@RequestParam(value="id",required = false)String id) {
         ModelAndView mv = new ModelAndView("sys/autonym/autonym_edit");
         com.rentalHouseAdmin.rha.modules.sys.entity.autonym.Autonym autonym;
+        Page<Autonym> list = null;
         if (id == null) {
             autonym = new com.rentalHouseAdmin.rha.modules.sys.entity.autonym.Autonym();
+            mv.addObject("editInfo", autonym);
         } else {
-            autonym = autonymService.getById(id);
+            Autonym autonym1=new Autonym();
+            autonym1.setId(id);
+           list = autonymService.listAutonymPage(autonym1);
+            mv.addObject("editInfo", list.getRecords().get(0));
         }
-        mv.addObject("editInfo", autonym);
+
         return mv;
     }
 

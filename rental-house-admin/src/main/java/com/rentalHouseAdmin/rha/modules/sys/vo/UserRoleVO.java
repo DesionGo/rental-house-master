@@ -17,5 +17,5 @@ import java.util.List;
 @ToString
 public class UserRoleVO {
     private Long roleId;
-    private List<Long> userIds;
+    private List<String> userIds;
 }

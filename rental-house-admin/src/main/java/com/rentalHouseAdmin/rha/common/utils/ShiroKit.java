@@ -45,7 +45,7 @@ public class ShiroKit {
         return (User)SecurityUtils.getSubject().getPrincipal();
     }
 
-    public static Long getUserId() {
+    public static String getUserId() {
         return getUser().getId();
     }
 

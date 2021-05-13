@@ -30,7 +30,7 @@ public class User extends BaseEntity {
      * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private String id;
 
     /**
      * 归属部门

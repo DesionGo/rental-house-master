@@ -52,18 +52,18 @@ public class UserRoleController extends BaseController {
 
     @RequiresPermissions("sys:userRole:del")
     @PostMapping(value = "removeBatch")
-    public com.rentalHouseAdmin.rha.common.dto.R removeBatch(@RequestParam("ids") List<Long> ids) {
+    public com.rentalHouseAdmin.rha.common.dto.R removeBatch(@RequestParam("ids") List<String> ids) {
         userRoleService.removeByIds(ids);
         return com.rentalHouseAdmin.rha.common.dto.R.ok();
     }
 
     @GetMapping(value = "count")
-    public com.rentalHouseAdmin.rha.common.dto.R count(Long roleId) {
+    public com.rentalHouseAdmin.rha.common.dto.R count(String roleId) {
         return com.rentalHouseAdmin.rha.common.dto.R.ok(userRoleService.countUserRoleByRoleId(roleId));
     }
 
     @GetMapping(value = "get/roleNames/{userId}")
-    public com.rentalHouseAdmin.rha.common.dto.R getRoleNames(@PathVariable Long userId) {
+    public com.rentalHouseAdmin.rha.common.dto.R getRoleNames(@PathVariable String userId) {
         return R.ok(userRoleService.getRoleNamesByUserId(userId));
     }
 

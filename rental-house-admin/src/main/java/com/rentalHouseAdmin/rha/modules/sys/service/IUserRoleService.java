@@ -20,18 +20,18 @@ public interface IUserRoleService extends IService<com.rentalHouseAdmin.rha.modu
 
     Page<com.rentalHouseAdmin.rha.modules.sys.entity.UserRole> listUserRolePage(com.rentalHouseAdmin.rha.modules.sys.entity.UserRole userRole);
 
-    List<UserRole> getUserRoleByRoleId(Long roleId);
+    List<UserRole> getUserRoleByRoleId(String roleId);
 
     void saveOrUpdateBatchUserRole(UserRoleVO userRoleVO);
 
-    void saveOrUpdateBatchUserRole(List<Long> roleIds, Long userId);
+    void saveOrUpdateBatchUserRole(List<Long> roleIds, String userId);
 
-    int countUserRoleByRoleId(Long roleId);
+    int countUserRoleByRoleId(String roleId);
 
-    UserRoleGroupDTO getUserRoleGroupDTOByUserId(Long userId);
+    UserRoleGroupDTO getUserRoleGroupDTOByUserId(String userId);
 
-    String getRoleIdsByUserId(Long userId);
+    String getRoleIdsByUserId(String userId);
 
-    String getRoleNamesByUserId(Long userId);
+    String getRoleNamesByUserId(String userId);
 
 }

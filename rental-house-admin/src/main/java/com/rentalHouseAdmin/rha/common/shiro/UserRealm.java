@@ -53,7 +53,7 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         User user = (User)principals.getPrimaryPrincipal();
-        Long userId = user.getId();
+        String userId = user.getId();
         String username = user.getUsername();
 
         List<String> permsList;

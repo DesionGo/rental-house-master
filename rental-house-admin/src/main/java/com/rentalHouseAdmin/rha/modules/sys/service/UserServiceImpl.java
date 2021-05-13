@@ -37,7 +37,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, com.rentalHouseAdmi
     }
 
     @Override
-    public void updateUserPassword(Long id, String password) {
+    public void updateUserPassword(String id, String password) {
         super.update(new LambdaUpdateWrapper<com.rentalHouseAdmin.rha.modules.sys.entity.User>()
                 .set(com.rentalHouseAdmin.rha.modules.sys.entity.User::getPassword, password)
                 .eq(com.rentalHouseAdmin.rha.modules.sys.entity.User::getId, id));

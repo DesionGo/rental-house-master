@@ -22,7 +22,7 @@ public interface IMenuService extends IService<com.rentalHouseAdmin.rha.modules.
      * @param userId 用户ID
      * @return
      */
-    List<String> getPermission(Long userId);
+    List<String> getPermission(String userId);
 
     /**
      * 获取菜单列表
@@ -52,21 +52,21 @@ public interface IMenuService extends IService<com.rentalHouseAdmin.rha.modules.
      */
     List<ZTreeDTO> listRoleMenu(Long roleId);
 
-    List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionMenu(Long parentId, Long userId);
+    List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionMenu(Long parentId, String userId);
 
     /**
      * 获取用户带权限的菜单，带子级菜单。这里只需要获取到第二层菜单即可
      * @param userId 用户ID
      * @return
      */
-    List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionMenuWithSubByUserId(Long userId);
+    List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionMenuWithSubByUserId(String userId);
 
     /**
      * 获取用户有权限的导航菜单列表（用于横向导航菜单）
      * @param userId 用户ID
      * @return
      */
-    List<Menu> listUserPermissionNavMenuByUserId(Long userId);
+    List<Menu> listUserPermissionNavMenuByUserId(String userId);
 
     void deleteWithChildren(Long id);
 

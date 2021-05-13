@@ -33,7 +33,7 @@ public class IssueController extends BaseController {
     }
 
     @GetMapping(value = "edit")
-    public ModelAndView edit(Long id) {
+    public ModelAndView edit(String id) {
         ModelAndView mv = new ModelAndView("sys/issue/issue_edit");
         com.rentalHouseAdmin.rha.modules.sys.entity.issue.Issue issue;
         if (id == null) {
@@ -60,7 +60,7 @@ public class IssueController extends BaseController {
 
     @RequiresPermissions("issue:issue:del")
     @PostMapping(value = "batchdel")
-    public com.rentalHouseAdmin.rha.common.dto.R batchdel(@RequestParam("ids") List<Long> ids) {
+    public com.rentalHouseAdmin.rha.common.dto.R batchdel(@RequestParam("ids") List<String> ids) {
         issueService.removeByIds(ids);
         return com.rentalHouseAdmin.rha.common.dto.R.ok();
     }

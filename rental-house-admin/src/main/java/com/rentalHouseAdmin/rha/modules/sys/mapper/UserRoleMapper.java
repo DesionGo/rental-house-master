@@ -19,6 +19,6 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
 
     List<UserRole> selectUserRoleList(UserRole userRole, Page page);
 
-    UserRoleGroupDTO selectUserRoleGroupByUserId(Long userId);
+    UserRoleGroupDTO selectUserRoleGroupByUserId(String userId);
 
 }

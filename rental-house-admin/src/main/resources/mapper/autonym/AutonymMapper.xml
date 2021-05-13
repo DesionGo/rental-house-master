@@ -16,16 +16,19 @@
     </sql>
 
     <select id="selectAutonymList" resultType="com.rentalHouseAdmin.rha.modules.sys.entity.autonym.Autonym">
-        select <include refid="Base_Column_List" /> from autonym
+        select a.id, a.identity_card, a.name, a.client_user_id,cu.user_name
+        from autonym a
+        left join client_user cu on cu.id=a.client_user_id
+
         <trim prefix="where" prefixOverrides="and">
             <if test="autonym.identityCard != null and autonym.identityCard != ''">
-                and identity_card like concat(#{autonym.identityCard}, "%")
+                and a.identity_card like concat(#{autonym.identityCard}, "%")
             </if>
             <if test="autonym.name != null and autonym.name != ''">
-                and name like concat(#{autonym.name}, "%")
+                and a.name like concat(#{autonym.name}, "%")
             </if>
             <if test="autonym.clientUserId != null and autonym.clientUserId != ''">
-                and client_user_id like concat(#{autonym.clientUserId}, "%")
+                and a.client_user_id like concat(#{autonym.clientUserId}, "%")
             </if>
         </trim>
     </select>

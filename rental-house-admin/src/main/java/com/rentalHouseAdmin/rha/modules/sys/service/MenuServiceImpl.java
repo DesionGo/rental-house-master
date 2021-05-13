@@ -31,7 +31,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, com.rentalHouseAdmi
     private IRoleMenuService roleMenuService;
 
     @Override
-    public List<String> getPermission(Long userId) {
+    public List<String> getPermission(String userId) {
         return baseMapper.selectPermission(userId);
     }
 
@@ -69,13 +69,13 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, com.rentalHouseAdmi
     }
 
     @Override
-    public List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionMenu(Long parentId, Long userId) {
+    public List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionMenu(Long parentId, String userId) {
         return baseMapper.selectUserPermissionMenuList(parentId, userId);
     }
 
 //    @Cacheable(value = "urm")
     @Override
-    public List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionMenuWithSubByUserId(Long userId) {
+    public List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionMenuWithSubByUserId(String userId) {
         List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> menus = this.listUserPermissionMenu(0L, userId);
         menus.forEach(menu -> {
             List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> submenus = this.listUserPermissionMenu(menu.getId(), userId);
@@ -85,7 +85,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, com.rentalHouseAdmi
     }
 
     @Override
-    public List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionNavMenuByUserId(Long userId) {
+    public List<com.rentalHouseAdmin.rha.modules.sys.entity.Menu> listUserPermissionNavMenuByUserId(String userId) {
         return baseMapper.selectUserPermissionNavMenuList(userId);
     }
 

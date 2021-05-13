@@ -41,7 +41,7 @@ public class UserRole extends BaseEntity {
     /**
      * 用户ID
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 创建时间

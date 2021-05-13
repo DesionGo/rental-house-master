@@ -33,14 +33,14 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, com.rentalH
     }
 
     @Override
-    public List<com.rentalHouseAdmin.rha.modules.sys.entity.UserRole> getUserRoleByRoleId(Long roleId) {
+    public List<com.rentalHouseAdmin.rha.modules.sys.entity.UserRole> getUserRoleByRoleId(String roleId) {
         return super.list(new LambdaQueryWrapper<com.rentalHouseAdmin.rha.modules.sys.entity.UserRole>().eq(com.rentalHouseAdmin.rha.modules.sys.entity.UserRole::getRoleId, roleId));
     }
 
     @Override
     public void saveOrUpdateBatchUserRole(UserRoleVO userRoleVO) {
         Long roleId = userRoleVO.getRoleId();
-        List<Long> userIds = userRoleVO.getUserIds();
+        List<String> userIds = userRoleVO.getUserIds();
         List<com.rentalHouseAdmin.rha.modules.sys.entity.UserRole> userRoles = new ArrayList<>();
 
         userIds.forEach(userId -> {
@@ -57,7 +57,7 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, com.rentalH
 
     @Transactional
     @Override
-    public void saveOrUpdateBatchUserRole(List<Long> roleIds, Long userId) {
+    public void saveOrUpdateBatchUserRole(List<Long> roleIds, String userId) {
         if (CollectionUtil.isEmpty(roleIds)) {
             super.remove(new LambdaQueryWrapper<com.rentalHouseAdmin.rha.modules.sys.entity.UserRole>().eq(com.rentalHouseAdmin.rha.modules.sys.entity.UserRole::getUserId, userId));
         } else {
@@ -78,22 +78,22 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, com.rentalH
     }
 
     @Override
-    public int countUserRoleByRoleId(Long roleId) {
+    public int countUserRoleByRoleId(String roleId) {
         return super.count(new LambdaQueryWrapper<com.rentalHouseAdmin.rha.modules.sys.entity.UserRole>().eq(UserRole::getRoleId, roleId));
     }
 
     @Override
-    public com.rentalHouseAdmin.rha.modules.sys.dto.UserRoleGroupDTO getUserRoleGroupDTOByUserId(Long userId) {
+    public com.rentalHouseAdmin.rha.modules.sys.dto.UserRoleGroupDTO getUserRoleGroupDTOByUserId(String userId) {
         return baseMapper.selectUserRoleGroupByUserId(userId);
     }
 
     @Override
-    public String getRoleIdsByUserId(Long userId) {
+    public String getRoleIdsByUserId(String userId) {
         return this.getUserRoleGroupDTOByUserId(userId).getRoleIds();
     }
 
     @Override
-    public String getRoleNamesByUserId(Long userId) {
+    public String getRoleNamesByUserId(String userId) {
         UserRoleGroupDTO userRoleGroupDTOByUserId = this.getUserRoleGroupDTOByUserId(userId);
         return userRoleGroupDTOByUserId == null ? "" : userRoleGroupDTOByUserId.getRoleNames();
     }

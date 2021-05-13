@@ -33,7 +33,7 @@ public class Log extends BaseEntity {
     /**
      * 用户ID
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 登录名称
