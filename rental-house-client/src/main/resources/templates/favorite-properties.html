@@ -58,7 +58,7 @@
                      </ul>
                      <ul th:if="${issueIndexDTO.userName} ne null"  class="list-inline main-nav-right">
                         <li class="list-inline-item">
-                           <a class="btn btn-link btn-sm" th:href="@{/login}">欢迎您,[[${issueIndexDTO.userName}]]</a>
+                           <a class="btn btn-link btn-sm" th:href="@{/userProfile}">欢迎您,[[${issueIndexDTO.userName}]]</a>
                         </li>
                         <li class="list-inline-item">
                            <a class="btn btn-success btn-sm" th:href="@{/logout}">退出</a>

@@ -428,7 +428,9 @@ public class IssueServiceImpl extends ServiceImpl<IssueMapper, Issue> implements
         IssueIndexDTO issueIndexDTO=new IssueIndexDTO();
         issueIndexDTO.setClientUser(clientUser);
         issueIndexDTO.setIssueDTO(issueDTO);
-        issueIndexDTO.setUserName(clientUser.getUserName());
+        if(SecurityUtils.getSubject().getPrincipal()!=null) {
+            issueIndexDTO.setUserName(ShiroKit.getSessionAttribute("userName").toString());
+        }
         return issueIndexDTO;
     }
 
