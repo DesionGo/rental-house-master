@@ -13,23 +13,6 @@
             <input type="text" name="labelContent" th:value="${editInfo.labelContent}" placeholder="请输入标签内容" autocomplete="off" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">状态(1.正常 2.锁定 )</label>
-        <div class="layui-input-block">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">创建时间</label>
-        <div class="layui-input-inline">
-            <input type="text" name="createTime" id="createTime" th:value="${#strings.replace(editInfo.createTime,'T',' ')}" placeholder="请输入创建时间" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">删除时间</label>
-        <div class="layui-input-inline">
-            <input type="text" name="deleteTime" th:value="${editInfo.deleteTime}" placeholder="请输入删除时间" autocomplete="off" class="layui-input">
-        </div>
-    </div>
 
     <div class="layui-form-item layui-hide">
         <input type="button" lay-submit="" lay-filter="kFormSubmit" id="kFormSubmit">

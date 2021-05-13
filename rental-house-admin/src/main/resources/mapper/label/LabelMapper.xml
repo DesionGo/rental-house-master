@@ -33,5 +33,18 @@
             </if>
         </trim>
     </select>
-
+    <insert id="saveGo" parameterType="com.rentalHouseAdmin.rha.modules.sys.entity.label.Label">
+        insert into label (
+        id,
+        label_content,
+        status,
+        create_time
+        )
+        values (
+       #{label.id},
+       #{label.labelContent},
+       #{label.status},
+       #{label.createTime}
+        )
+    </insert>
 </mapper>

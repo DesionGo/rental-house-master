@@ -107,7 +107,7 @@ kvf:
   login:
     authcode:
       # 登录验证码是否开启，开发环境配置false方便测试
-      enable: false
+      enable: true
       # 是否动态
       dynamic: true
   # quartz开关

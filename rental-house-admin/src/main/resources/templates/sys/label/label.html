@@ -48,7 +48,12 @@
 <!--表格列格式化模板 start-->
 <script type="text/html" id="statusTpl">
 <!--todo由于注释不统一规范，无法为你生成格式化代码，请自行处理-->
-<span>{{d.status}}</span>
+{{#  if(d.status == 1){  }}
+正常
+{{#  }  }}
+{{#  if(d.status == 0){  }}
+失效
+{{#  }  }}
 </script>
 <!--表格列格式化模板 end-->
 
@@ -66,7 +71,7 @@
             ,cols: [[ //表头
                 {type:'checkbox', fixed: 'left'}
                 ,{field: 'labelContent', title: '标签内容', width: 130}
-                ,{field: 'status', title: '状态(1.正常 2.锁定 )', templet: '#statusTpl'}
+                ,{field: 'status', title: '状态', templet: '#statusTpl'}
                 ,{field: 'createTime', title: '创建时间', width: 130}
                 ,{field: 'deleteTime', title: '删除时间', width: 130}
                 ,{field: '', title: '操作', width: 235, fixed: 'right', templet: '#rowToolbarTpl'}

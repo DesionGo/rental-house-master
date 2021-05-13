@@ -3,6 +3,7 @@ package com.rentalHouseAdmin.rha.modules.sys.mapper.label;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.rentalHouseAdmin.rha.modules.sys.entity.label.Label;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,4 +23,5 @@ public interface LabelMapper extends BaseMapper<com.rentalHouseAdmin.rha.modules
      */
     List<com.rentalHouseAdmin.rha.modules.sys.entity.label.Label> selectLabelList(Label label, IPage page);
 
+    void saveGo(@Param("label") Label label);
 }

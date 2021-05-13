@@ -10,7 +10,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.rentalHouseAdmin.rha.modules.sys.entity.label.Label;
 import com.rentalHouseAdmin.rha.modules.sys.service.label.LabelService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -54,7 +57,14 @@ public class LabelController extends BaseController {
     @RequiresPermissions("label:label:add")
     @PostMapping(value = "add")
     public com.rentalHouseAdmin.rha.common.dto.R add(Label label) {
-        labelService.save(label);
+        label.setId("123456543213");
+        label.setStatus(1);
+        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String createtime = dtf2.format(LocalDateTime.now());
+        LocalDateTime ldt = LocalDateTime.parse(createtime, dtf2);
+        label.setCreateTime(ldt);
+
+        labelService.saveGo(label);
         return com.rentalHouseAdmin.rha.common.dto.R.ok();
     }
 

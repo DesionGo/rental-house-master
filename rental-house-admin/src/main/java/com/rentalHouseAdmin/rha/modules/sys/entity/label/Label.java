@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * <p>
@@ -27,7 +28,7 @@ public class Label extends BaseEntity {
     /**
      * 
      */
-    @TableId(value = "id", type = IdType.AUTO)
+
     private String id;
 
     /**

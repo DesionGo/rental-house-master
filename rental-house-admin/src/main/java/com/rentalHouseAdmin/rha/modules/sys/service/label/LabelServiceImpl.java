@@ -24,4 +24,9 @@ public class LabelServiceImpl extends ServiceImpl<LabelMapper, Label> implements
         return page.setRecords(labels);
     }
 
+    @Override
+    public void saveGo(Label label) {
+        baseMapper.saveGo(label);
+    }
+
 }

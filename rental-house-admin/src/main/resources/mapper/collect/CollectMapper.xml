@@ -16,9 +16,13 @@
     <sql id="Base_Column_List">
        id, user_id, issue_id, status, create_time, delete_time
     </sql>
-
+    <sql id="Base_Column_List1">
+        i.headline,cu.user_name,c.id,c.status,c.create_time
+    </sql>
     <select id="selectCollectList" resultType="com.rentalHouseAdmin.rha.modules.sys.entity.collect.Collect">
-        select <include refid="Base_Column_List" /> from collect
+        select <include refid="Base_Column_List1" /> from collect c
+        left join issue i on i.id=c.issue_id
+        left join client_user cu on c.user_id=cu.id
         <trim prefix="where" prefixOverrides="and">
             <if test="collect.userId != null and collect.userId != ''">
                 and user_id like concat(#{collect.userId}, "%")

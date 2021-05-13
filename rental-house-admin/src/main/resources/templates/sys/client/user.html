@@ -30,38 +30,12 @@
                                     </div>
                                 </div>
 
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">昵称</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="nickName" placeholder="请输入昵称" autocomplete="off" class="layui-input">
-                                    </div>
-                                </div>
+
 
                                 <div class="layui-inline">
                                     <label class="layui-form-label">邮箱</label>
                                     <div class="layui-input-inline">
-                                        <input type="text" name="email" placeholder="请输入邮箱(唯一)" autocomplete="off" class="layui-input">
-                                    </div>
-                                </div>
-
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">性别</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="sex" placeholder="请输入性别(1.男 2.女)" autocomplete="off" class="layui-input">
-                                    </div>
-                                </div>
-
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">账户状态</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="status" placeholder="请输入账户状态(1.正常 2.锁定 )" autocomplete="off" class="layui-input">
-                                    </div>
-                                </div>
-
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">创建时间</label>
-                                    <div class="layui-input-inline">
-                                        <input type="text" name="createTime" id="createTime" placeholder="请输入创建时间" autocomplete="off" class="layui-input">
+                                        <input type="text" name="email" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
                                     </div>
                                 </div>
 
@@ -92,7 +66,7 @@
 
 <!--头部工具栏模板-->
 <script type="text/html" id="headToolbarTpl">
-    <button class="layui-btn layui-btn-sm " lay-event="add">添加</button>
+
     <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchdel">批量删除</button>
 </script>
 
@@ -115,10 +89,10 @@
 </script>
 <script type="text/html" id="statusTpl">
 <!--todo由于注释不统一规范，无法为你生成格式化代码，请自行处理-->
-<span>{{#  if(d.status == 1){  }}
+<span>{{#  if(d.status == 0){  }}
                         正常
                         {{#  }  }}
-                        {{#  if(d.status == 2){  }}
+                        {{#  if(d.status == 1){  }}
                         冻结
                         {{#  }  }}</span>
 </script>
@@ -138,14 +112,13 @@
             ,cols: [[ //表头
                 {type:'checkbox', fixed: 'left'}
                 ,{field: 'id', title: '', width: 130,hide:true}
-                ,{field: 'userName', title: '账户名称', sort: true,width: 130}
+                ,{field: 'userName', title: '账户名称', sort: true,width: 200}
                 ,{field: 'phone', title: '手机号码', width: 130}
-                ,{field: 'nickName', title: '昵称', sort: true, width: 130}
-                ,{field: 'email', title: '邮箱', width: 130}
+                ,{field: 'email', title: '邮箱', width: 200}
                 ,{field: 'sex', title: '性别', width: 130, templet: '#sexTpl'}
                 ,{field: 'status', title: '账户状态', width: 130, templet: '#statusTpl'}
-                ,{field: 'createTime', title: '创建时间', sort: true, width: 130}
-                ,{field: 'updateTime', title: '修改时间', sort: true, width: 130}
+                ,{field: 'createTime', title: '创建时间', sort: true, width: 200}
+                ,{field: 'updateTime', title: '修改时间', sort: true, width: 200}
                 ,{field: '', title: '操作', width: 235, fixed: 'right', templet: '#rowToolbarTpl'}
             ]]
         }));

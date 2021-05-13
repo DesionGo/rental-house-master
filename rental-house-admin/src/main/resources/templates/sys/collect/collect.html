@@ -34,21 +34,26 @@
 <script th:replace="common/base::mainjs"></script>
 
 <!--头部工具栏模板-->
-<script type="text/html" id="headToolbarTpl">
+<!--<script type="text/html" id="headToolbarTpl">
     <button class="layui-btn layui-btn-sm " lay-event="add">添加</button>
     <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchdel">批量删除</button>
-</script>
+</script>-->
 
 <!--表格行工具栏模板-->
 <script type="text/html" id="rowToolbarTpl">
-    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
 
 <!--表格列格式化模板 start-->
 <script type="text/html" id="statusTpl">
 <!--todo由于注释不统一规范，无法为你生成格式化代码，请自行处理-->
-<span>{{d.status}}</span>
+{{#  if(d.status == 1){  }}
+已收藏
+{{#  }  }}
+{{#  if(d.status == 0){  }}
+取消收藏
+{{#  }  }}
 </script>
 <!--表格列格式化模板 end-->
 
@@ -65,9 +70,9 @@
             ,toolbar: '#headToolbarTpl'
             ,cols: [[ //表头
                 {type:'checkbox', fixed: 'left'}
-                ,{field: 'userId', title: '用户id', width: 130}
-                ,{field: 'issueId', title: '发表id'}
-                ,{field: 'status', title: '账户状态(1.正常 2.锁定 )', width: 130, templet: '#statusTpl'}
+                ,{field: 'userName', title: '用户', width: 130}
+                ,{field: 'headline', title: '租房标题'}
+                ,{field: 'status', title: '收藏状态', width: 130, templet: '#statusTpl'}
                 ,{field: 'createTime', title: '创建时间', width: 130}
                 ,{field: 'deleteTime', title: '删除时间', width: 130}
                 ,{field: '', title: '操作', width: 235, fixed: 'right', templet: '#rowToolbarTpl'}

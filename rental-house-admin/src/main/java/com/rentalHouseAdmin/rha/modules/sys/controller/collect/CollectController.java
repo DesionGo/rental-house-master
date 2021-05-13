@@ -10,7 +10,10 @@ import com.rentalHouseAdmin.rha.common.controller.BaseController;
 import com.rentalHouseAdmin.rha.common.dto.R;
 import com.rentalHouseAdmin.rha.modules.sys.service.collect.CollectService;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -54,13 +57,14 @@ public class CollectController extends BaseController {
     @RequiresPermissions("collect:collect:add")
     @PostMapping(value = "add")
     public R add(com.rentalHouseAdmin.rha.modules.sys.entity.collect.Collect collect) {
+
         collectService.save(collect);
         return R.ok();
     }
 
     @RequiresPermissions("collect:collect:del")
     @PostMapping(value = "batchdel")
-    public R batchdel(@RequestParam("ids") List<Long> ids) {
+    public R batchdel(@RequestParam("ids") List<String> ids) {
         collectService.removeByIds(ids);
         return R.ok();
     }
@@ -68,13 +72,14 @@ public class CollectController extends BaseController {
     @RequiresPermissions("collect:collect:edit")
     @PostMapping(value = "edit")
     public R edit(Collect collect) {
+
         collectService.updateById(collect);
         return R.ok();
     }
 
     @RequiresPermissions("collect:collect:del")
     @PostMapping(value = "del/{id}")
-    public R del(@PathVariable Long id) {
+    public R del(@PathVariable String id) {
         collectService.removeById(id);
         return R.ok();
     }

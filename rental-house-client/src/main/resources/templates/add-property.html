@@ -163,8 +163,8 @@
                            <h5 class="card-title mb-4">房子特点</h5>
                            <div class="row">
                               <div class="col-md-4">
-                                 <div class="custom-control custom-checkbox" th:each="labelList: ${issueIndexDTO.labelList}">
-                                    <input type="checkbox" name="label" class="custom-control-input" th:id="${labelList.id}" th:value="${labelList.id}">
+                                 <div class="custom-control custom-checkbox"  th:each="labelList: ${issueIndexDTO.labelList}" >
+                                    <input type="checkbox" name="label"  class="custom-control-input" th:id="${labelList.id}" th:value="${labelList.id}">
                                     <label class="custom-control-label" th:for="${labelList.id}">[[${labelList.labelContent}]]</label>
                                  </div>
 

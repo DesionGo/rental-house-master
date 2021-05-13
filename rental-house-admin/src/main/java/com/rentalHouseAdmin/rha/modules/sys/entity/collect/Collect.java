@@ -56,4 +56,8 @@ public class Collect extends BaseEntity {
      */
     private String deleteTime;
 
+    private String headline;
+
+    private String userName;
+
 }

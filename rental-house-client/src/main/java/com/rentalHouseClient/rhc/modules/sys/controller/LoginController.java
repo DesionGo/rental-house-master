@@ -223,6 +223,10 @@ public class LoginController extends BaseController {
             if (collectService.selectById(collect) == null) {
                 collect.setId(UUID.randomUUID().toString());
                 collect.setStatus(1);
+                DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String createtime = dtf2.format(LocalDateTime.now());
+                LocalDateTime ldt = LocalDateTime.parse(createtime, dtf2);
+                collect.setCreateTime(ldt);
                 return collectService.add(collect);
             } else {
                 return R.fail("收藏过了噢！");

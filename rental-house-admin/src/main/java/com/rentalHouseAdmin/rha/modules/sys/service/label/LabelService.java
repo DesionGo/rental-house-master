@@ -19,4 +19,5 @@ public interface LabelService extends IService<Label> {
      */
     Page<Label> listLabelPage(Label label);
 
+     void saveGo(Label label);
 }
