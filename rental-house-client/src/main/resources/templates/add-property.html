@@ -376,11 +376,11 @@
                });
                console.log(checked)
 
-               console.log(JSON.stringify({label:checked,city:form1.city.value,province:form1.province.value,counties:form1.counties.value,type:form1.type.value,content:form1.content.value,headline:form1.headline.value}))
+
                $.ajax({
                   url: 'addPropertyDetail',
                   type: 'post',
-                  data: JSON.stringify({label:checked,city:form1.city.value,province:form1.province.value,counties:form1.counties.value,type:form1.type.value,content:form1.content.value,headline:form1.headline.value,money:form1.money.value}),
+                  data: JSON.stringify({label:checked,city:form1.city.value,province:form1.province.value,county:form1.counties.value,type:form1.type.value,content:form1.content.value,headline:form1.headline.value,money:form1.money.value,detailSite:form1.detailSite.value}),
                   processData: false,
                   dataType:"json",
                   contentType: "application/json",

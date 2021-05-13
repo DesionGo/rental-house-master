@@ -35,16 +35,50 @@
 
 <!--头部工具栏模板-->
 <script type="text/html" id="headToolbarTpl">
-    <button class="layui-btn layui-btn-sm " lay-event="add">添加</button>
+
     <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="batchdel">批量删除</button>
 </script>
 
 <!--表格行工具栏模板-->
 <script type="text/html" id="rowToolbarTpl">
-    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>审核</a>
     <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del"><i class="layui-icon layui-icon-delete"></i>删除</a>
 </script>
+<script type="text/html" id="typeTpl">
+    <!--todo由于注释不统一规范，无法为你生成格式化代码，请自行处理-->
+    {{#  if(d.type == 0){  }}
+    找租友
+    {{#  }  }}
+    {{#  if(d.type == 1){  }}
+    出租
+    {{#  }  }}
+    {{#  if(d.type == 2){  }}
+    求租
+    {{#  }  }}
+</script>
+<script type="text/html" id="statusTpl">
+    <!--todo由于注释不统一规范，无法为你生成格式化代码，请自行处理-->
+    {{#  if(d.status == 1){  }}
+    正常
+    {{#  }  }}
+    {{#  if(d.status == 2){  }}
+    审核中
+    {{#  }  }}
+    {{#  if(d.status == 3){  }}
+    下架
+    {{#  }  }}
+</script>
 
+<script type="text/html" id="auditorStatusTpl">
+    <!--todo由于注释不统一规范，无法为你生成格式化代码，请自行处理-->
+    {{#  if(d.auditorStatus == 1){  }}
+    通过
+    {{#  }  }}
+    {{#  if(d.auditorStatus == 2){  }}
+    驳回
+    {{#  }  }}
+
+</script>
 <!--表格列格式化模板 start-->
 <!--表格列格式化模板 end-->
 
@@ -52,7 +86,7 @@
     layui.use(['element', 'form', 'layer', 'table', 'laydate'], function () {
         var elemet = layui.element, form = layui.form, layer = layui.layer, table = layui.table, laydate = layui.laydate;
         var tableId = 'kContentTable';
-        var area = ['449px', '95%'];
+        var area = ['449px', '50%'];
 
         // 实例化table
         var tableIns = table.render($.extend(config.layui.table, {
@@ -62,23 +96,19 @@
             ,cols: [[ //表头
                 {type:'checkbox', fixed: 'left'}
                 ,{field: 'headline', title: '发布标题', width: 130}
-                ,{field: 'content', title: '发布内容'}
-                ,{field: 'type', title: '发布类型(0 找租友，1 出租，2 求租）', width: 130}
-                ,{field: 'createUserId', title: '创建者id', width: 130}
-                ,{field: 'createUserName', title: '创建者名字', width: 130}
-                ,{field: 'createTime', title: '创建时间', width: 130}
+                ,{field: 'content', title: '发布内容', width: 200}
+                ,{field: 'type', title: '发布类型', width: 100,templet: '#typeTpl'}
+                ,{field: 'createTime', title: '创建时间', width: 200}
                 ,{field: 'updateTime', title: '修改时间', width: 130}
-                ,{field: 'deleteTime', title: '删除时间', width: 130}
-                ,{field: 'money', title: '金额', width: 130}
+                ,{field: 'money', title: '金额', width: 100}
                 ,{field: 'province', title: '省', width: 130}
                 ,{field: 'city', title: '市', width: 130}
                 ,{field: 'county', title: '县/区', width: 130}
                 ,{field: 'detailSite', title: '详情地点', width: 130}
-                ,{field: 'status', title: '状态(1.正常 2.审核中,3.下架 )', width: 130}
-                ,{field: 'auditorUserId', title: '审核人员id', width: 130}
-                ,{field: 'auditorUserName', title: '审核人员姓名', width: 130}
+                ,{field: 'status', title: '状态', width: 130,templet: '#statusTpl'}
+                ,{field: 'auditorUserName', title: '审核人员姓名', width: 130,fixed: 'right'}
                 ,{field: 'auditorTime', title: '审核时间', width: 130}
-                ,{field: 'auditorStatus', title: '审核状态（0.审核中 1. 审核通过，2.审核驳回）', width: 130}
+                ,{field: 'auditorStatus', title: '审核状态', width: 130,fixed: 'right' , templet: '#auditorStatusTpl'}
                 ,{field: 'auditorRemark', title: '审核回复', width: 130}
                 ,{field: '', title: '操作', width: 235, fixed: 'right', templet: '#rowToolbarTpl'}
             ]]
