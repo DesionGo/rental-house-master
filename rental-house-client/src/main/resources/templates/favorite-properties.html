@@ -129,10 +129,10 @@
                            <div class="row no-gutters">
 
                               <div class="col-lg-5 col-md-5">
-                                 <a th:href="@{/propertySingleGallery}">
+                                 <a th:href="@{'/propertySingleGallery?issueId='+${issue.id}}">
                                     <span class="badge badge-success" th:if="${issue.status}==1">出租</span>
                                     <span class="badge badge-info" th:if="${issue.status}==2">审核中</span>
-                                 <img class="card-img-top" src="static/img/list/1.png" alt="Card image cap">
+                                    <img class="card-img-top" style="height: 200px" th:src="${issue.url}" alt="Card image cap">
                                  </a>
                               </div>
 

@@ -110,16 +110,20 @@ public class IndexController extends BaseController {
         if(issues.size()>6){
             for(int i=0;i<6;i++){
                 if(issues.get(i).getCity().equals(city)){
+                    List<Files> files1=filesService.selectFilesById(issues.get(0).getId());
                     IssueDTO issueDTO=new IssueDTO();
                     BeanUtils.copyProperties(issues.get(i),issueDTO);
+                    issueDTO.setUrl(files1.get(0).getUrl());
                     issueDTOS.add(issueDTO);
                 }
             }
         }else{
             for(Issue issue1:issues){
                 if(issue1.getCity().equals(city)){
+                    List<Files> files1=filesService.selectFilesById(issues.get(0).getId());
                     IssueDTO issueDTO=new IssueDTO();
                     BeanUtils.copyProperties(issue1,issueDTO);
+                    issueDTO.setUrl(files1.get(0).getUrl());
                     issueDTOS.add(issueDTO);
                 }
             }

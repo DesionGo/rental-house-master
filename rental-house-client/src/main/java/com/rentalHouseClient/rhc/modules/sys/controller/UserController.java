@@ -115,7 +115,22 @@ public class UserController extends BaseController {
         ClientUser clientUser =new ClientUser();
         BeanUtils.copyProperties(clientUserDTO,clientUser);
         BaiDuAPIUtil baiDuAPIUtil=new BaiDuAPIUtil();
-        if(clientUserService.getByEmail(clientUser.getEmail())==null){
+        if(clientUserDTO.getUserName()==null||clientUserDTO.getUserName().equals("")){
+            return R.fail("用户名不能为空！");
+        }
+        if(clientUserDTO.getEmail()==null||clientUserDTO.getEmail().equals("")){
+            return R.fail("邮箱不能为空！");
+        }
+        if(clientUserDTO.getPassword()==null||clientUserDTO.getPassword().equals("")){
+            return R.fail("密码不能为空！");
+        }
+        if(clientUserDTO.getIdentityCard()==null||clientUserDTO.getIdentityCard().equals("")){
+            return R.fail("身份证不能为空！");
+        }
+        if(clientUserDTO.getName()==null||clientUserDTO.getName().equals("")){
+            return R.fail("姓名不能为空！");
+        }
+        if(clientUserService.getByEmail(clientUser.getEmail())==null||clientUserDTO.getUserName().equals("")){
             clientUser.setProvince(baiDuAPIUtil.baiDuApiProvince(ip));
             clientUser.setCity(baiDuAPIUtil.baiDuApiCity(ip));
             clientUser.setSex(2);

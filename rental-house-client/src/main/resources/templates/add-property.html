@@ -145,7 +145,7 @@
                               <div class="form-group col-md-4">
                                  <label>发布类型<span class="text-danger">*</span></label>
                                  <select name="type" class="form-control custom-select">
-                                    <option>选择类型</option>
+
                                     <option value="1">出租</option>
                                     <option value="2">转租</option>
                                     <option value="0">找室友</option>
@@ -385,7 +385,7 @@
                   dataType:"json",
                   contentType: "application/json",
                   success: function(data) {
-                     console.log(data)
+
                      if(data.code!=500){
                         $.ajax({
                            url: 'multipleImageUpload',
@@ -394,7 +394,7 @@
                            processData: false,
                            contentType: false,
                            success: function(data) {
-                              alert(data.length+"个上传结果");
+
                               window.location.href='../myProperties?current=1';
                            },
                            error: function(err) {

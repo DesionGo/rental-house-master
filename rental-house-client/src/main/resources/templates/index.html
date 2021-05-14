@@ -191,19 +191,12 @@
                   <div class="card card-list">
                      <a th:href="@{'/propertySingleGallery?issueId='+${issue.id}}">
                         <span class="badge badge-success">在租</span>
-                        <img class="card-img-top" src="/static/img/list/1.png" alt="Card image cap">
+                        <img class="card-img-top" style="height: 200px" th:src="${issue.url}" alt="Card image cap">
                         <div class="card-body">
                            <h5 class="card-title" th:text="${issue.headline}"></h5>
                            <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> [[${issue.createTime}]],[[${issue.province}]],[[${issue.city}]],[[${issue.county}]]
                            </h6>
-                           <div class="review-block-rate">
-                              <i class="mdi mdi-star"></i>
-                              <i class="mdi mdi-star"></i>
-                              <i class="mdi mdi-star"></i>
-                              <i class="mdi mdi-star-outline"></i>
-                              <i class="mdi mdi-star-outline"></i>
-                              <span class="badge-pill badge-success ml-2">3.2</span>
-                           </div>
+
                            <h2 class="text-success mb-0 mt-3">
                               [[${issue.money}]]<small>/月</small>
                            </h2>

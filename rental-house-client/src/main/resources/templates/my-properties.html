@@ -127,42 +127,46 @@
                   </div>
                </div>
                <div class="col-lg-9 col-md-9">
+
                   <div class="row" th:if="${issueIndexDTO.issue} ne null">
-                     <div class="col-lg-12 col-md-12" th:each="issue: ${issueIndexDTO.issue}">
+                     <div class="col-lg-12 col-md-12"  th:each="issue: ${issueIndexDTO.issue}">
+
                         <div class="card card-list card-list-view">
-                        <!--   <span class="float-right text-success"  style="margin-left: 750px"  > <a th:href="@{'/updateProperty?issueId='+${issue.id}}"><i class="mdi mdi-table-edit" ></i>编辑</a></span>-->
-                           <a th:href="@{'/propertySingleGallery?issueId='+${issue.id}}">
-                              <div class="row no-gutters">
-                                 <div class="col-lg-5 col-md-5">           
+                           <div class="row no-gutters">
+
+                              <div class="col-lg-5 col-md-5">
+                                 <a th:href="@{'/propertySingleGallery?issueId='+${issue.id}}">
                                     <span class="badge badge-success" th:if="${issue.status}==1">出租</span>
                                     <span class="badge badge-info" th:if="${issue.status}==2">审核中</span>
-                                    <img class="card-img-top" src="static/img/list/1.png" alt="Card image cap">
-                                 </div>
-
-                                 <div class="col-lg-7 col-md-7">
-                                    <div class="card-body">
-                                       <h5 class="card-title">[[${issue.headline}]]</h5>
-                                       <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> [[${issue.createTime}]],[[${issue.province}]][[${issue.city}]][[${issue.county}]]</h6>
-                                       <h2 class="text-success mb-0 mt-3">
-                                          [[${issue.money}]] <small>/月</small>
-                                       </h2>
-                                    </div>
-                                    <div class="card-footer"  th:if="not ${#lists.isEmpty(issue.label)}">
-                                       <p style="display: inline"> 设备:</p>
-                                       <span  th:each="label: ${issue.label}">[[${label.labelContent}]]</span>
-
-                                    </div>
-                                    <div class="card-footer"  th:if=" ${#lists.isEmpty(issue.label)}">
-                                       <p style="display: inline"> 设备:无</p>
-
-
-                                    </div>
-                                 </div>
-
+                                    <img class="card-img-top" style="height: 200px" th:src="${issue.url}" alt="Card image cap">
+                                 </a>
                               </div>
-                           </a>
+
+                              <div class="col-lg-7 col-md-7">
+                                 <div class="card-body">
+                                    <a class="float-right text-danger" th:href="@{'/deleteMyProperties?issueId='+${issue.id}}" ><i class="mdi mdi-delete-forever"></i> 删除</a>
+                                    <h5 class="card-title">[[${issue.headline}]]</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i>[[${issue.createTime}]]</h6>
+                                    <h2 class="text-success mb-0 mt-3">
+                                       [[${issue.headline}]] <small>/月</small>
+                                    </h2>
+                                 </div>
+                                 <div class="card-footer"  th:if="not ${#lists.isEmpty(issue.label)}">
+                                    <p style="display: inline"> 设备:</p>
+                                    <span  th:each="label: ${issue.label}">[[${label.labelContent}]]</span>
+
+                                 </div>
+                                 <div class="card-footer"  th:if=" ${#lists.isEmpty(issue.label)}">
+                                    <p style="display: inline"> 设备:无</p>
+
+
+                                 </div>
+                              </div>
+                           </div>
                         </div>
+
                      </div>
+
                   </div>
                   <div class="row" th:if="${#lists.isEmpty(issueIndexDTO.issue)}">
                      <h3 style="margin-top: 100px">无数据</h3>
@@ -215,10 +219,6 @@
       <script th:replace="common/base::context"></script>
       <script th:replace="common/base::iconpkcss"></script>
       <script th:replace="common/base::mainjs"></script>
-   <script>
-      function go() {
-         window.location.href=""
-      }
-   </script>
+
    </body>
 </html>

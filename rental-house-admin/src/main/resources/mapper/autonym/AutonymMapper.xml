@@ -24,6 +24,9 @@
             <if test="autonym.identityCard != null and autonym.identityCard != ''">
                 and a.identity_card like concat(#{autonym.identityCard}, "%")
             </if>
+            <if test="autonym.id != null and autonym.id != ''">
+                and a.id like concat(#{autonym.id}, "%")
+            </if>
             <if test="autonym.name != null and autonym.name != ''">
                 and a.name like concat(#{autonym.name}, "%")
             </if>

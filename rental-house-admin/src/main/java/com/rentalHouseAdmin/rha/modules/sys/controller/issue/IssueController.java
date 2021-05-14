@@ -88,13 +88,13 @@ public class IssueController extends BaseController {
 
     @RequiresPermissions("issue:issue:del")
     @PostMapping(value = "del/{id}")
-    public com.rentalHouseAdmin.rha.common.dto.R del(@PathVariable Long id) {
+    public com.rentalHouseAdmin.rha.common.dto.R del(@PathVariable String id) {
         issueService.removeById(id);
         return com.rentalHouseAdmin.rha.common.dto.R.ok();
     }
 
     @GetMapping(value = "get/{id}")
-    public com.rentalHouseAdmin.rha.common.dto.R get(@PathVariable Long id) {
+    public com.rentalHouseAdmin.rha.common.dto.R get(@PathVariable String id) {
         return R.ok(issueService.getById(id));
     }
 

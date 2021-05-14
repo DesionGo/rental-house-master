@@ -6,6 +6,7 @@ import com.rentalHouseClient.rhc.modules.sys.dto.AddPropertyDTO;
 import com.rentalHouseClient.rhc.modules.sys.dto.IssueDTO;
 import com.rentalHouseClient.rhc.modules.sys.entity.Files;
 import com.rentalHouseClient.rhc.modules.sys.entity.collect.Collect;
+import com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue;
 import com.rentalHouseClient.rhc.modules.sys.entity.label.Label;
 import com.rentalHouseClient.rhc.modules.sys.service.FilesService;
 import com.rentalHouseClient.rhc.modules.sys.service.clientUser.ClientUserService;
@@ -119,7 +120,7 @@ public class LoginController extends BaseController {
     @GetMapping("logout")
     public ModelAndView logout() {
 
-        String username = ShiroKit.getUser().getUserName();
+        String username = ShiroKit.getSessionAttribute("userName").toString();
         ShiroKit.logout();
         LOGGER.info("{}退出登录", username);
         return new ModelAndView("sys/login");
@@ -263,7 +264,41 @@ public class LoginController extends BaseController {
 
 
         if(SecurityUtils.getSubject().getPrincipal()!=null){
+            if(addPropertyDTO.getLabel().size()==0){
+                return R.fail(500,"请选择标签！");
+            }
+            if(addPropertyDTO.getCity()==null){
+                return R.fail(500,"城市不能为空！");
 
+            }
+            if(addPropertyDTO.getContent()==null){
+                return R.fail(500,"出租内容不能为空！");
+
+            }
+            if(addPropertyDTO.getCounty()==null){
+                return R.fail(500,"市区不能为空！");
+
+            }
+            if(addPropertyDTO.getHeadline()==null){
+                return R.fail(500,"标题不能为空！");
+
+            }
+            if(addPropertyDTO.getMoney()==0){
+                return R.fail(500,"金额不能为空！");
+
+            }
+            if(addPropertyDTO.getProvince()==null){
+                return R.fail(500,"省份不能为空！");
+
+            }
+            if(addPropertyDTO.getDetailSite()==null){
+                return R.fail(500,"详细地址不能为空！");
+
+            }
+            if(addPropertyDTO.getType()==null){
+                return R.fail(500,"发布类型不能为空！");
+
+            }
             DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             String createtime = dtf2.format(LocalDateTime.now());
             LocalDateTime ldt = LocalDateTime.parse(createtime, dtf2);
@@ -271,8 +306,21 @@ public class LoginController extends BaseController {
 
             return issueService.add(addPropertyDTO);
         } else{
-            return R.fail("用户token过期，请重新登陆！");
+            return R.fail(500,"用户token过期，请重新登陆！");
         }
+    }
+
+    @Log("删除发布信息")
+    @GetMapping("deleteMyProperties")
+    public ModelAndView deleteMyProperties(@RequestParam(value="issueId",required = false) String issueId) {
+        Issue issue=new Issue();
+        issue.setStatus("3");
+        issue.setId(issueId);
+        issueService.updateById(issue);
+        IssueIndexDTO issueIndexDTO=issueService.userIssue(ShiroKit.getSessionAttribute("id").toString(),1);
+        return  new ModelAndView("my-properties").addObject("issueIndexDTO",issueIndexDTO);
+
+
     }
     @Log("租房详情")
     @GetMapping("propertySingleGallery")

@@ -144,7 +144,7 @@
     <select id="selectUserIssue"  resultType="com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue">
         select <include refid="Base_Column_List" />
         from issue
-        where    create_user_id=#{createId}
+        where    create_user_id=#{createId} and status=1 or status =2
     </select>
 
     <insert id="add" parameterType="com.rentalHouseClient.rhc.modules.sys.entity.issue.Issue">

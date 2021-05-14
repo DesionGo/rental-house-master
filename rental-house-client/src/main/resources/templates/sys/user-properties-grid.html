@@ -190,72 +190,7 @@
       <section class="section-padding">
          <div class="container">
             <div class="row">
-               <div class="col-lg-3 col-md-3">
 
-                  <div class="card">
-                     <div class="card-body">
-                        <h5 class="card-title mb-3">出租类型</h5>
-                        <ul class="sidebar-card-list">
-                           <li><a href="#"><i class="mdi mdi-chevron-right"></i> 整租 <span class="sidebar-badge">600</span></a></li>
-                           <li><a href="#"><i class="mdi mdi-chevron-right"></i> 合租 <span class="sidebar-badge">1200</span></a></li>
-                           <li><a href="#"><i class="mdi mdi-chevron-right"></i> 找室友 <span class="sidebar-badge">1200</span></a></li>
-                        </ul>
-                     </div>
-                  </div>
-                  <div class="card">
-                     <div class="card-body">
-                        <h5 class="card-title mb-3">城市</h5>
-                        <ul class="sidebar-card-list">
-
-                           <li th:each="city: ${issueIndexDTO.city}"><a href="#"><i class="mdi mdi-chevron-right"></i> [[${city.cityName}]]<span class="sidebar-badge">[[${city.amount}]]</span></a></li>
-
-                        </ul>
-                     </div>
-                  </div>
-                  <div class="card">
-                     <div class="card-body">
-                        <h5 class="card-title mb-4">人气出租</h5>
-                        <div id="featured-properties" class="carousel slide" data-ride="carousel">
-                           <ol class="carousel-indicators">
-                              <li data-target="#featured-properties" data-slide-to="0" class="active"></li>
-                              <li data-target="#featured-properties" data-slide-to="1"></li>
-                           </ol>
-                           <div class="carousel-inner">
-                              <div class="carousel-item active">
-                                 <div class="card card-list">
-                                    <a href="#">
-                                       <span class="badge badge-success">For Sale</span>
-                                       <img class="card-img-top" src="/static/img/list/1.png" alt="Card image cap">
-                                       <div class="card-body">
-                                          <h5 class="card-title">House in Kent Street</h5>
-                                          <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> 127 Kent Sreet, Sydny, NEW 2000</h6>
-                                          <h2 class="text-success mb-0 mt-3">
-                                             $130,000 <small>/month</small>
-                                          </h2>
-                                       </div>
-                                    </a>
-                                 </div>
-                              </div>
-                              <div class="carousel-item">
-                                 <div class="card card-list">
-                                    <a href="#">
-                                       <span class="badge badge-secondary">For Rent</span>
-                                       <img class="card-img-top" src="/static/img/list/2.png" alt="Card image cap">
-                                       <div class="card-body">
-                                          <h5 class="card-title">Family House in Hudson</h5>
-                                          <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> Hoboken, NJ, USA</h6>
-                                          <h2 class="text-success mb-0 mt-3">
-                                             $127,000 <small>/month</small>
-                                          </h2>
-                                       </div>
-                                    </a>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
                <div class="col-lg-9 col-md-9">
 
                   <div class="row" th:if="${issueIndexDTO.issue} ne ''">
@@ -263,7 +198,7 @@
                         <div class="card card-list">
                            <a th:href="@{'/propertySingleGallery?issueId='+${issue.id}}">
                               <span class="badge badge-success">出租</span>
-                              <img class="card-img-top" src="/static/img/list/1.png" alt="Card image cap">
+                              <img class="card-img-top" style="height: 200px" th:src="${issue.url}" alt="Card image cap">
                               <div class="card-body">
                                  <h5 class="card-title"> [[${issue.headline}]]</h5>
                                  <h6 class="card-subtitle mb-2 text-muted"><i class="mdi mdi-home-map-marker"></i> [[${issue.createTime}]],[[${issue.province}]][[${issue.city}]][[${issue.county}]]</h6>
